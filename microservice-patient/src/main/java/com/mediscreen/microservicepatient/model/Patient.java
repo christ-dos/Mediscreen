@@ -1,19 +1,21 @@
 package com.mediscreen.microservicepatient.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
     @NotBlank(message = "The field cannot be blank")
@@ -35,4 +37,10 @@ public class Patient {
 
     private String phone;
 
+    public Patient(String firstName, String lastName, String birthDate, GenderEnum gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+    }
 }
