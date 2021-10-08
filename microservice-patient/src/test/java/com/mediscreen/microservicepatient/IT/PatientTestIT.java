@@ -21,12 +21,12 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -81,7 +81,7 @@ public class PatientTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/2"))
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("Gérard")))
                 .andExpect(jsonPath("$.lastName", is("Duhammel")))
@@ -95,12 +95,47 @@ public class PatientTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/50")).
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/50")).
                 andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
                 .andExpect(result -> assertEquals("Patient not found",
                         result.getResolvedException().getMessage()))
                 .andDo(print());
+    }
 
+    @Test
+    public void updatePatientTest_whenPatientRecodedInDb_thenReturnResponseEntityCreated() throws Exception {
+        //GIVEN
+        Patient patientToUpdate = new Patient(
+                1, "Johnne", "Boyd", "1964-09-23", GenderEnum.M, "1509 Culver St ,Culver 97451", "123-456-789");
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+                        .content(Utils.asJsonString(patientToUpdate))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(header().stringValues("Location", "http://localhost:8081/patient/update/1"))
+                .andExpect(jsonPath("$.firstName", is("Johnne")))
+                .andExpect(jsonPath("$.address", is("1509 Culver St ,Culver 97451")))
+                .andExpect(jsonPath("$.phone", is("123-456-789")))
+                .andDo(print());
+
+    }
+
+    @Test
+    public void updatePatientTest_whenPatientNotRecodedInDb_thenThrowPatientNotFoundException() throws Exception {
+        //GIVEN
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+                        .content(Utils.asJsonString(patientTest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
+                .andExpect(result -> assertEquals("Patient to update not found",
+                        result.getResolvedException().getMessage()))
+                .andDo(print());
     }
 }

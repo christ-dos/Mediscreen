@@ -39,4 +39,19 @@ public class PatientService {
         log.info("Service - Patient found with ID: " + id);
         return patient.get();
     }
+
+    public Patient updatePatient(Patient patient){
+        Optional<Patient> patientToUpdate = patientRepository.findById(patient.getId());
+        if(!patientToUpdate.isPresent()){
+            throw  new PatientNotFoundException("Patient to update not found");
+        }
+        patientToUpdate.get().setFirstName(patient.getFirstName());
+        patientToUpdate.get().setLastName(patient.getLastName());
+        patientToUpdate.get().setBirthDate(patient.getBirthDate());
+        patientToUpdate.get().setGender(patient.getGender());
+        patientToUpdate.get().setAddress(patient.getAddress());
+        patientToUpdate.get().setPhone(patient.getPhone());
+
+        return patientRepository.save(patientToUpdate.get());
+    }
 }

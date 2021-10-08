@@ -28,9 +28,9 @@ public class PatientController {
         if(patientSaved == null){
             ResponseEntity.noContent().build();
         }
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Responded", "PatientController");
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .port(8081)
@@ -48,9 +48,29 @@ public class PatientController {
         return patientService.getPatients();
     }
 
-    @GetMapping(value = "/patients/{id}")
+    @GetMapping(value = "/patient/{id}")
     public Patient getPatientById(@PathVariable int id , Model model){
         log.info("Controller - Find Patient with ID: " + id);
         return patientService.findPatientById(id);
+    }
+
+    @PutMapping(value = "/patient/update")
+    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient, BindingResult result, Model model){
+        Patient patientUpdated = patientService.updatePatient(patient);
+        if(patientUpdated == null){
+            ResponseEntity.noContent().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Responded", "PatientController");
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .port(8081)
+                .path("/{id}")
+                .buildAndExpand(patientUpdated.getId())
+                .toUri();
+
+        log.info("Controller - Patient to update with ID: " + patient.getId());
+        return ResponseEntity.created(location).headers(headers).body(patientUpdated);
     }
 }

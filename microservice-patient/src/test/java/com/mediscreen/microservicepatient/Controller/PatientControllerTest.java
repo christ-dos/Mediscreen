@@ -20,10 +20,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,12 +60,8 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void addPatientTest_whenPatientNotExitsInDb_thenReturnPatientAdded() throws Exception {
+    public void addPatientTest_whenPatientNotExitsInDb_thenReturnReponseEntityCreated() throws Exception {
         //GIVEN
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity responseEntity = new ResponseEntity(Utils.asJsonString(patientTest), header, 201);
-
         patientTest.setId(5);
         when(patientServiceMock.addPatient(any(Patient.class))).thenReturn(patientTest);
         //WHEN
@@ -73,7 +70,6 @@ public class PatientControllerTest {
                         .content(Utils.asJsonString(patientTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"))
                 .andExpect(header().stringValues("Location", "http://localhost:8081/patient/add/5"))
                 .andExpect(jsonPath("$.firstName", is("Jacob")))
                 .andExpect(jsonPath("$.lastName", is("Boyd")))
@@ -110,7 +106,7 @@ public class PatientControllerTest {
         when(patientServiceMock.findPatientById(anyInt())).thenReturn(patientTest);
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/2"))
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("Jacob")))
                 .andExpect(jsonPath("$.lastName", is("Boyd")))
@@ -125,12 +121,49 @@ public class PatientControllerTest {
         when(patientServiceMock.findPatientById(anyInt())).thenThrow(new PatientNotFoundException("Patient not found"));
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/50")).
-                andExpect(status().isNotFound())
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/50"))
+                .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
                 .andExpect(result -> assertEquals("Patient not found",
                         result.getResolvedException().getMessage()))
                 .andDo(print());
+    }
 
+    @Test
+    public void updatePatientTest_whenPatientRecodedInDb_thenReturnResponseEntityCreated() throws Exception {
+        //GIVEN
+        Patient patientToUpdate = new Patient(
+                1, "Johnne", "Boyd", "1964-09-23", GenderEnum.M, "1509 Culver St ,Culver 97451", "123-456-789");
+        when(patientServiceMock.updatePatient(any(Patient.class))).thenReturn(patientToUpdate);
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+                        .content(Utils.asJsonString(patientToUpdate))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(header().stringValues("Location", "http://localhost:8081/patient/update/1"))
+                .andExpect(jsonPath("$.firstName", is("Johnne")))
+                .andExpect(jsonPath("$.address", is("1509 Culver St ,Culver 97451")))
+                .andExpect(jsonPath("$.phone", is("123-456-789")))
+                .andDo(print());
+
+    }
+
+    @Test
+    public void updatePatientTest_whenPatientNotRecodedInDb_thenThrowPatientNotFoundException() throws Exception {
+        //GIVEN
+        when(patientServiceMock.updatePatient(any(Patient.class))).thenThrow(new PatientNotFoundException("Patient not found"));
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+                .content(Utils.asJsonString(patientTest))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
+                .andExpect(result -> assertEquals("Patient not found",
+                        result.getResolvedException().getMessage()))
+                .andDo(print());
     }
 }
