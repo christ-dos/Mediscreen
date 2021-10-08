@@ -7,22 +7,23 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-
+@AllArgsConstructor
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    @NotBlank(message = "The field cannot be blank")
+    @Size(min=3, max=20, message = "First name must be between 3 and 20 characters")
     @Column(name = "first_name")
     private String firstName;
 
-    @NotBlank(message = "The field cannot be blank")
+    @Size(min=3, max=20, message = "Last name must be between 3 and 20 characters")
     @Column(name = "last_name")
     private String lastName;
 
