@@ -1,9 +1,7 @@
-package com.clientui.controller.model;
+package com.clientui.models;
 
-import com.mediscreen.microservicepatient.model.GenderEnum;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import com.clientui.models.GenderEnum;
 
 public class PatientBean {
     private int id;
@@ -14,7 +12,6 @@ public class PatientBean {
 
     private String birthDate;
 
-    @Enumerated(value = EnumType.STRING)
     private GenderEnum gender;
 
     private String address;

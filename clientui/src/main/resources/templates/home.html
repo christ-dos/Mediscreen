@@ -1,13 +1,44 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Mediscreen</title>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
 </head>
 <body>
     <div class="container">
+        <div class="row">
         <h1>Mediscreen</h1>
-
+        </div>
+        <!-- ***************Table******************-->
+        <div class="row" >
+            <a href="/patient/add" class="btn btn-primary btn-sm mb-2">Add New Patient</a>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last name</th>
+                    <th>Birth date</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="patient : ${patients}">
+                    <td th:text="${patient.firstName}"></td>
+                    <td th:text="${patient.lastName}"></td>
+                    <td th:text="${patient.birthDate}"></td>
+                    <td  style="width: 5%" th:text="${patient.gender}"></td>
+                    <td th:text="${patient.address}"></td>
+                    <td th:text="${patient.phone}"></td>
+                    <td style="width: 15%" class="text-center">
+                        <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a> |
+                        <a th:href="@{/patient/delete/{id}(id=${patient.id})}">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 

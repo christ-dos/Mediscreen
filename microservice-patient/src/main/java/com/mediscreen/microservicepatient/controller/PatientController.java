@@ -44,13 +44,13 @@ public class PatientController {
     }
 
     @GetMapping(value = "/patients")
-    public Iterable<Patient> getListPatients(Model model){
+    public Iterable<Patient> getListPatients(){
         log.info("Controller - List Patients displayed");
         return patientService.getPatients();
     }
 
     @GetMapping(value = "/patient/{id}")
-    public Patient getPatientById(@PathVariable int id , Model model){
+    public Patient getPatientById(@PathVariable int id){
         log.info("Controller - Find Patient with ID: " + id);
         return patientService.findPatientById(id);
     }
