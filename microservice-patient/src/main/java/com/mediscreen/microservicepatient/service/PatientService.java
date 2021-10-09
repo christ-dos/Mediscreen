@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class PatientService {
+public class PatientService implements IPatientService {
 
     private IPatientRepository patientRepository;
 
@@ -21,16 +21,19 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
+    @Override
     public Patient addPatient(Patient patient) {
         log.info("Service - Patient saved");
         return patientRepository.save(patient);
     }
 
+    @Override
     public Iterable<Patient> getPatients() {
         log.info("Service - list of patients found");
         return patientRepository.findAll();
     }
 
+    @Override
     public Patient findPatientById(int id) {
         Optional<Patient> patient = patientRepository.findById(id);
         if (!patient.isPresent()) {
@@ -40,6 +43,7 @@ public class PatientService {
         return patient.get();
     }
 
+    @Override
     public Patient updatePatient(Patient patient){
         Optional<Patient> patientToUpdate = patientRepository.findById(patient.getId());
         if(!patientToUpdate.isPresent()){

@@ -1,6 +1,7 @@
 package com.mediscreen.microservicepatient.controller;
 
 import com.mediscreen.microservicepatient.model.Patient;
+import com.mediscreen.microservicepatient.service.IPatientService;
 import com.mediscreen.microservicepatient.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.net.URI;
 public class PatientController {
 
     @Autowired
-    private PatientService patientService;
+    private IPatientService patientService;
 
     @PostMapping(value = "/patient/add")
     public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient, BindingResult result, Model model) {
