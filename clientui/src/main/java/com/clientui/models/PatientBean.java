@@ -14,16 +14,16 @@ import javax.validation.constraints.NotBlank;
 public class PatientBean {
     private int id;
 
-    @NotBlank(message = "The field cannot be blank")
+//    @NotBlank(message = "The field cannot be blank")
     private String firstName;
 
-    @NotBlank(message = "The field cannot be blank")
+//    @NotBlank(message = "The field cannot be blank")
     private String lastName;
 
-    @NotBlank(message = "The field cannot be blank")
+//    @NotBlank(message = "The field cannot be blank")
     private String birthDate;
 
-    @NotBlank(message = "The field cannot be blank")
+//    @NotBlank(message = "The field cannot be blank")
     private GenderEnum gender;
 
     private String address;

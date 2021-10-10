@@ -4,7 +4,10 @@ import com.clientui.models.PatientBean;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,10 +27,10 @@ public interface IMicroServicePatientProxy {
     ResponseEntity<PatientBean> addPatient(@Valid @RequestBody PatientBean patientBean);
 
 
-    @PutMapping(value = "/patient/update")
-    ResponseEntity<PatientBean> updatePatient(@RequestBody PatientBean patientBean);
+    @PostMapping(value = "/patient/update/{id}")
+    ResponseEntity<PatientBean> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientBean patientBean);
 
-    @DeleteMapping(value = "/patient/delete/{id}")
+    @GetMapping(value = "/patient/delete/{id}")
     public String deletePatientById(@PathVariable("id") Integer id);
 
 }

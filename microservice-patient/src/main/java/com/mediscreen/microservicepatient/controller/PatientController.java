@@ -56,13 +56,12 @@ public class PatientController {
         return patientService.findPatientById(id);
     }
 
-    @PutMapping(value = "/patient/update")
-    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient, BindingResult result, Model model) {
+    @PostMapping(value = "/patient/update/{id}")
+    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient, @PathVariable("id") Integer id, BindingResult result, Model model) {
         Patient patientUpdated = patientService.updatePatient(patient);
         if (patientUpdated == null) {
             ResponseEntity.noContent().build();
         }
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Responded", "PatientController");
         URI location = ServletUriComponentsBuilder
@@ -76,7 +75,7 @@ public class PatientController {
         return ResponseEntity.created(location).headers(headers).body(patientUpdated);
     }
 
-    @DeleteMapping(value = "/patient/delete/{id}")
+    @GetMapping(value = "/patient/delete/{id}")
     public String deletePatientById(@PathVariable("id") Integer id) {
 
         log.info("Controller - Patient deleted");

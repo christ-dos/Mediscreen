@@ -62,7 +62,7 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public String deletePatientById(int id) {
+    public String deletePatientById(Integer id) {
         patientRepository.deleteById(id);
         log.info("Service - Patient deleted");
         return "SUCCESS";
