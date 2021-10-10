@@ -68,7 +68,6 @@ public class ClientUiController {
             return "patient/update";
         }
         patientProxy.updatePatient(id, patientClientUi);
-
         model.addAttribute("patients", patientProxy.listPatients());
         log.info("Controller - Redirection to patient list after update");
         return "redirect:/";

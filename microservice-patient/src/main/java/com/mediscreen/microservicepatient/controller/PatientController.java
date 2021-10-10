@@ -63,10 +63,7 @@ public class PatientController {
         headers.add("Responded", "PatientController");
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .port(8081)
-                .path("/{id}")
-                .buildAndExpand(patientUpdated.getId())
-                .toUri();
+                .port(8081).build().toUri();
 
         log.info("Controller - Patient to update with ID: " + patient.getId());
         return ResponseEntity.created(location).headers(headers).body(patientUpdated);

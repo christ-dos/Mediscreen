@@ -31,6 +31,15 @@ public class PatientClientUi {
 
     private String phone;
 
+    public PatientClientUi(int id, String firstName, String lastName, String birthDate, Gender gender, String address, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.address = address;
+        this.phone = phone;
+    }
 
     @Override
     public String toString() {

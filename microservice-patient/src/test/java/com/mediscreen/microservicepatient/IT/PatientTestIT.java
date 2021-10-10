@@ -23,6 +23,11 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Class integratioin tests for {@link Patient}
+ *
+ * @author Christine Duarte
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -105,7 +110,7 @@ public class PatientTestIT {
                 1, "Johnne", "Boyd", "1964-09-23", Gender.M, "1509 Culver St ,Culver 97451", "123-456-789");
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+        mockMvcPatient.perform(MockMvcRequestBuilders.post("/patient/update/1")
                         .content(Utils.asJsonString(patientToUpdate))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -123,7 +128,7 @@ public class PatientTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+        mockMvcPatient.perform(MockMvcRequestBuilders.post("/patient/update/50")
                         .content(Utils.asJsonString(patientTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

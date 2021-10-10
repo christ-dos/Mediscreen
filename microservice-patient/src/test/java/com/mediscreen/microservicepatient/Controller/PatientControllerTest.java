@@ -31,6 +31,11 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Class that test PatientController
+ *
+ * @author Christine Duarte
+ */
 @WebMvcTest(PatientController.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
@@ -108,7 +113,6 @@ public class PatientControllerTest {
                 .andExpect(jsonPath("$.lastName", is("Boyd")))
                 .andExpect(jsonPath("$.birthDate", is("1968-07-15")))
                 .andDo(print());
-
     }
 
     @Test
@@ -133,7 +137,7 @@ public class PatientControllerTest {
         when(patientServiceMock.updatePatient(any(Patient.class))).thenReturn(patientToUpdate);
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+        mockMvcPatient.perform(MockMvcRequestBuilders.post("/patient/update/1")
                         .content(Utils.asJsonString(patientToUpdate))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -152,7 +156,7 @@ public class PatientControllerTest {
         when(patientServiceMock.updatePatient(any(Patient.class))).thenThrow(new PatientNotFoundException("Patient not found"));
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
+        mockMvcPatient.perform(MockMvcRequestBuilders.post("/patient/update/1")
                 .content(Utils.asJsonString(patientTest))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
