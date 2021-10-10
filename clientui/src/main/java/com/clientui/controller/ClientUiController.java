@@ -41,6 +41,7 @@ public class ClientUiController {
     @PostMapping("/patient/add")
     public String addNewPatient(@Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("genders", Gender.values());
             log.error("Controller - Has error in form");
             return "patient/add";
         }
@@ -49,7 +50,6 @@ public class ClientUiController {
         log.info("Controller - redirection to patient list after addition patient");
         return "redirect:/";
     }
-
 
     @GetMapping(value = "/patient/update/{id}")
     public String showFormUpdatePatient(PatientClientUi patientClientUi, Model model) {
@@ -63,10 +63,12 @@ public class ClientUiController {
     @PostMapping(value = "/patient/update/{id}")
     public String updatePatient( @PathVariable("id") Integer id,@Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("genders", Gender.values());
             log.error("Controller - Has error in form");
             return "patient/update";
         }
         patientProxy.updatePatient(id, patientClientUi);
+
         model.addAttribute("patients", patientProxy.listPatients());
         log.info("Controller - Redirection to patient list after update");
         return "redirect:/";
