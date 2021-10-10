@@ -31,6 +31,7 @@ public class Patient {
     @Column(name = "birth_date")
     private String birthDate;
 
+//    @NotBlank(message = "The field cannot be blank")
     @Enumerated(value = EnumType.STRING)
     private GenderEnum gender;
 

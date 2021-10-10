@@ -2,7 +2,6 @@ package com.mediscreen.microservicepatient.controller;
 
 import com.mediscreen.microservicepatient.model.Patient;
 import com.mediscreen.microservicepatient.service.IPatientService;
-import com.mediscreen.microservicepatient.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,12 +23,14 @@ public class PatientController {
     private IPatientService patientService;
 
     @PostMapping(value = "/patient/add")
-    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient, BindingResult result, Model model) {
+    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient, BindingResult result) {
+        if (result.hasErrors()) {
+
+        }
         Patient patientSaved = patientService.addPatient(patient);
-        if(patientSaved == null){
+        if (patientSaved == null) {
             ResponseEntity.noContent().build();
         }
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Responded", "PatientController");
         URI location = ServletUriComponentsBuilder
@@ -44,21 +45,21 @@ public class PatientController {
     }
 
     @GetMapping(value = "/patients")
-    public Iterable<Patient> getListPatients(){
+    public Iterable<Patient> getListPatients() {
         log.info("Controller - List Patients displayed");
         return patientService.getPatients();
     }
 
     @GetMapping(value = "/patient/{id}")
-    public Patient getPatientById(@PathVariable int id){
+    public Patient getPatientById(@PathVariable("id") int id) {
         log.info("Controller - Find Patient with ID: " + id);
         return patientService.findPatientById(id);
     }
 
     @PutMapping(value = "/patient/update")
-    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient, BindingResult result, Model model){
+    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient, BindingResult result, Model model) {
         Patient patientUpdated = patientService.updatePatient(patient);
-        if(patientUpdated == null){
+        if (patientUpdated == null) {
             ResponseEntity.noContent().build();
         }
 
@@ -73,5 +74,12 @@ public class PatientController {
 
         log.info("Controller - Patient to update with ID: " + patient.getId());
         return ResponseEntity.created(location).headers(headers).body(patientUpdated);
+    }
+
+    @DeleteMapping(value = "/patient/delete/{id}")
+    public String deletePatientById(@PathVariable("id") Integer id) {
+
+        log.info("Controller - Patient deleted");
+        return patientService.deletePatientById(id);
     }
 }

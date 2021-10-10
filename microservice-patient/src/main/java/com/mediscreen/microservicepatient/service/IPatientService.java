@@ -10,4 +10,6 @@ public interface IPatientService {
     Patient findPatientById(int id);
 
     Patient updatePatient(Patient patient);
+
+    String deletePatientById(int id) ;
 }

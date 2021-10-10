@@ -39,23 +39,32 @@ public class PatientService implements IPatientService {
         if (!patient.isPresent()) {
             throw new PatientNotFoundException("Patient not found");
         }
-        log.info("Service - Patient found with ID: " + id);
+        log.debug("Service - Patient found with ID: " + id);
         return patient.get();
     }
 
     @Override
     public Patient updatePatient(Patient patient){
-        Optional<Patient> patientToUpdate = patientRepository.findById(patient.getId());
-        if(!patientToUpdate.isPresent()){
+        Optional<Patient> patientToUpdateOptional = patientRepository.findById(patient.getId());
+        if(!patientToUpdateOptional.isPresent()){
             throw  new PatientNotFoundException("Patient to update not found");
         }
-        patientToUpdate.get().setFirstName(patient.getFirstName());
-        patientToUpdate.get().setLastName(patient.getLastName());
-        patientToUpdate.get().setBirthDate(patient.getBirthDate());
-        patientToUpdate.get().setGender(patient.getGender());
-        patientToUpdate.get().setAddress(patient.getAddress());
-        patientToUpdate.get().setPhone(patient.getPhone());
+        Patient patientToUpdate= patientToUpdateOptional.get();
+        patientToUpdate.setFirstName(patient.getFirstName());
+        patientToUpdate.setLastName(patient.getLastName());
+        patientToUpdate.setBirthDate(patient.getBirthDate());
+        patientToUpdate.setGender(patient.getGender());
+        patientToUpdate.setAddress(patient.getAddress());
+        patientToUpdate.setPhone(patient.getPhone());
 
-        return patientRepository.save(patientToUpdate.get());
+        log.debug("Service - Patient updated with ID: " + patientToUpdate.getId());
+        return patientRepository.save(patientToUpdate);
+    }
+
+    @Override
+    public String deletePatientById(int id) {
+        patientRepository.deleteById(id);
+        log.info("Service - Patient deleted");
+        return "SUCCESS";
     }
 }

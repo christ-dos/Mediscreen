@@ -166,4 +166,16 @@ public class PatientControllerTest {
                         result.getResolvedException().getMessage()))
                 .andDo(print());
     }
+
+    @Test
+    public void deletePatientByIdTest_thenReturnStringSUCCESS() throws Exception {
+        //GIVEN
+        when(patientServiceMock.deletePatientById(anyInt())).thenReturn("SUCCESS");
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.delete("/patient/delete/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",is("SUCCESS")))
+                .andDo(print());
+    }
 }

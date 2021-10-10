@@ -113,10 +113,10 @@ public class PatientServiceTest {
         //WHEN
         Patient patientUpdatedResult = patientServiceTest.updatePatient(patientTest);
         //THEN
-        assertEquals(1 ,patientUpdatedResult.getId());
-        assertEquals("Johnne" ,patientUpdatedResult.getFirstName());
-        assertEquals(patientToUpdate.getAddress() ,patientUpdatedResult.getAddress());
-        assertEquals("123-456-789" ,patientUpdatedResult.getPhone());
+        assertEquals(1, patientUpdatedResult.getId());
+        assertEquals("Johnne", patientUpdatedResult.getFirstName());
+        assertEquals(patientToUpdate.getAddress(), patientUpdatedResult.getAddress());
+        assertEquals("123-456-789", patientUpdatedResult.getPhone());
         verify(patientRepositoryMock, times(1)).findById(anyInt());
         verify(patientRepositoryMock, times(1)).save(any(Patient.class));
     }
@@ -130,5 +130,15 @@ public class PatientServiceTest {
         assertThrows(PatientNotFoundException.class, () -> patientServiceTest.updatePatient(patientTest));
         verify(patientRepositoryMock, times(1)).findById(anyInt());
         verify(patientRepositoryMock, times(0)).save(any(Patient.class));
+    }
+
+    @Test
+    public void deletePatientByIdTest_thenReturnStringWithSUCCESS() {
+        //GIVEN
+        int id = 2;
+        //WHEN
+        String patientDeletedResult = patientServiceTest.deletePatientById(id);
+        //THEN
+        assertEquals("SUCCESS", patientDeletedResult);
     }
 }
