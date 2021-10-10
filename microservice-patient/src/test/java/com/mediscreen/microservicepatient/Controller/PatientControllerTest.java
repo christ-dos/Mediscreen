@@ -2,7 +2,7 @@ package com.mediscreen.microservicepatient.Controller;
 
 import com.mediscreen.microservicepatient.controller.PatientController;
 import com.mediscreen.microservicepatient.exception.PatientNotFoundException;
-import com.mediscreen.microservicepatient.model.GenderEnum;
+import com.mediscreen.microservicepatient.model.Gender;
 import com.mediscreen.microservicepatient.model.Patient;
 import com.mediscreen.microservicepatient.repository.IPatientRepository;
 import com.mediscreen.microservicepatient.service.PatientService;
@@ -15,16 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,7 +51,7 @@ public class PatientControllerTest {
 
     @BeforeEach
     public void setupPerTest() {
-        patientTest = new Patient(2, "Jacob", "Boyd", "1968-07-15", GenderEnum.M, null, null);
+        patientTest = new Patient(2, "Jacob", "Boyd", "1968-07-15", Gender.M, null, null);
 
     }
 
@@ -82,11 +78,11 @@ public class PatientControllerTest {
         //GIVEN
         List<Patient> patientsTests = Arrays.asList(
                 new Patient(
-                        1, "John", "Boyd", "1964-09-23", GenderEnum.M, null, null),
+                        1, "John", "Boyd", "1964-09-23", Gender.M, null, null),
                 new Patient(
-                        2, "Jacob", "Boyd", "1968-07-15", GenderEnum.M, null, null),
+                        2, "Jacob", "Boyd", "1968-07-15", Gender.M, null, null),
                 new Patient(
-                        3, "Johanna", "Lefevre", "1970-09-08", GenderEnum.F, null, null)
+                        3, "Johanna", "Lefevre", "1970-09-08", Gender.F, null, null)
         );
         when(patientServiceMock.getPatients()).thenReturn(patientsTests);
         //WHEN
@@ -133,7 +129,7 @@ public class PatientControllerTest {
     public void updatePatientTest_whenPatientRecodedInDb_thenReturnResponseEntityCreated() throws Exception {
         //GIVEN
         Patient patientToUpdate = new Patient(
-                1, "Johnne", "Boyd", "1964-09-23", GenderEnum.M, "1509 Culver St ,Culver 97451", "123-456-789");
+                1, "Johnne", "Boyd", "1964-09-23", Gender.M, "1509 Culver St ,Culver 97451", "123-456-789");
         when(patientServiceMock.updatePatient(any(Patient.class))).thenReturn(patientToUpdate);
         //WHEN
         //THEN
@@ -164,18 +160,6 @@ public class PatientControllerTest {
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
                 .andExpect(result -> assertEquals("Patient not found",
                         result.getResolvedException().getMessage()))
-                .andDo(print());
-    }
-
-    @Test
-    public void deletePatientByIdTest_thenReturnStringSUCCESS() throws Exception {
-        //GIVEN
-        when(patientServiceMock.deletePatientById(anyInt())).thenReturn("SUCCESS");
-        //WHEN
-        //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.delete("/patient/delete/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$",is("SUCCESS")))
                 .andDo(print());
     }
 }

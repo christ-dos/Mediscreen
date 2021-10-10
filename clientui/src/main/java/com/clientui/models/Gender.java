@@ -5,6 +5,6 @@ package com.clientui.models;
  * F = female
  * M = Male
  */
-public enum GenderEnum {
+public enum Gender {
     F, M;
 }

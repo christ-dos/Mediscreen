@@ -11,5 +11,4 @@ public interface IPatientService {
 
     Patient updatePatient(Patient patient);
 
-    String deletePatientById(Integer id) ;
 }

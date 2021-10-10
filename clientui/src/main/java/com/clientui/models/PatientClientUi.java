@@ -1,30 +1,31 @@
 package com.clientui.models;
 
 
-import com.clientui.models.GenderEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class PatientBean {
+public class PatientClientUi {
     private int id;
 
-//    @NotBlank(message = "The field cannot be blank")
+    @Size(min=3, max=20, message = "First name must be between 3 and 20 characters")
     private String firstName;
 
-//    @NotBlank(message = "The field cannot be blank")
+    @Size(min=3, max=20, message = "Last name must be between 3 and 20 characters")
     private String lastName;
 
-//    @NotBlank(message = "The field cannot be blank")
+    @NotBlank(message = "The field cannot be blank")
     private String birthDate;
 
-//    @NotBlank(message = "The field cannot be blank")
-    private GenderEnum gender;
+    @NotNull(message = "The field cannot be blank")
+    private Gender gender;
 
     private String address;
 

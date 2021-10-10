@@ -23,10 +23,7 @@ public class PatientController {
     private IPatientService patientService;
 
     @PostMapping(value = "/patient/add")
-    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient, BindingResult result) {
-        if (result.hasErrors()) {
-
-        }
+    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient) {
         Patient patientSaved = patientService.addPatient(patient);
         if (patientSaved == null) {
             ResponseEntity.noContent().build();
@@ -75,10 +72,4 @@ public class PatientController {
         return ResponseEntity.created(location).headers(headers).body(patientUpdated);
     }
 
-    @GetMapping(value = "/patient/delete/{id}")
-    public String deletePatientById(@PathVariable("id") Integer id) {
-
-        log.info("Controller - Patient deleted");
-        return patientService.deletePatientById(id);
-    }
 }

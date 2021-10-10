@@ -61,10 +61,4 @@ public class PatientService implements IPatientService {
         return patientRepository.save(patientToUpdate);
     }
 
-    @Override
-    public String deletePatientById(Integer id) {
-        patientRepository.deleteById(id);
-        log.info("Service - Patient deleted");
-        return "SUCCESS";
-    }
 }

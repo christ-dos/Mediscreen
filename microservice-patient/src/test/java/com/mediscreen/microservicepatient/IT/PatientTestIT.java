@@ -1,7 +1,7 @@
 package com.mediscreen.microservicepatient.IT;
 
 import com.mediscreen.microservicepatient.exception.PatientNotFoundException;
-import com.mediscreen.microservicepatient.model.GenderEnum;
+import com.mediscreen.microservicepatient.model.Gender;
 import com.mediscreen.microservicepatient.model.Patient;
 import com.mediscreen.microservicepatient.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,15 +15,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -44,7 +39,7 @@ public class PatientTestIT {
 
     @BeforeEach
     public void setupPerTest() {
-        patientTest = new Patient("John", "Boyd", "1964-09-23", GenderEnum.M);
+        patientTest = new Patient("John", "Boyd", "1964-09-23", Gender.M);
     }
 
     @Test
@@ -107,7 +102,7 @@ public class PatientTestIT {
     public void updatePatientTest_whenPatientRecodedInDb_thenReturnResponseEntityCreated() throws Exception {
         //GIVEN
         Patient patientToUpdate = new Patient(
-                1, "Johnne", "Boyd", "1964-09-23", GenderEnum.M, "1509 Culver St ,Culver 97451", "123-456-789");
+                1, "Johnne", "Boyd", "1964-09-23", Gender.M, "1509 Culver St ,Culver 97451", "123-456-789");
         //WHEN
         //THEN
         mockMvcPatient.perform(MockMvcRequestBuilders.put("/patient/update")
@@ -136,17 +131,6 @@ public class PatientTestIT {
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
                 .andExpect(result -> assertEquals("Patient to update not found",
                         result.getResolvedException().getMessage()))
-                .andDo(print());
-    }
-
-    @Test
-    public void deletePatientByIdTest_thenReturnStringSUCCESS() throws Exception {
-        //GIVEN
-        //WHEN
-        //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.delete("/patient/delete/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$",is("SUCCESS")))
                 .andDo(print());
     }
 }

@@ -1,6 +1,6 @@
 package com.clientui.proxy;
 
-import com.clientui.models.PatientBean;
+import com.clientui.models.PatientClientUi;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,20 +17,17 @@ import java.util.List;
 public interface IMicroServicePatientProxy {
 
     @GetMapping(value = "/patients")
-    List<PatientBean> listPatients();
+    List<PatientClientUi> listPatients();
 
     @GetMapping(value = "/patient/{id}")
-    PatientBean getPatientById(@PathVariable("id") int id);
+    PatientClientUi getPatientById(@PathVariable("id") int id);
 
 
     @PostMapping(value = "/patient/add")
-    ResponseEntity<PatientBean> addPatient(@Valid @RequestBody PatientBean patientBean);
+    ResponseEntity<PatientClientUi> addPatient(@Valid @RequestBody PatientClientUi patientClientUi);
 
 
     @PostMapping(value = "/patient/update/{id}")
-    ResponseEntity<PatientBean> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientBean patientBean);
-
-    @GetMapping(value = "/patient/delete/{id}")
-    public String deletePatientById(@PathVariable("id") Integer id);
+    ResponseEntity<PatientClientUi> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientClientUi patientBean);
 
 }
