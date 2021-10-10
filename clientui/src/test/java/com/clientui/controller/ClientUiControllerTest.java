@@ -1,6 +1,5 @@
 package com.clientui.controller;
 
-import com.clientui.controller.ClientUiController;
 import com.clientui.models.Gender;
 import com.clientui.models.PatientClientUi;
 import com.clientui.proxy.IMicroServicePatientProxy;
@@ -31,7 +30,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
  * Class that test ClientUiController

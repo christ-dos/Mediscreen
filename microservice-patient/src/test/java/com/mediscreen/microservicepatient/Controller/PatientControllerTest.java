@@ -4,7 +4,6 @@ import com.mediscreen.microservicepatient.controller.PatientController;
 import com.mediscreen.microservicepatient.exception.PatientNotFoundException;
 import com.mediscreen.microservicepatient.model.Gender;
 import com.mediscreen.microservicepatient.model.Patient;
-import com.mediscreen.microservicepatient.repository.IPatientRepository;
 import com.mediscreen.microservicepatient.service.PatientService;
 import com.mediscreen.microservicepatient.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,8 +48,6 @@ public class PatientControllerTest {
     @MockBean
     private PatientService patientServiceMock;
 
-    @MockBean
-    private IPatientRepository patientRepositoryMock;
 
     private Patient patientTest;
 

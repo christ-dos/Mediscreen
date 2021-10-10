@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -32,7 +31,7 @@ public class ClientUiController {
     }
 
     @GetMapping(value = "/patient/add")
-    public String showFormAddNewPatient(PatientClientUi patientClientUi, Model model) {
+    public String showFormAddNewPatient(Model model) {
         model.addAttribute("genders", Gender.values());
         log.info("Controller - Displaying form for adding new patient");
         return "patient/add";

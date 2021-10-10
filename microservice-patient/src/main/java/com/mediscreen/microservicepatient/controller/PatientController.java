@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -54,7 +52,7 @@ public class PatientController {
     }
 
     @PostMapping(value = "/patient/update/{id}")
-    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient, @PathVariable("id") Integer id, BindingResult result, Model model) {
+    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient patient) {
         Patient patientUpdated = patientService.updatePatient(patient);
         if (patientUpdated == null) {
             ResponseEntity.noContent().build();
