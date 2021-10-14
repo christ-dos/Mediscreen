@@ -17,13 +17,13 @@ import java.util.List;
 
 @Controller
 @Slf4j
-public class ClientUiController {
+public class PatientClientUiController {
 
     @Autowired
     private IMicroServicePatientProxy patientProxy;
 
     @GetMapping(value = "/")
-    public String showHomeView(Model model) {
+    public String showPatientHomeView(Model model) {
         List<PatientClientUi> patients = patientProxy.listPatients();
         model.addAttribute("patients", patients);
         log.info("Controller - Displaying list of patients");

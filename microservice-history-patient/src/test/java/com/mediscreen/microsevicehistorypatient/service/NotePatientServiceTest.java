@@ -61,14 +61,14 @@ public class NotePatientServiceTest {
                 new NotePatient(1, "Patient Durand Recommendation:une recommendation test pour le patient 1", LocalDateTime.now()),
                 new NotePatient(1, "Patient Martin Recommendation:une recommendation test pour le patient 2", LocalDateTime.now())
         ));
-        when(notePatientRepositoryMock.findAllByPatientId(anyInt())).thenReturn(listNotesPatient);
+        when(notePatientRepositoryMock.findAllByPatientIdOrderByDateDesc(anyInt())).thenReturn(listNotesPatient);
         //WHEN
         List<NotePatient> notesByPatientTest = (List<NotePatient>) notePatientServiceTest.findNotesByPatientId(1);
         //THEN
         assertTrue(notesByPatientTest.size() == 3);
         assertEquals(1, notesByPatientTest.get(0).getPatientId());
         assertEquals("Patient Durand Recommendation:rien de nouveau sous le soleil", notesByPatientTest.get(0).getNote());
-        verify(notePatientRepositoryMock, times(1)).findAllByPatientId(anyInt());
+        verify(notePatientRepositoryMock, times(1)).findAllByPatientIdOrderByDateDesc(anyInt());
 
     }
 

@@ -38,8 +38,8 @@ public class NotePatientController {
         return ResponseEntity.created(location).headers(headers).body(notePatientSaved);
     }
 
-    @GetMapping(value = "/notesPatient/{id}")
-    public Iterable<NotePatient> getListNotesByPatient(@PathVariable("id") int patientId) {
+    @GetMapping(value = "/notesPatient/{patientId}")
+    public Iterable<NotePatient> getListNotesByPatient(@PathVariable("patientId") int patientId) {
         log.info("Controller - List notes of Patient: " + patientId +" displayed");
         return notePatientService.findNotesByPatientId(patientId);
     }

@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class PatientClientUi {
+
     private int id;
 
     @Size(min=3, max=20, message = "First name must be between 3 and 20 characters")

@@ -36,10 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Christine Duarte
  */
-@WebMvcTest(ClientUiController.class)
+@WebMvcTest(PatientClientUiController.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-public class ClientUiControllerTest {
+public class PatientClientUiControllerTest {
     /**
      * An instance of {@link MockMvc} that permit simulate a request HTTP
      */

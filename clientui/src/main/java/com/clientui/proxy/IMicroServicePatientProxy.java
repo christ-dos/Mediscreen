@@ -3,8 +3,6 @@ package com.clientui.proxy;
 import com.clientui.models.PatientClientUi;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +19,6 @@ public interface IMicroServicePatientProxy {
 
     @GetMapping(value = "/patient/{id}")
     PatientClientUi getPatientById(@PathVariable("id") int id);
-
 
     @PostMapping(value = "/patient/add")
     ResponseEntity<PatientClientUi> addPatient(@RequestBody PatientClientUi patientClientUi);

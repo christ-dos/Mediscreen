@@ -23,7 +23,7 @@ public class NotePatientService {
     public Iterable<NotePatient> findNotesByPatientId(int patientId) {
 
         log.debug("Service - list notes found for patientID: " + patientId);
-        return notePatientRepository.findAllByPatientId(patientId);
+        return notePatientRepository.findAllByPatientIdOrderByDateDesc(patientId);
     }
 
     public NotePatient saveNotePatient(NotePatient notePatient) {
