@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
 /**
- * Class That test Patient Service
+ * Class That test PatientService
  *
  * @author Christine Duarte
  */

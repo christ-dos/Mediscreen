@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Setter
 @Document("note_patient")
 @NoArgsConstructor
-@AllArgsConstructor
 public class NotePatient {
     @Id
     private String id;
@@ -23,6 +22,12 @@ public class NotePatient {
     private String note;
 
     private LocalDateTime date;
+
+    public NotePatient(Integer patientId, String note, LocalDateTime date) {
+        this.patientId = patientId;
+        this.note = note;
+        this.date = date;
+    }
 
     @Override
     public String toString() {

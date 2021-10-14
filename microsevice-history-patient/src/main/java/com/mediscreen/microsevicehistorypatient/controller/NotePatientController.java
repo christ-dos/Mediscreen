@@ -32,7 +32,7 @@ public class NotePatientController {
                 .fromCurrentRequest()
                 .port(8082)
                 .path("/{id}")
-                .buildAndExpand(notePatient.getPatientId())
+                .buildAndExpand(notePatient.getId())
                 .toUri();
         log.info("Controller - note patient created");
         return ResponseEntity.created(location).headers(headers).body(notePatientSaved);
@@ -42,12 +42,6 @@ public class NotePatientController {
     public Iterable<NotePatient> getListNotesByPatient(@PathVariable("id") int patientId) {
         log.info("Controller - List notes of Patient: " + patientId +" displayed");
         return notePatientService.findNotesByPatientId(patientId);
-    }
-
-    @GetMapping(value = "/notes")
-    public Iterable<NotePatient> getListNotesAllPatients() {
-        log.info("Controller - List notes of all patients displayed");
-        return notePatientService.getAllNotesForAllPatients();
     }
 
 }
