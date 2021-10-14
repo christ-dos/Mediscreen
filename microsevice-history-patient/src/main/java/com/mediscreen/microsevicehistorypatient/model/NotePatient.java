@@ -1,0 +1,37 @@
+package com.mediscreen.microsevicehistorypatient.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@Document("note_patient")
+@NoArgsConstructor
+@AllArgsConstructor
+public class NotePatient {
+    @Id
+    private String id;
+
+    private Integer patientId;
+
+    private String note;
+
+    private LocalDateTime date;
+
+    @Override
+    public String toString() {
+        return "NotePatient{" +
+                "id='" + id + '\'' +
+                ", patientId=" + patientId +
+                ", note='" + note + '\'' +
+                ", date=" + date +
+                '}';
+    }
+}
+

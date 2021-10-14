@@ -31,7 +31,7 @@ public class ClientUiController {
     }
 
     @GetMapping(value = "/patient/add")
-    public String showFormAddNewPatient(Model model) {
+    public String showFormAddNewPatient(PatientClientUi patientClientUi,Model model) {
         model.addAttribute("genders", Gender.values());
         log.info("Controller - Displaying form for adding new patient");
         return "patient/add";
@@ -42,7 +42,7 @@ public class ClientUiController {
         if (result.hasErrors()) {
             model.addAttribute("genders", Gender.values());
             log.error("Controller - Has error in form");
-            return "patient/add";
+            return "/patient/add";
         }
         patientProxy.addPatient(patientClientUi);
         model.addAttribute("patients", patientProxy.listPatients());
