@@ -16,13 +16,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
  * Class that test NotePatientController
@@ -46,13 +49,12 @@ public class NotePatientControllerTest {
 
     @BeforeEach
     public void setupPerTest() {
-        notePatientTest = new NotePatient(1,"Patient:Mr Durant Recommendation: une recommendation test pour le patient 1", null);
+        notePatientTest = new NotePatient(1, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 1", null);
     }
 
     @Test
     public void addNotePatientTest_thenReturnResponseEntityCreated() throws Exception {
         //GIVEN
-//        notePatientTest.setNote();
         when(notePatientServiceMock.saveNotePatient(any(NotePatient.class))).thenReturn(notePatientTest);
         //WHEN
         //THEN
@@ -63,6 +65,25 @@ public class NotePatientControllerTest {
                 .andExpect(header().stringValues("Location", "http://localhost:8082/patHistory/add/"))
                 .andExpect(jsonPath("$.patientId", is(1)))
                 .andExpect(jsonPath("$.note", is("Patient:Mr Durant Recommendation: une recommendation test pour le patient 1")))
+                .andDo(print());
+    }
+
+
+    @Test
+    public void getListNotesByPatientTest_thenReturnAnIterableOfNotesByPatient() throws Exception {
+        //GIVEN
+        List<NotePatient> listNotesPatient = new ArrayList<>(Arrays.asList(
+                new NotePatient(1, "Patient Durand Recommendation:rien de nouveau sous le soleil", LocalDateTime.now()),
+                new NotePatient(1, "Patient Durand Recommendation:une recommendation test pour le patient 1", LocalDateTime.now()),
+                new NotePatient(1, "Patient Martin Recommendation:une recommendation test pour le patient 2", LocalDateTime.now())
+        ));
+        when(notePatientServiceMock.findNotesByPatientId(anyInt())).thenReturn(listNotesPatient);
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/notesPatient/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[1].patientId", is(1)))
+                .andExpect(jsonPath("$.[1].note", is("Patient Durand Recommendation:une recommendation test pour le patient 1")))
                 .andDo(print());
     }
 

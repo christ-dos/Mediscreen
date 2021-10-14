@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class NotePatientServiceTest {
 
-    private  NotePatientService notePatientServiceTest;
+    private NotePatientService notePatientServiceTest;
 
     @Mock
     INotePatientRepository notePatientRepositoryMock;
@@ -36,7 +36,7 @@ public class NotePatientServiceTest {
     @BeforeEach
     public void setupPerTest() {
         notePatientServiceTest = new NotePatientService(notePatientRepositoryMock);
-        notePatientTest = new NotePatient(1,"Patient:Mr Durant Recommendation: une recommendation test pour le patient 1", LocalDateTime.now());
+        notePatientTest = new NotePatient(1, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 1", LocalDateTime.now());
     }
 
     @Test
@@ -57,9 +57,9 @@ public class NotePatientServiceTest {
     public void findNotesByPatientIdTest_whenPatientIdIsOne_thenReturnAllNotesOfPatient() {
         //GIVEN
         List<NotePatient> listNotesPatient = new ArrayList<>(Arrays.asList(
-                new NotePatient(1,"Patient Durand Recommendation:rien de nouveau sous le soleil", LocalDateTime.now()),
-                new NotePatient(1,"Patient Durand Recommendation:une recommendation test pour le patient 1", LocalDateTime.now()),
-                new NotePatient(1,"Patient Martin Recommendation:une recommendation test pour le patient 2", LocalDateTime.now())
+                new NotePatient(1, "Patient Durand Recommendation:rien de nouveau sous le soleil", LocalDateTime.now()),
+                new NotePatient(1, "Patient Durand Recommendation:une recommendation test pour le patient 1", LocalDateTime.now()),
+                new NotePatient(1, "Patient Martin Recommendation:une recommendation test pour le patient 2", LocalDateTime.now())
         ));
         when(notePatientRepositoryMock.findAllByPatientId(anyInt())).thenReturn(listNotesPatient);
         //WHEN
