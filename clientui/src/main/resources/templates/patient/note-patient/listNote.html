@@ -36,16 +36,16 @@
                 <td style="width: 20%" th:text="${note.date}"></td>
                 <td style="width: 10%" class="text-center">
                     <a th:href="@{/patHistory/update/{id}(id=${note.patientId})}">Edit</a>
-
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="form-group row p-2">
-        <a href="/patHistory/add" class="btn btn-primary  col-3 col-sm-3 col-md-3 col-lg-2 m-1">Add Note</a>
-        <a th:href="@{/}" class="btn btn-danger col-3 col-sm-3 col-md-3 col-lg-2 m-1">Cancel</a>
-    </div>
+        <div class="form-group">
+<!--            <a th:href="@{/patHistory/add}" href="#"  class="btn btn-primary  col-3 col-sm-3 col-md-3 col-lg-2 ">Add Note</a>-->
+            <a th:href="@{/patHistory/add/{patienId}(patienId=${patientId})}" href="#"  class="btn btn-primary btn-sm col-3 col-sm-3 col-md-3 col-lg-2 ">Add Note</a>
+            <a th:href="@{/}" class="btn btn-danger btn-sm col-3 col-sm-3 col-md-3 col-lg-2">Cancel</a>
+        </div>
 </div>
 
 

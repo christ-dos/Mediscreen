@@ -6,8 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 @Slf4j
@@ -16,11 +21,36 @@ public class NoteClientUiController {
     @Autowired
     IMicroServiceHistoryPatientProxy historyNotesPatientProxy;
 
-    @GetMapping(value = "/notesPatient/{patientId}")
-    public String showNotePatientHomeView(@PathVariable("patientId") Integer patientId, Model model) {
-        Iterable<NotesClientUi> NotesPatient = historyNotesPatientProxy.getListNotesByPatient(patientId);
-        model.addAttribute("NotesPatient", NotesPatient);
-        log.info("Controller - Displaying list Notes of patient");
-        return "patient/note-patient/listNote";
+//    @GetMapping(value = "/notesPatient/{patientId}")
+//    public String showNotePatientHomeView(@PathVariable("patientId") int patientId, Model model) {
+//        Iterable<NotesClientUi> notesPatient = historyNotesPatientProxy.getListNotesByPatient(patientId);
+//        model.addAttribute("NotesPatient", notesPatient);
+//        log.info("Controller - Displaying list Notes of patient");
+//        return "patient/note-patient/listNote";
+//    }
+
+    @GetMapping(value = "/patHistory/add/{patientId}")
+    public String showFormAddNewNotePatient(@ModelAttribute("notesClientUi") NotesClientUi notesClientUi, @PathVariable("patientId") int patientId, Model model) {
+        Iterable<NotesClientUi> notesPatient = historyNotesPatientProxy.getListNotesByPatient(notesClientUi.getPatientId());
+        model.addAttribute("notesPatient", notesPatient);
+        log.info("Controller - Displaying list of notes by patient");
+        return "patient/note-patient/addNote";
     }
+
+    @PostMapping(value = "/patHistory/add")
+    public String addNoteToPatient(@Valid NotesClientUi notesClientUi, BindingResult result, Model model) {
+        Iterable<NotesClientUi> notesPatient = historyNotesPatientProxy.getListNotesByPatient(notesClientUi.getPatientId());
+        if (result.hasErrors()) {
+            model.addAttribute("notesPatient", notesPatient);
+            log.error("Controller - Has error in form add note");
+            return "patient/note-patient/addNote";
+        }
+        historyNotesPatientProxy.addNotePatient(notesClientUi);
+        model.addAttribute("notesPatient", notesPatient);
+//        model.addAttribute("patientId", notesClientUi.getPatientId());
+        log.info("Controller - return list of notes patient after addition");
+
+        return "patient/note-patient/addNote";
+    }
+
 }

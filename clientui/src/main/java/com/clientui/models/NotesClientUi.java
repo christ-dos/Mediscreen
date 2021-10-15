@@ -15,12 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NotesClientUi {
 
-//    private String id;
-
-    @NotNull
     private int patientId;
 
-    @NotBlank
+    @NotBlank(message = "The field cannot be blank")
     private String note;
 
     private LocalDate date;
@@ -31,13 +28,12 @@ public class NotesClientUi {
         this.date = date;
     }
 
-//    @Override
-//    public String toString() {
-//        return "NotesClientUi{" +
-//                "id='" + id + '\'' +
-//                ", patientId=" + patientId +
-//                ", note='" + note + '\'' +
-//                ", date=" + date +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "NotesClientUi{" +
+                "patientId=" + patientId +
+                ", note='" + note + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
