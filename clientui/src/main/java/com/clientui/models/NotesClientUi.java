@@ -13,26 +13,31 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class NotesClientUi {
 
-    private String id;
+//    private String id;
 
     @NotNull
-    private Integer patientId;
+    private int patientId;
 
     @NotBlank
     private String note;
 
     private LocalDate date;
 
-    @Override
-    public String toString() {
-        return "NotesClientUi{" +
-                "id='" + id + '\'' +
-                ", patientId=" + patientId +
-                ", note='" + note + '\'' +
-                ", date=" + date +
-                '}';
+    public NotesClientUi(Integer patientId, String note, LocalDate date) {
+        this.patientId = patientId;
+        this.note = note;
+        this.date = date;
     }
+
+//    @Override
+//    public String toString() {
+//        return "NotesClientUi{" +
+//                "id='" + id + '\'' +
+//                ", patientId=" + patientId +
+//                ", note='" + note + '\'' +
+//                ", date=" + date +
+//                '}';
+//    }
 }

@@ -17,9 +17,9 @@ public class NoteClientUiController {
     IMicroServiceHistoryPatientProxy historyNotesPatientProxy;
 
     @GetMapping(value = "/notesPatient/{patientId}")
-    public String showNotePatientHomeView(Model model, @PathVariable("patientId") int patientId) {
-        Iterable<NotesClientUi> Notespatient = historyNotesPatientProxy.getListNotesByPatient(patientId);
-        model.addAttribute("NotesPatient", Notespatient);
+    public String showNotePatientHomeView(@PathVariable("patientId") Integer patientId, Model model) {
+        Iterable<NotesClientUi> NotesPatient = historyNotesPatientProxy.getListNotesByPatient(patientId);
+        model.addAttribute("NotesPatient", NotesPatient);
         log.info("Controller - Displaying list Notes of patient");
         return "patient/note-patient/listNote";
     }

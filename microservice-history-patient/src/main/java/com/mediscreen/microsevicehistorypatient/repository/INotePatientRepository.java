@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface INotePatientRepository extends MongoRepository<NotePatient, String> {
 
 
-    Iterable<NotePatient> findAllByPatientIdOrderByDateDesc(int patientId);
+    Iterable<NotePatient> findAllByPatientIdOrderByDateDesc(Integer patientId);
 }

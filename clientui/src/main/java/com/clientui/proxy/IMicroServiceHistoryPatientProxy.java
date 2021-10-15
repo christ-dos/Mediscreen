@@ -3,6 +3,7 @@ package com.clientui.proxy;
 import com.clientui.models.NotesClientUi;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,6 @@ public interface IMicroServiceHistoryPatientProxy {
     ResponseEntity<NotesClientUi> addNotePatient(@Valid @RequestBody NotesClientUi notesClientUi);
 
     @GetMapping(value = "/notesPatient/{patientId}")
-    Iterable<NotesClientUi> getListNotesByPatient(@PathVariable("patientId") int patientId);
-
+    Iterable<NotesClientUi> getListNotesByPatient(@PathVariable("patientId") Integer patientId);
 
     }

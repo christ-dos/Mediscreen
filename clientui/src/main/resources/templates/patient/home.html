@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <div class="row">
-        <h1>Mediscreen</h1>
+        <h1>Mediscreen - Patients</h1>
         </div>
 
         <!-- ***************Table******************-->
@@ -35,9 +35,10 @@
                     <td  style="width: 5%" th:text="${patient.gender}"></td>
                     <td th:text="${patient.address}"></td>
                     <td th:text="${patient.phone}"></td>
-                    <td style="width: 20%"  class="text-center">
+                    <td style="width: 30%"  class="text-center">
                         <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a> |
-                        <a href="#">Cancel Appointment</a>
+                        <a th:href="@{/notesPatient/{patientId}(patientId=${patient.id})}" href="#">History</a>
+                       | <a href="#">Cancel Rdv</a>
                     </td>
                 </tr>
                 </tbody>
