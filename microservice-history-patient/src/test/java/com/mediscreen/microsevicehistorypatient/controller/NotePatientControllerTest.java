@@ -56,7 +56,7 @@ public class NotePatientControllerTest {
 
     @BeforeEach
     public void setupPerTest() {
-        notePatientTest = new NotePatient(1, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 1", null);
+        notePatientTest = new NotePatient("6168595e0f838c0a462e6c9b",1, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 1", null);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class NotePatientControllerTest {
                         .content(Utils.asJsonString(notePatientTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(header().stringValues("Location", "http://localhost:8082/patHistory/add/"))
+                .andExpect(header().stringValues("Location", "http://localhost:8082/patHistory/add/6168595e0f838c0a462e6c9b"))
                 .andExpect(jsonPath("$.patientId", is(1)))
                 .andExpect(jsonPath("$.note", is("Patient:Mr Durant Recommendation: une recommendation test pour le patient 1")))
                 .andDo(print());
@@ -91,6 +91,37 @@ public class NotePatientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[1].patientId", is(1)))
                 .andExpect(jsonPath("$.[1].note", is("Patient Durand Recommendation:une recommendation test pour le patient 1")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getNotePatientByIdTest_whenNotePatientExistInDb_thenReturnNotePatientFound() throws Exception {
+        //GIVEN
+        when(notePatientServiceMock.getNotePatientById(anyString())).thenReturn(notePatientTest);
+        //WHEN
+        //THEN
+        mockMvcNotesPatient.perform(MockMvcRequestBuilders.get("/note/6168595e0f838c0a462e6c9b"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is("6168595e0f838c0a462e6c9b")))
+                .andExpect(jsonPath("$.patientId", is(1)))
+                .andExpect(jsonPath("$.note", is("Patient:Mr Durant Recommendation: une recommendation test pour le patient 1")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getNotePatientByIdTest_whenNotePatientNotFoundInDb_thenThrowNotePatientNotFoundException() throws Exception {
+        //GIVEN
+        when(notePatientServiceMock.getNotePatientById(anyString())).thenThrow(new NotePatientNotFoundException("Note not found"));
+        //WHEN
+        //THEN
+        mockMvcNotesPatient.perform(MockMvcRequestBuilders.get("/note/000000000000000000000")
+                        .content(Utils.asJsonString(notePatientTest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotePatientNotFoundException))
+                .andExpect(result -> assertEquals("Note not found",
+                        result.getResolvedException().getMessage()))
                 .andDo(print());
     }
 

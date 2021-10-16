@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -66,6 +68,35 @@ public class NotePatientTestIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[2].patientId", is(1)))
                 .andExpect(jsonPath("$.[2].note", is("Patient:Mr Durant Recommendation: une recommendation test pour le patient 1")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getNotePatientByIdTest_whenNotePatientExistInDb_thenReturnNotePatientFound() throws Exception {
+        //GIVEN
+        //WHEN
+        //THEN
+        mockMvcNotesPatient.perform(MockMvcRequestBuilders.get("/note/616af863924e3c02ec5c9188"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is("616af863924e3c02ec5c9188")))
+                .andExpect(jsonPath("$.patientId", is(1)))
+                .andExpect(jsonPath("$.note", is("Patient:Mr Durant Recommendation: une recommendation test pour le patient 1")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getNotePatientByIdTest_whenNotePatientNotFoundInDb_thenThrowNotePatientNotFoundException() throws Exception {
+        //GIVEN
+        //WHEN
+        //THEN
+        mockMvcNotesPatient.perform(MockMvcRequestBuilders.get("/note/aaaaaaaaaaaa")
+                        .content(Utils.asJsonString(notePatientTest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof NotePatientNotFoundException))
+                .andExpect(result -> assertEquals("Note of patient not found",
+                        result.getResolvedException().getMessage()))
                 .andDo(print());
     }
 

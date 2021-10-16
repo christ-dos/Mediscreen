@@ -74,6 +74,30 @@ public class NotePatientServiceTest {
     }
 
     @Test
+    public void getNotePatientByIdTest_whenNotePatientIsPresentInDB_thenReturnNotePatientFound() {
+        //GIVEN
+        when(notePatientRepositoryMock.findById(anyString())).thenReturn(Optional.of(notePatientTest));
+        //WHEN
+        NotePatient notePatientTestResult = notePatientServiceTest.getNotePatientById(notePatientTest.getId());
+        //THEN
+        assertNotNull(notePatientTestResult);
+        assertEquals("6169f7df2c0d9a754676809f", notePatientTestResult.getId());
+        assertEquals(1, notePatientTestResult.getPatientId());
+        assertEquals(notePatientTest.getNote(), notePatientTestResult.getNote());
+        verify(notePatientRepositoryMock, times(1)).findById(anyString());
+    }
+
+    @Test
+    public void getNotePatientByIdTest_whenNotePatientNotFound_thenThrowNotePatientNotFoundException() {
+        //GIVEN
+        when(notePatientRepositoryMock.findById(anyString())).thenReturn(Optional.empty());
+        //WHEN
+        //THEN
+        assertThrows(NotePatientNotFoundException.class, () -> notePatientServiceTest.getNotePatientById("000000000000"));
+        verify(notePatientRepositoryMock, times(1)).findById(anyString());
+    }
+
+    @Test
     public void updateNotePatientTest_whenNoteExistInDB_thenReturnNoteOfPatientUpdated() {
         //GIVEN
         NotePatient notePatientToUpdate = new NotePatient("6169f7df2c0d9a754676809f",1, "Patient:Mr Durant Recommendation: une recommendation test updated", LocalDateTime.now());
