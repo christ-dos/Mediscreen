@@ -5,19 +5,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class NotesClientUi {
+    @NotBlank(message = "Id cannot be blank")
+    private String id;
 
+    @Min(value = 1, message = "Field patientId must be greater than 1 ")
     private int patientId;
 
-    @NotBlank(message = "The field cannot be blank")
+    @NotBlank(message = "The field note cannot be blank")
     private String note;
 
     private LocalDate date;
@@ -31,7 +35,8 @@ public class NotesClientUi {
     @Override
     public String toString() {
         return "NotesClientUi{" +
-                "patientId=" + patientId +
+                "id='" + id + '\'' +
+                ", patientId=" + patientId +
                 ", note='" + note + '\'' +
                 ", date=" + date +
                 '}';

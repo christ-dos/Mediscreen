@@ -9,31 +9,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Class integratioin tests for {@link com.clientui.models.PatientClientUi}
+ * Class integration tests for {@link PatientClientUi}
  *
  * @author Christine Duarte
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ClientUiTestIT {
+public class PatientClientUiTestIT {
     /**
      * An instance of {@link MockMvc} that permit simulate a request HTTP
      */
     @Autowired
-    private MockMvc mockMvcClientUi;
+    private MockMvc mockMvcPatientClientUi;
 
     private PatientClientUi patientClientUiTest;
 
@@ -47,7 +44,7 @@ public class ClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/add")
+        mockMvcPatientClientUi.perform(MockMvcRequestBuilders.post("/patient/add")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
                         .param("firstName","Jacob")
@@ -64,7 +61,7 @@ public class ClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/add")
+        mockMvcPatientClientUi.perform(MockMvcRequestBuilders.post("/patient/add")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
                         .param("firstName","")
@@ -86,7 +83,7 @@ public class ClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcClientUi.perform(MockMvcRequestBuilders.get("/"))
+        mockMvcPatientClientUi.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().isOk())
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("patient/home"))
@@ -104,7 +101,7 @@ public class ClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/update/2")
+        mockMvcPatientClientUi.perform(MockMvcRequestBuilders.post("/patient/update/2")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
                         .param("firstName","Jacob")
@@ -121,7 +118,7 @@ public class ClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/update/2")
+        mockMvcPatientClientUi.perform(MockMvcRequestBuilders.post("/patient/update/2")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
                         .param("firstName","")

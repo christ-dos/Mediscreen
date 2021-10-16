@@ -1,103 +1,74 @@
-package com.clientui.controller;
+package com.clientui.IT;
 
 import com.clientui.models.NotesClientUi;
-import com.clientui.proxy.IMicroServiceHistoryPatientProxy;
 import com.clientui.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Class that test ClientUiController
+ * Class integraton tests for {@link com.clientui.models.NotesClientUi}
  *
  * @author Christine Duarte
  */
-@WebMvcTest(NoteClientUiController.class)
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @AutoConfigureMockMvc
-public class NoteClientUiControllerTest {
+public class NoteClientUiTestIT {
+
     /**
      * An instance of {@link MockMvc} that permit simulate a request HTTP
      */
     @Autowired
     private MockMvc mockMvcNoteClientUi;
 
-    @MockBean
-    private IMicroServiceHistoryPatientProxy microServiceHistoryPatientProxyMock;
-
-    private NotesClientUi noteClientUi;
+    private NotesClientUi notesClientUiTest;
 
     @BeforeEach
     public void setupPerTest() {
-        noteClientUi = new NotesClientUi("6169f7df2c0d9a754676809f", 1, "Patient: Martin Recommendation: rien à signaler", null);
+        notesClientUiTest = new NotesClientUi("6169f7df2c0d9a754676809f", 1, "Patient: Martin Recommendation: rien à signaler", null);
+
     }
 
     @Test
     public void getListNotesByPatientTest_thenReturnAnIterableOfNotesByPatient() throws Exception {
         //GIVEN
-        List<NotesClientUi> notesByPatientsTest = Arrays.asList(
-                new NotesClientUi(1, "Patient: Martin Recommendation: ras", null),
-                new NotesClientUi(1, "Patient: Martin Recommendation: Le patient se sent fatigué", null),
-                new NotesClientUi(1, "Patient: Martin Recommendation: consultation ce jour ras", null)
-        );
-        when(microServiceHistoryPatientProxyMock.getListNotesByPatient(anyInt())).thenReturn(notesByPatientsTest);
         //WHEN
         //THEN
-        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/add/1"))
+        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/add/3"))
                 .andExpect(status().isOk())
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("note-patient/addNote"))
-                .andExpect(model().attributeExists("notesPatient"))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("patientId", is(1)))))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("Patient: Martin Recommendation: ras")))))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("Patient: Martin Recommendation: Le patient se sent fatigué")))))
+                .andExpect(model().attributeExists("notesClientUi"))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("id", is("6169f7df2c0d9a754676809f")))))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("patientId", is(3)))))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("Patient: Martin Recommendation: rien à signaler")))))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("une nouvelle recommendation pour le patient 3")))))
                 .andDo(print());
     }
 
     @Test
     public void updateNotePatientTest_whenNotePatientExitsInDbAndHasNoErrorInForm_thenReturnToViewAddNote() throws Exception {
         //GIVEN
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_JSON);
-
-        ResponseEntity<?> responseEntity = new ResponseEntity<>(
-                Utils.asJsonString(noteClientUi),
-                header,
-                HttpStatus.CREATED
-        );
-        when(microServiceHistoryPatientProxyMock.
-                updateNotePatient(any(NotesClientUi.class), anyString())).thenReturn((ResponseEntity<NotesClientUi>) responseEntity);
         //WHEN
         //THEN
         mockMvcNoteClientUi.perform(MockMvcRequestBuilders.post("/patHistory/update/6169f7df2c0d9a754676809f")
-                        .content(Utils.asJsonString(noteClientUi))
+                        .content(Utils.asJsonString(notesClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("id", "6169f7df2c0d9a754676809f")
                         .param("patientId", String.valueOf(1))
-                        .param("note", noteClientUi.getNote()))
+                        .param("note", notesClientUiTest.getNote()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("note-patient/addNote"))
                 .andExpect(model().attribute("notesClientUi", hasProperty("id", is("6169f7df2c0d9a754676809f"))))
@@ -109,20 +80,10 @@ public class NoteClientUiControllerTest {
     @Test
     public void updateNotePatientTest_whenNotePatientHasErrorInForm_thenReturnToUpdateNote() throws Exception {
         //GIVEN
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_JSON);
-
-        ResponseEntity<?> responseEntity = new ResponseEntity<>(
-                Utils.asJsonString(noteClientUi),
-                header,
-                HttpStatus.CREATED
-        );
-        when(microServiceHistoryPatientProxyMock.
-                updateNotePatient(any(NotesClientUi.class), anyString())).thenReturn((ResponseEntity<NotesClientUi>) responseEntity);
         //WHEN
         //THEN
         mockMvcNoteClientUi.perform(MockMvcRequestBuilders.post("/patHistory/update/6169f7df2c0d9a754676809f")
-                        .content(Utils.asJsonString(noteClientUi))
+                        .content(Utils.asJsonString(notesClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .param("id", "")
@@ -149,4 +110,5 @@ public class NoteClientUiControllerTest {
                 .andDo(print());
 
     }
+
 }

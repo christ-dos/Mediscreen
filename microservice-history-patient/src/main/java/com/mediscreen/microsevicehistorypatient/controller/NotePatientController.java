@@ -59,7 +59,4 @@ public class NotePatientController {
         log.info("Controller - note patient to update with ID: " + notePatient.getId());
         return ResponseEntity.created(location).headers(headers).body(notePatientUpdated);
     }
-
-
-
 }

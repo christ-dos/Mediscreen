@@ -63,7 +63,7 @@ public class PatientClientUiController {
     public String updatePatient( @PathVariable("id") Integer id,@Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("genders", Gender.values());
-            log.error("Controller - Has error in form");
+            log.error("Controller - Has error in form update patient");
             return "patient/update";
         }
         patientProxy.updatePatient(id, patientClientUi);
