@@ -11,7 +11,8 @@
 <div class="container">
     <div class="row p-2">
         <h1>Mediscreen - History Patient</h1>
-        <form action="#" th:action="@{/patHistory/add}" th:object="${notesClientUi}" method="post"
+        <form action="#" th:action="@{/patHistory/update/{id}(id=${notesClientUi.id})}" th:object="${notesClientUi}"
+              method="post"
               class="form-horizontal">
             <div class="form-group row mb-2">
                 <label for="patientId" class="col-3 col-sm-2 col-md-2 col-lg-2 col-form-label"><strong>N°
@@ -25,37 +26,37 @@
             </div>
             <div class="form-group mb-2 col-8">
                 <label for="note"><strong>Note/Recommendation</strong></label>
-                <textarea th:field="*{note}" class="form-control mt-1" id="note" rows="3"
+                <textarea th:field="*{note}" class="form-control mt-1" id="note" rows="4"
                           placeholder="Patient: Durand /Recommendation: Write your recommendation"></textarea>
                 <p class="text-danger" th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></p>
-
             </div>
             <div class="form-group">
-                <input class="btn btn-primary btn-sm mt-2" type="submit" value="Add Note">
-                <a th:href="@{/}" class="btn btn-danger  btn-sm mt-2">Cancel</a>
+                <input class="btn btn-primary btn-sm mt-2" type="submit" value="Update Note">
+                <a th:href="@{/patHistory/add/{patientId}(patientId=${notesClientUi.patientId})}"
+                   class="btn btn-danger  btn-sm mt-2">Cancel</a>
             </div>
         </form>
     </div>
     <!-- ***************Table******************-->
     <div class="row px-3 pt-1">
-<!--        <table class="table table-bordered ">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th>Notes/Recommendations</th>-->
-<!--                <th>Date</th>-->
-<!--                <th></th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr th:each="note : ${notesPatient}">-->
-<!--                <td style="width: 60%" th:text="${note.note}"></td>-->
-<!--                <td style="width: 20%" th:text="${note.date}"></td>-->
-<!--                <td style="width: 10%" class="text-center">-->
-<!--                    <a th:href="@{/patHistory/update/{id}(id=${note.patientId})}">Edit</a>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--        </table>-->
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th>Notes/Recommendations</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="note : ${notesPatient}">
+                <td style="width: 60%" th:text="${note.note}"></td>
+                <td style="width: 20%" th:text="${note.date}"></td>
+                <td style="width: 10%" class="text-center">
+                    <a th:href="@{/patHistory/update/{id}(id=${note.id})}">Edit</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 

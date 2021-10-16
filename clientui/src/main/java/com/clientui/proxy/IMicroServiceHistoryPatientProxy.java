@@ -23,4 +23,6 @@ public interface IMicroServiceHistoryPatientProxy {
     @PostMapping(value = "/patHistory/update/{id}")
     ResponseEntity<NotesClientUi> updateNotePatient(@Valid @RequestBody NotesClientUi notesClientUit, @PathVariable("id") String id) ;
 
-    }
+    @GetMapping(value = "/note/{id}")
+    NotesClientUi getNotePatientById(@PathVariable("id") String id);
+}

@@ -37,10 +37,10 @@ public class NotePatientService implements INotePatientService {
     }
 
     @Override
-    public NotePatient updateNotePatient(NotePatient notePatient){
+    public NotePatient updateNotePatient(NotePatient notePatient) {
         Optional<NotePatient> notePatientToUpdateOptional = notePatientRepository.findById(notePatient.getId());
-        if(!notePatientToUpdateOptional.isPresent()){
-            throw  new NotePatientNotFoundException("The Note of patient to update not found");
+        if (!notePatientToUpdateOptional.isPresent()) {
+            throw new NotePatientNotFoundException("The Note of patient to update not found");
         }
         NotePatient notePatientToUpdate = notePatientToUpdateOptional.get();
 
@@ -49,5 +49,16 @@ public class NotePatientService implements INotePatientService {
 
         log.debug("Service - Note patient updated with patient Id: " + notePatient.getId());
         return notePatientRepository.save(notePatientToUpdate);
+    }
+
+    @Override
+    public NotePatient getNotePatientById(String id) {
+        Optional<NotePatient> notePatientOptional = notePatientRepository.findById(id);
+        if (!notePatientOptional.isPresent()) {
+            log.error("Note with ID: " + id + " not found");
+            throw new NotePatientNotFoundException("Note of patient not found");
+        }
+        log.debug("Service - Note patient found with ID: " + id);
+        return notePatientOptional.get();
     }
 }

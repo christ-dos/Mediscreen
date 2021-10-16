@@ -19,13 +19,13 @@
                 <div class="col-2 col-sm-2 col-md-2 col-lg-1 ">
                     <input th:field="*{patientId}" th:value="${notesClientUi.patientId}" type="number" min="1" step="1"
                            class="p-1 form-control-plaintext"
-                           id="patientId">
+                           id="patientId" required>
                     <p class="text-danger" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></p>
                 </div>
             </div>
             <div class="form-group mb-2 col-8">
                 <label for="note"><strong>Note/Recommendation</strong></label>
-                <textarea th:field="*{note}" class="form-control mt-1" id="note" rows="3"
+                <textarea th:field="*{note}" class="form-control mt-1" id="note" name="note" rows="4"
                           placeholder="Patient: Durand /Recommendation: Write your recommendation"></textarea>
                 <p class="text-danger" th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></p>
 
@@ -51,7 +51,7 @@
                 <td style="width: 60%" th:text="${note.note}"></td>
                 <td style="width: 20%" th:text="${note.date}"></td>
                 <td style="width: 10%" class="text-center">
-                    <a th:href="@{/patHistory/update/{id}(id=${note.patientId})}">Edit</a>
+                    <a th:href="@{/patHistory/update/{id}(id=${note.id})}">Edit</a>
                 </td>
             </tr>
             </tbody>

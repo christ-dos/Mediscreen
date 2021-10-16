@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotesClientUi {
-    @NotBlank(message = "Id cannot be blank")
     private String id;
 
     @Min(value = 1, message = "Field patientId must be greater than 1 ")

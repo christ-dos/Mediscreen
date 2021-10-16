@@ -59,4 +59,10 @@ public class NotePatientController {
         log.info("Controller - note patient to update with ID: " + notePatient.getId());
         return ResponseEntity.created(location).headers(headers).body(notePatientUpdated);
     }
+
+    @GetMapping(value = "/note/{id}")
+    public NotePatient getNotePatientById(@PathVariable("id") String id) {
+        log.info("Controller - Find Note of patient with ID: " + id);
+        return notePatientService.getNotePatientById(id);
+    }
 }

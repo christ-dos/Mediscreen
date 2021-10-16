@@ -9,4 +9,5 @@ public interface INotePatientService {
 
     NotePatient updateNotePatient(NotePatient notePatient);
 
+    NotePatient getNotePatientById(String id);
 }
