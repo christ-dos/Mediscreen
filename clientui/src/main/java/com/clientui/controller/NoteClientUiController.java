@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -56,10 +53,11 @@ public class NoteClientUiController {
     }
 
     @GetMapping(value = "/patHistory/update/{id}")
-    public String showFormUpdateNotePatient(@ModelAttribute("notesClientUi") NotesClientUi notesClientUi, Model model) {
+    public String showFormUpdateNotePatient(NotesClientUi notesClientUi, Model model) {
         NotesClientUi notePatientClientUiById = historyNotesPatientProxy.getNotePatientById(notesClientUi.getId());
-        model.addAttribute("notesPatient", getListNotesByPatientId(notesClientUi.getPatientId()));
         model.addAttribute("notesClientUi", notePatientClientUiById);
+        model.addAttribute("notesPatient", getListNotesByPatientId(notePatientClientUiById.getPatientId()));
+
         log.info("Controller - Displaying form for updating a note of patient");
         return "note-patient/updateNote";
     }

@@ -19,7 +19,7 @@
                 <div class="col-2 col-sm-2 col-md-2 col-lg-1 ">
                     <input th:field="*{patientId}" th:value="${notesClientUi.patientId}" type="number" min="1" step="1"
                            class="p-1 form-control-plaintext"
-                           id="patientId" required>
+                           id="patientId" name="patientId" required>
                     <p class="text-danger" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></p>
                 </div>
             </div>

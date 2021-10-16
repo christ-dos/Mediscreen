@@ -10,7 +10,7 @@
 <body>
 <div class="container">
     <div class="row p-2">
-        <h1>Mediscreen - History Patient</h1>
+        <h1>Mediscreen - Update Note</h1>
         <form action="#" th:action="@{/patHistory/update/{id}(id=${notesClientUi.id})}" th:object="${notesClientUi}"
               method="post"
               class="form-horizontal">
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group mb-2 col-8">
                 <label for="note"><strong>Note/Recommendation</strong></label>
-                <textarea th:field="*{note}" class="form-control mt-1" id="note" rows="4"
+                <textarea th:field="*{note}" class="form-control mt-1 text-primary"  id="note" rows="4"
                           placeholder="Patient: Durand /Recommendation: Write your recommendation"></textarea>
                 <p class="text-danger" th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></p>
             </div>
