@@ -130,23 +130,26 @@ public class NoteClientUiControllerTest {
                         .param("note", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(model().errorCount(3))
-                .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "id", "NotBlank"))
+                .andExpect(model().errorCount(2))
                 .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "patientId", "Min"))
                 .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "note", "NotBlank"))
                 .andDo(print());
 
     }
+
     @Test
     public void showFormUpdateNotePatientTest() throws Exception {
         //GIVEN
+        when(microServiceHistoryPatientProxyMock.getNotePatientById(anyString())).thenReturn(noteClientUi);
         //WHEN
         //THEN
-        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/update"))
+        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/update/6169f7df2c0d9a754676809f"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("note-patient/updateNote"))
-                .andExpect(model().attributeExists("notesClientUi"))
+                .andExpect(model().attribute("notesClientUi",hasProperty("id", is("6169f7df2c0d9a754676809f"))))
+                .andExpect(model().attribute("notesClientUi",hasProperty("patientId", is(1))))
+                .andExpect(model().attribute("notesClientUi",hasProperty("note", is("Patient: Martin Recommendation: rien à signaler"))))
                 .andDo(print());
-
     }
+
 }

@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,15 +47,16 @@ public class NoteClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/add/3"))
+        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/add/1"))
                 .andExpect(status().isOk())
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("note-patient/addNote"))
                 .andExpect(model().attributeExists("notesClientUi"))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("id", is("6169f7df2c0d9a754676809f")))))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("patientId", is(3)))))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("Patient: Martin Recommendation: rien à signaler")))))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("une nouvelle recommendation pour le patient 3")))))
+                .andExpect(model().attributeExists("notesPatient"))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("id", is("616b45951524b440b8203c99")))))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("patientId", is(1)))))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("ajouter une note...")))))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is("modifier la note ")))))
                 .andDo(print());
     }
 
@@ -91,24 +94,25 @@ public class NoteClientUiTestIT {
                         .param("note", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(model().errorCount(3))
-                .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "id", "NotBlank"))
+                .andExpect(model().errorCount(2))
                 .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "patientId", "Min"))
                 .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "note", "NotBlank"))
                 .andDo(print());
 
     }
+
     @Test
     public void showFormUpdateNotePatientTest() throws Exception {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/update"))
+        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/update/6169f7df2c0d9a754676809f"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("note-patient/updateNote"))
-                .andExpect(model().attributeExists("notesClientUi"))
+                .andExpect(model().attribute("notesClientUi",hasProperty("id", is("6169f7df2c0d9a754676809f"))))
+                .andExpect(model().attribute("notesClientUi",hasProperty("patientId", is(3))))
+                .andExpect(model().attribute("notesClientUi",hasProperty("note", is("Patient: Martin Recommendation: rien à signaler"))))
                 .andDo(print());
-
     }
 
 }
