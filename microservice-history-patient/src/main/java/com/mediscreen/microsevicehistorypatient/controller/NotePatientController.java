@@ -1,6 +1,7 @@
 package com.mediscreen.microsevicehistorypatient.controller;
 
 import com.mediscreen.microsevicehistorypatient.model.NotePatient;
+import com.mediscreen.microsevicehistorypatient.service.INotePatientService;
 import com.mediscreen.microsevicehistorypatient.service.NotePatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.net.URI;
 public class NotePatientController {
 
     @Autowired
-    private NotePatientService notePatientService;
+    private INotePatientService notePatientService;
 
     @PostMapping(value = "/patHistory/add")
     public ResponseEntity<NotePatient> addNotePatient(@Valid @RequestBody NotePatient notePatient) {
@@ -42,5 +43,23 @@ public class NotePatientController {
         log.info("Controller - List notes of Patient: " + patientId +" displayed");
         return notePatientService.findNotesByPatientId(patientId);
     }
+
+    @PostMapping(value = "/patHistory/update/{id}")
+    public ResponseEntity<NotePatient> updateNotePatient(@Valid @RequestBody NotePatient notePatient) {
+        NotePatient notePatientUpdated = notePatientService.updateNotePatient(notePatient);
+        if (notePatientUpdated == null) {
+            ResponseEntity.noContent().build();
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Responded", "PatientController");
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .port(8082).build().toUri();
+
+        log.info("Controller - note patient to update with ID: " + notePatient.getId());
+        return ResponseEntity.created(location).headers(headers).body(notePatientUpdated);
+    }
+
+
 
 }

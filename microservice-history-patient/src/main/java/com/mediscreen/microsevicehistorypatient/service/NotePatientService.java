@@ -1,5 +1,6 @@
 package com.mediscreen.microsevicehistorypatient.service;
 
+import com.mediscreen.microsevicehistorypatient.exception.NotePatientNotFoundException;
 import com.mediscreen.microsevicehistorypatient.model.NotePatient;
 import com.mediscreen.microsevicehistorypatient.repository.INotePatientRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class NotePatientService {
+public class NotePatientService implements INotePatientService {
 
     private INotePatientRepository notePatientRepository;
 
@@ -20,12 +21,14 @@ public class NotePatientService {
         this.notePatientRepository = INotePatientRepository;
     }
 
+    @Override
     public Iterable<NotePatient> findNotesByPatientId(int patientId) {
 
         log.debug("Service - list notes found for patientID: " + patientId);
         return notePatientRepository.findAllByPatientIdOrderByDateDesc(patientId);
     }
 
+    @Override
     public NotePatient saveNotePatient(NotePatient notePatient) {
         notePatient.setDate(LocalDateTime.now());
 
@@ -33,4 +36,18 @@ public class NotePatientService {
         return notePatientRepository.save(notePatient);
     }
 
+    @Override
+    public NotePatient updateNotePatient(NotePatient notePatient){
+        Optional<NotePatient> notePatientToUpdateOptional = notePatientRepository.findById(notePatient.getId());
+        if(!notePatientToUpdateOptional.isPresent()){
+            throw  new NotePatientNotFoundException("The Note of patient to update not found");
+        }
+        NotePatient notePatientToUpdate = notePatientToUpdateOptional.get();
+
+        notePatientToUpdate.setNote(notePatient.getNote());
+        notePatientToUpdate.setDate(LocalDateTime.now());
+
+        log.debug("Service - Note patient updated with patient Id: " + notePatient.getId());
+        return notePatientRepository.save(notePatientToUpdate);
+    }
 }

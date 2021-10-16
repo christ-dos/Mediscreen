@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Document("note_patient")
 @NoArgsConstructor
+@AllArgsConstructor
 public class NotePatient {
     @Id
     private String id;

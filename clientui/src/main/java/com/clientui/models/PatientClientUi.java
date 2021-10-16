@@ -44,7 +44,7 @@ public class PatientClientUi {
 
     @Override
     public String toString() {
-        return "PatientBean{" +
+        return "PatientClientUi{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
