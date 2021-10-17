@@ -1,5 +1,6 @@
 package com.mediscreen.microsevicehistorypatient.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,10 @@ public class NotePatient {
     @Id
     private String id;
 
+    @JsonAlias("patid")
     private Integer patientId;
 
+    @JsonAlias("e")
     private String note;
 
     private LocalDateTime date;

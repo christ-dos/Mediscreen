@@ -10,7 +10,11 @@
 <body>
 <div class="container">
     <div class="row p-2">
-        <h1>Mediscreen - Update Note</h1>
+        <a th:href="@{/patHistory/add/{patientId}(patientId=${notesClientUi.patientId})}"
+           class="btn btn-default  col-1">
+            <img src="https://img.icons8.com/material-outlined/30/000000/chevron-left.png"/>
+        </a>
+        <h1 class="col-11">Mediscreen - Update Note</h1>
         <form action="#" th:action="@{/patHistory/update/{id}(id=${notesClientUi.id})}" th:object="${notesClientUi}"
               method="post"
               class="form-horizontal">
@@ -19,21 +23,19 @@
                     Patient:</strong></label>
                 <div class="col-2 col-sm-2 col-md-2 col-lg-1 ">
                     <input th:field="*{patientId}" th:value="${notesClientUi.patientId}" type="number" min="1" step="1"
-                           class="p-1 form-control-plaintext"
+                           class="p-1 form-control-plaintext text-primary fw-bold" readonly
                            id="patientId">
-                    <p class="text-danger" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></p>
                 </div>
             </div>
             <div class="form-group mb-2 col-8">
                 <label for="note"><strong>Note/Recommendation</strong></label>
-                <textarea th:field="*{note}" class="form-control mt-1 text-primary"  id="note" rows="4"
+                <textarea th:field="*{note}" class="form-control mt-1 text-primary fw-bolder" id="note" rows="4"
                           placeholder="Patient: Durand /Recommendation: Write your recommendation"></textarea>
                 <p class="text-danger" th:if="${#fields.hasErrors('note')}" th:errors="*{note}"></p>
             </div>
             <div class="form-group">
                 <input class="btn btn-primary btn-sm mt-2" type="submit" value="Update Note">
-                <a th:href="@{/patHistory/add/{patientId}(patientId=${notesClientUi.patientId})}"
-                   class="btn btn-danger  btn-sm mt-2">Cancel</a>
+
             </div>
         </form>
     </div>

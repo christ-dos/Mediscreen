@@ -2,7 +2,6 @@ package com.mediscreen.microsevicehistorypatient.controller;
 
 import com.mediscreen.microsevicehistorypatient.model.NotePatient;
 import com.mediscreen.microsevicehistorypatient.service.INotePatientService;
-import com.mediscreen.microsevicehistorypatient.service.NotePatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +21,7 @@ public class NotePatientController {
 
     @PostMapping(value = "/patHistory/add")
     public ResponseEntity<NotePatient> addNotePatient(@Valid @RequestBody NotePatient notePatient) {
-        NotePatient notePatientSaved= notePatientService.saveNotePatient(notePatient);
+        NotePatient notePatientSaved = notePatientService.saveNotePatient(notePatient);
         if (notePatientSaved == null) {
             ResponseEntity.noContent().build();
         }
@@ -40,7 +39,7 @@ public class NotePatientController {
 
     @GetMapping(value = "/notesPatient/{patientId}")
     public Iterable<NotePatient> getListNotesByPatient(@PathVariable("patientId") int patientId) {
-        log.info("Controller - List notes of Patient: " + patientId +" displayed");
+        log.debug("Controller - List notes of Patient n°: " + patientId + " displayed");
         return notePatientService.findNotesByPatientId(patientId);
     }
 
@@ -56,13 +55,13 @@ public class NotePatientController {
                 .fromCurrentRequest()
                 .port(8082).build().toUri();
 
-        log.info("Controller - note patient to update with ID: " + notePatient.getId());
+        log.debug("Controller - note patient to update with ID: " + notePatient.getId());
         return ResponseEntity.created(location).headers(headers).body(notePatientUpdated);
     }
 
     @GetMapping(value = "/note/{id}")
     public NotePatient getNotePatientById(@PathVariable("id") String id) {
-        log.info("Controller - Find Note of patient with ID: " + id);
+        log.debug("Controller - Find Note of patient with ID: " + id);
         return notePatientService.getNotePatientById(id);
     }
 }

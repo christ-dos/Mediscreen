@@ -23,20 +23,20 @@ public class NoteClientUiController {
         model.addAttribute("notesPatient", getListNotesByPatientId(patientId));
         log.info("Controller - Displaying list of notes by patient");
         return "note-patient/addNote";
+//        return "redirect:/patHistory/add/" + patientId;
     }
 
     @PostMapping(value = "/patHistory/add")
     public String addNoteToPatient(@Valid NotesClientUi notesClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("notesPatient", getListNotesByPatientId(notesClientUi.getPatientId()));
-            log.error("Controller - Has error in form add note: " + result.getFieldError());
+            log.error("Controller - Has error in form add note: ");
             return "note-patient/addNote";
         }
         historyNotesPatientProxy.addNotePatient(notesClientUi);
-        model.addAttribute("notesPatient", getListNotesByPatientId(notesClientUi.getPatientId()));
         log.info("Controller - return list of notes patient after addition");
 
-        return "note-patient/addNote";
+        return "redirect:/patHistory/add/" + notesClientUi.getPatientId();
     }
 
     @PostMapping(value = "/patHistory/update/{id}")
@@ -47,9 +47,8 @@ public class NoteClientUiController {
             return "note-patient/updateNote";
         }
         historyNotesPatientProxy.updateNotePatient(notesClientUi, id);
-        model.addAttribute("notesPatient", getListNotesByPatientId(notesClientUi.getPatientId()));
         log.debug("Controller - Note updated with ID: " + id);
-        return "note-patient/addNote";
+        return "redirect:/patHistory/add/" + notesClientUi.getPatientId();
     }
 
     @GetMapping(value = "/patHistory/update/{id}")
