@@ -88,8 +88,8 @@ public class PatientClientUiTestIT {
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("patient/home"))
                 .andExpect(model().attributeExists("patients"))
-                .andExpect(model().attribute("patients", hasItem(hasProperty("firstName", is("Christine")))))
-                .andExpect(model().attribute("patients", hasItem(hasProperty("lastName", is("Duarte")))))
+                .andExpect(model().attribute("patients", hasItem(hasProperty("firstName", is("Christ")))))
+                .andExpect(model().attribute("patients", hasItem(hasProperty("lastName", is("Dos Santos")))))
                 .andExpect(model().attribute("patients", hasItem(hasProperty("birthDate", is("1974-09-17")))))
                 .andExpect(model().attribute("patients", hasItem(hasProperty("gender", is(Gender.F)))))
                 .andDo(print());

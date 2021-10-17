@@ -72,11 +72,9 @@ public class NoteClientUiTestIT {
                         .param("id", "6169f7df2c0d9a754676809f")
                         .param("patientId", String.valueOf(1))
                         .param("note", notesClientUiTest.getNote()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("note-patient/addNote"))
-                .andExpect(model().attribute("notesClientUi", hasProperty("id", is("6169f7df2c0d9a754676809f"))))
-                .andExpect(model().attribute("notesClientUi", hasProperty("patientId", is(1))))
-                .andExpect(model().attribute("notesClientUi", hasProperty("note", is("Patient: Martin Recommendation: rien à signaler"))))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/patHistory/add/1"))
+                .andExpect(redirectedUrl("/patHistory/add/1"))
                 .andDo(print());
     }
 
