@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Class integratioin tests for {@link Patient}
+ * Class integration tests for {@link Patient}
  *
  * @author Christine Duarte
  */

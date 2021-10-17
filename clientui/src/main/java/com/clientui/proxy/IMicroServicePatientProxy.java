@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+
 @FeignClient(name = "microservice-patient", url = "localhost:8081")
 public interface IMicroServicePatientProxy {
 
@@ -18,7 +19,6 @@ public interface IMicroServicePatientProxy {
 
     @GetMapping(value = "/patient/{id}")
     PatientClientUi getPatientById(@PathVariable("id") int id);
-
 
     @PostMapping(value = "/patient/add")
     ResponseEntity<PatientClientUi> addPatient(@RequestBody PatientClientUi patientClientUi);

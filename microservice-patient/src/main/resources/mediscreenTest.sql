@@ -21,15 +21,4 @@ VALUES ('Christine','Deschamps','1974-05-25', 'F','1509 Culver St','841-874-6512
        ('Gérard','Duhammel','2003-04-27', 'M','834 Binoc Ave"','841-874-6515'),
        ('Lili','Martin','1950-01-15','F','748 Townings Dr','841-874-6510');
 
-    CREATE TABLE note
-(
-    id         int auto_increment
-        primary key,
-    note       varchar(1000) null,
-    patient_id int           null,
-    constraint note_patient__fk
-        foreign key (patient_id) references patient (id)
-) ENGINE = innoDB;
-
-
 commit;

@@ -17,13 +17,13 @@ import java.util.List;
 
 @Controller
 @Slf4j
-public class ClientUiController {
+public class PatientClientUiController {
 
     @Autowired
     private IMicroServicePatientProxy patientProxy;
 
     @GetMapping(value = "/")
-    public String showHomeView(Model model) {
+    public String showPatientHomeView(Model model) {
         List<PatientClientUi> patients = patientProxy.listPatients();
         model.addAttribute("patients", patients);
         log.info("Controller - Displaying list of patients");
@@ -31,7 +31,7 @@ public class ClientUiController {
     }
 
     @GetMapping(value = "/patient/add")
-    public String showFormAddNewPatient(Model model) {
+    public String showFormAddNewPatient(PatientClientUi patientClientUi,Model model) {
         model.addAttribute("genders", Gender.values());
         log.info("Controller - Displaying form for adding new patient");
         return "patient/add";
@@ -42,7 +42,7 @@ public class ClientUiController {
         if (result.hasErrors()) {
             model.addAttribute("genders", Gender.values());
             log.error("Controller - Has error in form");
-            return "patient/add";
+            return "/patient/add";
         }
         patientProxy.addPatient(patientClientUi);
         model.addAttribute("patients", patientProxy.listPatients());
@@ -63,7 +63,7 @@ public class ClientUiController {
     public String updatePatient( @PathVariable("id") Integer id,@Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("genders", Gender.values());
-            log.error("Controller - Has error in form");
+            log.error("Controller - Has error in form update patient");
             return "patient/update";
         }
         patientProxy.updatePatient(id, patientClientUi);

@@ -19,15 +19,4 @@ CREATE TABLE patient
 INSERT INTO patient(first_name, last_name, birth_date, gender)
 VALUES ('Christine','Duarte','1974-09-17', 'F');
 
-    CREATE TABLE note
-(
-    id         int auto_increment
-        primary key,
-    note       varchar(1000) null,
-    patient_id int           null,
-    constraint note_patient__fk
-        foreign key (patient_id) references patient (id)
-) ENGINE = innoDB;
-
-
 commit;

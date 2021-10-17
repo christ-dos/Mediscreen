@@ -50,6 +50,7 @@ public class PatientService implements IPatientService {
             throw  new PatientNotFoundException("Patient to update not found");
         }
         Patient patientToUpdate= patientToUpdateOptional.get();
+
         patientToUpdate.setFirstName(patient.getFirstName());
         patientToUpdate.setLastName(patient.getLastName());
         patientToUpdate.setBirthDate(patient.getBirthDate());

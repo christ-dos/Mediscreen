@@ -36,10 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Christine Duarte
  */
-@WebMvcTest(ClientUiController.class)
+@WebMvcTest(PatientClientUiController.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-public class ClientUiControllerTest {
+public class PatientClientUiControllerTest {
     /**
      * An instance of {@link MockMvc} that permit simulate a request HTTP
      */
@@ -47,7 +47,7 @@ public class ClientUiControllerTest {
     private MockMvc mockMvcClientUi;
 
     @MockBean
-    private IMicroServicePatientProxy microServicePatientProxy;
+    private IMicroServicePatientProxy microServicePatientProxyMock;
 
     private PatientClientUi patientClientUiTest;
 
@@ -67,15 +67,15 @@ public class ClientUiControllerTest {
                 header,
                 HttpStatus.CREATED
         );
-        when(microServicePatientProxy.addPatient(any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
+        when(microServicePatientProxyMock.addPatient(any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
         //WHEN
         //THEN
         mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/add")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("firstName","Jacob")
-                        .param("lastName","Boyd")
-                        .param("birthDate","1968-07-15")
+                        .param("firstName", "Jacob")
+                        .param("lastName", "Boyd")
+                        .param("birthDate", "1968-07-15")
                         .param("gender", String.valueOf(Gender.M)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().stringValues("Location", "/"))
@@ -94,15 +94,15 @@ public class ClientUiControllerTest {
                 header,
                 HttpStatus.CREATED
         );
-        when(microServicePatientProxy.addPatient(any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
+        when(microServicePatientProxyMock.addPatient(any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
         //WHEN
         //THEN
         mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/add")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("firstName","")
-                        .param("lastName","")
-                        .param("birthDate","")
+                        .param("firstName", "")
+                        .param("lastName", "")
+                        .param("birthDate", "")
                         .param("gender", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
@@ -125,7 +125,7 @@ public class ClientUiControllerTest {
                 new PatientClientUi(
                         3, "Johanna", "Lefevre", "1970-09-08", Gender.F, null, null)
         );
-        when(microServicePatientProxy.listPatients()).thenReturn(patientsTest);
+        when(microServicePatientProxyMock.listPatients()).thenReturn(patientsTest);
         //WHEN
         //THEN
         mockMvcClientUi.perform(MockMvcRequestBuilders.get("/"))
@@ -153,15 +153,16 @@ public class ClientUiControllerTest {
                 header,
                 HttpStatus.CREATED
         );
-        when(microServicePatientProxy.updatePatient(anyInt(),any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
+        when(microServicePatientProxyMock.updatePatient(anyInt(), any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
         //WHEN
         //THEN
         mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/update/2")
                         .content(Utils.asJsonString(patientClientUiTest))
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("firstName","Jacob")
-                        .param("lastName","Boyd")
-                        .param("birthDate","1968-07-15")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .param("firstName", "Jacob")
+                        .param("lastName", "Boyd")
+                        .param("birthDate", "1968-07-15")
                         .param("gender", String.valueOf(Gender.M)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().stringValues("Location", "/"))
@@ -180,15 +181,15 @@ public class ClientUiControllerTest {
                 header,
                 HttpStatus.CREATED
         );
-        when(microServicePatientProxy.updatePatient(anyInt(),any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
+        when(microServicePatientProxyMock.updatePatient(anyInt(), any(PatientClientUi.class))).thenReturn((ResponseEntity<PatientClientUi>) responseEntity);
         //WHEN
         //THEN
         mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patient/update/2")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("firstName","")
-                        .param("lastName","")
-                        .param("birthDate","")
+                        .param("firstName", "")
+                        .param("lastName", "")
+                        .param("birthDate", "")
                         .param("gender", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())

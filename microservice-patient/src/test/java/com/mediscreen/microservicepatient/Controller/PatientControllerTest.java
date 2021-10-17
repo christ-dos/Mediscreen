@@ -54,11 +54,10 @@ public class PatientControllerTest {
     @BeforeEach
     public void setupPerTest() {
         patientTest = new Patient(2, "Jacob", "Boyd", "1968-07-15", Gender.M, null, null);
-
     }
 
     @Test
-    public void addPatientTest_whenPatientNotExitsInDb_thenReturnReponseEntityCreated() throws Exception {
+    public void addPatientTest_whenPatientNotExitsInDb_thenReturnResponseEntityCreated() throws Exception {
         //GIVEN
         patientTest.setId(5);
         when(patientServiceMock.addPatient(any(Patient.class))).thenReturn(patientTest);
