@@ -36,7 +36,7 @@ public class PatientClientUiTestIT {
 
     @BeforeEach
     public void setupPerTest() {
-        patientClientUiTest = new PatientClientUi(2,"John", "Boyd", "1964-09-23", Gender.M,null,null);
+        patientClientUiTest = new PatientClientUi(2,"Test", "TestNone", "1966-12-31", Gender.F,null,null);
     }
 
     @Test
@@ -47,10 +47,10 @@ public class PatientClientUiTestIT {
         mockMvcPatientClientUi.perform(MockMvcRequestBuilders.post("/patient/add")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("firstName","Jacob")
-                        .param("lastName","Boyd")
-                        .param("birthDate","1968-07-15")
-                        .param("gender", String.valueOf(Gender.M)))
+                        .param("firstName","Test")
+                        .param("lastName","TestNone")
+                        .param("birthDate","1966-12-31")
+                        .param("gender", String.valueOf(Gender.F)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().stringValues("Location", "/"))
                 .andDo(print());
@@ -88,9 +88,9 @@ public class PatientClientUiTestIT {
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("patient/home"))
                 .andExpect(model().attributeExists("patients"))
-                .andExpect(model().attribute("patients", hasItem(hasProperty("firstName", is("Christ")))))
-                .andExpect(model().attribute("patients", hasItem(hasProperty("lastName", is("Dos Santos")))))
-                .andExpect(model().attribute("patients", hasItem(hasProperty("birthDate", is("1974-09-17")))))
+                .andExpect(model().attribute("patients", hasItem(hasProperty("firstName", is("Test")))))
+                .andExpect(model().attribute("patients", hasItem(hasProperty("lastName", is("TestNone")))))
+                .andExpect(model().attribute("patients", hasItem(hasProperty("birthDate", is("1966-12-31")))))
                 .andExpect(model().attribute("patients", hasItem(hasProperty("gender", is(Gender.F)))))
                 .andDo(print());
 
@@ -104,10 +104,10 @@ public class PatientClientUiTestIT {
         mockMvcPatientClientUi.perform(MockMvcRequestBuilders.post("/patient/update/2")
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-                        .param("firstName","Jacob")
-                        .param("lastName","Boyd")
-                        .param("birthDate","1968-07-15")
-                        .param("gender", String.valueOf(Gender.M)))
+                        .param("firstName","Test")
+                        .param("lastName","TestNone")
+                        .param("birthDate","1966-12-31")
+                        .param("gender", String.valueOf(Gender.F)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().stringValues("Location", "/"))
                 .andDo(print());

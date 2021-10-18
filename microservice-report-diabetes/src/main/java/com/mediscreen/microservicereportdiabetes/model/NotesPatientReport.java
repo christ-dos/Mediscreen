@@ -1,11 +1,10 @@
-package com.clientui.models;
+package com.mediscreen.microservicereportdiabetes.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
@@ -13,7 +12,8 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotesClientUi {
+public class NotesPatientReport {
+
     private String id;
 
     private int patientId;
@@ -23,15 +23,9 @@ public class NotesClientUi {
 
     private LocalDate date;
 
-    public NotesClientUi(Integer patientId, String note, LocalDate date) {
-        this.patientId = patientId;
-        this.note = note;
-        this.date = date;
-    }
-
     @Override
     public String toString() {
-        return "NotesClientUi{" +
+        return "NotesPatientReport{" +
                 "id='" + id + '\'' +
                 ", patientId=" + patientId +
                 ", note='" + note + '\'' +

@@ -18,6 +18,7 @@
             <table class="table table-bordered ">
                 <thead>
                 <tr>
+                    <th>N° Patient</th>
                     <th>First Name</th>
                     <th>Last name</th>
                     <th>Birth date</th>
@@ -29,6 +30,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="patient : ${patients}">
+                    <td  style="width: 5%" th:text="${patient.id}"></td>
                     <td th:text="${patient.firstName}"></td>
                     <td th:text="${patient.lastName}"></td>
                     <td th:text="${patient.birthDate}"></td>

@@ -128,8 +128,7 @@ public class NoteClientUiControllerTest {
                         .param("note", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().hasErrors())
-                .andExpect(model().errorCount(2))
-                .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "patientId", "Min"))
+                .andExpect(model().errorCount(1))
                 .andExpect(model().attributeHasFieldErrorCode("notesClientUi", "note", "NotBlank"))
                 .andDo(print());
 
