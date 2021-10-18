@@ -41,6 +41,8 @@ public class PatientReport {
                 ", lastName='" + lastName + '\'' +
                 ", birthDate='" + birthDate + '\'' +
                 ", gender=" + gender +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }
