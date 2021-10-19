@@ -215,9 +215,10 @@ public class ReportDiabetesServiceTest {
         //THEN
         assertEquals("Early On Set", diabetesAssessmentResult.getResult());
     }
-/*---------------------------------------------------------------------------------------------------------------------------
-                                Test get Diabetes assessment by family name
------------------------------------------------------------------------------------------------------------------------------- */
+
+    /*---------------------------------------------------------------------------------------------------------------------------
+                                    Test get Diabetes assessment by family name
+    ------------------------------------------------------------------------------------------------------------------------------ */
     @Test
     public void getDiabetesAssessmentByFamilyNameTest_whenPatientFemaleAgeGreaterThanThirtyAndTriggersTwo_ThenReturnBorderline() {
         //GIVEN

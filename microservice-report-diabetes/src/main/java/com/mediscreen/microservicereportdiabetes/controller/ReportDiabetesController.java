@@ -16,11 +16,11 @@ public class ReportDiabetesController {
 
     @GetMapping(value = "/assess/{id}")
     public DiabetesAssessment getDiabetesAssessmentByPatientId(@PathVariable("id") int id) {
-        log.debug("Controller - get Diabetes assessment with  patient ID: " + id);
+        log.debug("Controller - get Diabetes assessment with patient ID: " + id);
         return reportDiabetesService.getDiabetesAssessmentByPatientId(id);
     }
 
- @GetMapping(value = "/assess/familyName/{lastName}")
+    @GetMapping(value = "/assess/familyName/{lastName}")
     public DiabetesAssessment getDiabetesAssessmentByFamilyName(@PathVariable("lastName") String lastName) {
         log.debug("Controller - get Diabetes assessment with family name: " + lastName);
         return reportDiabetesService.getDiabetesAssessmentByFamilyName(lastName);

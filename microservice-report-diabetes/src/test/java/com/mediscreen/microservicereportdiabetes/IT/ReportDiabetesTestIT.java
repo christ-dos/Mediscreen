@@ -1,0 +1,64 @@
+package com.mediscreen.microservicereportdiabetes.IT;
+
+import com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Class integration tests for {@link com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment}
+ *
+ * @author Christine Duarte
+ */
+@SpringBootTest
+@AutoConfigureMockMvc
+public class ReportDiabetesTestIT {
+
+    /**
+     * An instance of {@link MockMvc} that permit simulate a request HTTP
+     */
+    @Autowired
+    private MockMvc mockMvcReportDiabetes;
+
+    @Test
+    public void getDiabetesAssessmentByPatientId_whenPatientReportLessThanThirtyAndMale_thenReturn() throws Exception {
+        //GIVEN
+//        DiabetesAssessment diabetesAssessmentTest = new DiabetesAssessment("Test", "TestNone",54,"None");
+        //WHEN
+        //THEN
+        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/assess/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Test")))
+                .andExpect(jsonPath("$.lastName", is("TestNone")))
+                .andExpect(jsonPath("$.age", is(54)))
+                .andExpect(jsonPath("$.result", is("None")))
+                .andDo(print());
+    }
+
+    @Test
+    public void getDiabetesAssessmentByFamilyName_whenPatientReportGreaterThanThirtyFemale_thenReturn() throws Exception {
+        //GIVEN
+//        DiabetesAssessment diabetesAssessmentTest = new DiabetesAssessment("Test", "TestBorderline",44,"InDanger");
+        //WHEN
+        //THEN
+        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/assess/familyName/TestBorderline"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Test")))
+                .andExpect(jsonPath("$.lastName", is("TestBorderline")))
+                .andExpect(jsonPath("$.age", is(76)))
+                .andExpect(jsonPath("$.result", is("Borderline")))
+                .andDo(print());
+    }
+
+}
