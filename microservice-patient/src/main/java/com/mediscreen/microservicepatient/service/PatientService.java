@@ -44,12 +44,22 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public Patient updatePatient(Patient patient){
-        Optional<Patient> patientToUpdateOptional = patientRepository.findById(patient.getId());
-        if(!patientToUpdateOptional.isPresent()){
-            throw  new PatientNotFoundException("Patient to update not found");
+    public Patient findPatientByLastName(String lastName) {
+        Optional<Patient> patientByLastName = patientRepository.findByLastName(lastName);
+        if (!patientByLastName.isPresent()) {
+            throw new PatientNotFoundException("Patient not found");
         }
-        Patient patientToUpdate= patientToUpdateOptional.get();
+        log.debug("Service - Patient found with family name: " + lastName);
+        return patientByLastName.get();
+    }
+
+    @Override
+    public Patient updatePatient(Patient patient) {
+        Optional<Patient> patientToUpdateOptional = patientRepository.findById(patient.getId());
+        if (!patientToUpdateOptional.isPresent()) {
+            throw new PatientNotFoundException("Patient to update not found");
+        }
+        Patient patientToUpdate = patientToUpdateOptional.get();
 
         patientToUpdate.setFirstName(patient.getFirstName());
         patientToUpdate.setLastName(patient.getLastName());

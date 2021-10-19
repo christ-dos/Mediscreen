@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -101,6 +103,32 @@ public class PatientTestIT {
                         result.getResolvedException().getMessage()))
                 .andDo(print());
     }
+
+    @Test
+    public void getPatientByLastNameTest_whenPatientExistInDb_thenReturnPatientFound() throws Exception {
+        //GIVEN
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/Martin"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Lili")))
+                .andExpect(jsonPath("$.lastName", is("Martin")))
+                .andExpect(jsonPath("$.birthDate", is("1950-01-15")))
+                .andDo(print());
+    }
+    @Test
+    public void getPatientByLastNameTest_whenPatientNotFoundInDb_thenThrowPatientNotFoundException() throws Exception {
+        //GIVEN
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/familyName"))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
+                .andExpect(result -> assertEquals("Patient not found",
+                        result.getResolvedException().getMessage()))
+                .andDo(print());
+    }
+
 
     @Test
     public void updatePatientTest_whenPatientRecodedInDb_thenReturnResponseEntityCreated() throws Exception {

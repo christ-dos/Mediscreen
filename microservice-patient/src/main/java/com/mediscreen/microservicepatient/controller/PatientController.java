@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.net.URI;
 
 
@@ -50,6 +51,12 @@ public class PatientController {
     public Patient getPatientById(@PathVariable("id") int id) {
         log.info("Controller - Find Patient with ID: " + id);
         return patientService.findPatientById(id);
+    }
+
+    @GetMapping(value = "/patient/lastname/{lastName}")
+    public Patient getPatientByFirstName(@PathVariable String lastName) {
+        log.info("Controller - Find Patient with family name: " + lastName);
+        return patientService.findPatientByLastName(lastName);
     }
 
     @PostMapping(value = "/patient/update/{id}")

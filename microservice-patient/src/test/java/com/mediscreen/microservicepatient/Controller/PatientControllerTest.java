@@ -24,8 +24,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -118,6 +117,33 @@ public class PatientControllerTest {
         //WHEN
         //THEN
         mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/50"))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
+                .andExpect(result -> assertEquals("Patient not found",
+                        result.getResolvedException().getMessage()))
+                .andDo(print());
+    }
+
+    @Test
+    public void getPatientByLastNameTest_whenPatientExistInDb_thenReturnPatientFound() throws Exception {
+        //GIVEN
+        when(patientServiceMock.findPatientByLastName(anyString())).thenReturn(patientTest);
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/Boyd"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Jacob")))
+                .andExpect(jsonPath("$.lastName", is("Boyd")))
+                .andExpect(jsonPath("$.birthDate", is("1968-07-15")))
+                .andDo(print());
+    }
+  @Test
+    public void getPatientByLastNameTest_whenPatientNotFoundInDb_thenThrowPatientNotFoundException() throws Exception {
+        //GIVEN
+        when(patientServiceMock.findPatientByLastName(anyString())).thenThrow(new PatientNotFoundException("Patient not found"));
+        //WHEN
+        //THEN
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/familyName"))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
                 .andExpect(result -> assertEquals("Patient not found",
