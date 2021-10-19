@@ -37,30 +37,23 @@ public class ReportDiabetesServiceTest {
     @Mock
     private IMicroServiceHistoryPatientReportProxy microServiceHistoryPatientReportProxy;
 
-    private PatientReport patientReportTest;
+    private PatientReport patientReportLessThanThirtyMaleTest;
+    private PatientReport patientReportLessThanThirtyFemaleTest;
+
+    private PatientReport patientReportGreaterThanThirtyMaleTest;
+    private PatientReport patientReportGreaterThanThirtyFemaleTest;
 
     @BeforeEach
     public void setupPerTest() {
         reportDiabetesServiceTest = new ReportDiabetesService(microServiceHistoryPatientReportProxy, microServicePatientReportProxyMock);
-        patientReportTest = new PatientReport(1, "John", "Boyd", "1964-09-23", Gender.M, null, null);
+
+//        patientReportLessThanThirtyMaleTest = new PatientReport(1, "John", "Boyd", "2000-04-23", Gender.M, null, null);
+//        patientReportLessThanThirtyFemaleTest = new PatientReport(2, "laura", "Boyd", "2003-05-27", Gender.F, null, null);
+
+        patientReportGreaterThanThirtyFemaleTest = new PatientReport(3, "Johnna", "Boyd", "1968-09-25", Gender.F, null, null);
+        patientReportGreaterThanThirtyMaleTest = new PatientReport(4, "John", "Boyd", "1964-09-23", Gender.M, null, null);
     }
 
-    @Test
-    public void get(){
-        //GIVEN
-        int id = 1;
-        when(microServicePatientReportProxyMock.getPatientById(anyInt())).thenReturn(patientReportTest);
-        //WHEN
-        PatientReport patientReportResult = reportDiabetesServiceTest.getInfoPatientById(id);
-        //THEN
-        assertEquals(1,patientReportResult.getId());
-        assertEquals("John",patientReportResult.getFirstName());
-        assertEquals("Boyd",patientReportResult.getLastName());
-        assertEquals("1964-09-23",patientReportResult.getBirthDate());
-        assertEquals(Gender.M,patientReportResult.getGender());
-        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
-
-    }
 
     @Test
     public void searchTriggerWordInNotesPatientTest(){
@@ -68,14 +61,45 @@ public class ReportDiabetesServiceTest {
         int id = 3;
         List<NotesPatientReport> notesPatientReportList= Arrays.asList(
                 new NotesPatientReport("6169f8db6b9ef56480237003", 3, "une Chaîne avec MicroalBumin,",null),
-                new NotesPatientReport("6169f8db6b9ef56480237003", 3," pour vérifier le mot reaction/",null),
-                new NotesPatientReport("6169f8db6b9ef56480237003",3, "dans les notes avec Antibodies/Hemoglobin A1C.",null)
+                new NotesPatientReport("6169f8db6b9ef56480237003", 3," pour vérifier le mot reaction/",null)
+                );
+//        when(microServiceHistoryPatientReportProxy.getListNotesByPatient(anyInt())).thenReturn(notesPatientReportList);
+        //WHEN
+//        int counterResult = reportDiabetesServiceTest.getDiabetesAssessment(id);
+        //THEN
+//        assertEquals(4,counterResult);
+    }
+
+    @Test
+    public void getDiabetesAssessmentTest_whenPatientFemaleAgeGreaterThanThirtyAndTriggersTwo_ThenReturnBorderline() {
+        //GIVEN
+        int id = 3;
+        List<NotesPatientReport> notesPatientReportList= Arrays.asList(
+                new NotesPatientReport("6169f8db6b9ef56480237003", 3, "une Chaîne avec MicroalBumin,",null),
+                new NotesPatientReport("6169f8db6b9ef56480237003", 3," pour vérifier le mot reaction/",null)
                 );
         when(microServiceHistoryPatientReportProxy.getListNotesByPatient(anyInt())).thenReturn(notesPatientReportList);
+        when(microServicePatientReportProxyMock.getPatientById(anyInt())).thenReturn(patientReportGreaterThanThirtyFemaleTest);
         //WHEN
-        int counterResult = reportDiabetesServiceTest.searchTriggerWordInNotesPatient(id);
+        String diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessment(id);
         //THEN
-        assertEquals(4,counterResult);
+        assertEquals("Borderline", diabetesAssessmentResult);
+    }
+
+    @Test
+    public void getDiabetesAssessmentTest_whenMaleAgeGreaterThanThirtyTriggersSix_ThenReturnInDanger() {
+        //GIVEN
+        int id = 4;
+        List<NotesPatientReport> notesPatientReportList= Arrays.asList(
+                new NotesPatientReport("6169f8db6b9ef56480237003", 3, " MicroalBumin, antibodies,dizziness",null),
+                new NotesPatientReport("6169f8db6b9ef56480237003", 3," reaction/smoker height",null)
+        );
+        when(microServiceHistoryPatientReportProxy.getListNotesByPatient(anyInt())).thenReturn(notesPatientReportList);
+        when(microServicePatientReportProxyMock.getPatientById(anyInt())).thenReturn(patientReportGreaterThanThirtyMaleTest);
+        //WHEN
+        String diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessment(id);
+        //THEN
+        assertEquals("In Danger", diabetesAssessmentResult);
     }
 
 }

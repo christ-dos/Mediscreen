@@ -31,11 +31,11 @@ public class MicroserviceReportDiabetesApplication implements CommandLineRunner 
 
 	@Override
 	public void run(String... args) throws Exception {
-		Iterable<NotesPatientReport> list = microServiceHistoryPatientReportProxy.getListNotesByPatient(3);
+		Iterable<NotesPatientReport> list = microServiceHistoryPatientReportProxy.getListNotesByPatient(1);
 		list.forEach(x->System.out.println(x));
 
-		int count = reportDiabetesService.searchTriggerWordInNotesPatient(4);
-		System.out.println("resultat: " + count);
+		String resultReport = reportDiabetesService.getDiabetesAssessment(4);
+//		System.out.println("resultat: " + resultReport);
 
 	}
 }

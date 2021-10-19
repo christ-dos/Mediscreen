@@ -1,5 +1,6 @@
 package com.mediscreen.microservicereportdiabetes.service;
 
+import com.mediscreen.microservicereportdiabetes.model.Gender;
 import com.mediscreen.microservicereportdiabetes.model.NotesPatientReport;
 import com.mediscreen.microservicereportdiabetes.model.PatientReport;
 import com.mediscreen.microservicereportdiabetes.proxy.IMicroServiceHistoryPatientReportProxy;
@@ -8,11 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,32 +30,64 @@ public class ReportDiabetesService {
     }
 
 
-    public PatientReport getInfoPatientById(int id) {
-
-        return null;
-    }
-
-    public int searchTriggerWordInNotesPatient(int id) {
+    public String getDiabetesAssessment(int id) {
+        String diabetesAssessment;
         PatientReport patientReport = microServicePatientReportProxy.getPatientById(id);
-        List<String> notesPatientReport = ((List<NotesPatientReport>) microServiceHistoryPatientReportProxy.getListNotesByPatient(id))
-                .stream().map(notesPatientReport1 -> notesPatientReport1.getNote()).collect(Collectors.toList());
-
-        int counterTrigger = counterWordsTriggerInNotes(notesPatientReport);
+        List<String> notesByPatient = getListNoteByPatientId(patientReport);
+        int counterTrigger = getCounterWordsTriggerInNotes(notesByPatient);
         int agePatient = getAge(patientReport.getBirthDate());
 
+        if (agePatient < 30) {
+            if (patientReport.getGender().equals(Gender.M)) {
+                //for patient male with less 30 years
+                if (counterTrigger >= 3 & counterTrigger < 5) {
+                    diabetesAssessment = "In Danger";
+                } else if (counterTrigger >= 5) {
+                    diabetesAssessment = "Early On Set";
+                } else {
+                    diabetesAssessment = "None";
+                }
 
+            } else {
+                //for patient female with less 30 years
+                if (counterTrigger >= 4 & counterTrigger < 7) {
+                    diabetesAssessment = "In Danger";
+                } else if (counterTrigger >= 7) {
+                    diabetesAssessment = "Early On Set";
+                } else {
+                    diabetesAssessment = "None";
+                }
+            }
 
-
-        return counterTrigger;
+        } else {
+            // patient male or female greater than 30 years
+            if (counterTrigger >= 2 & counterTrigger < 6) {
+                diabetesAssessment = "Borderline";
+            } else if (counterTrigger >= 6 & counterTrigger < 8) {
+                diabetesAssessment = "In Danger";
+            } else if (counterTrigger >= 8) {
+                diabetesAssessment = "Early On Set";
+            } else {
+                diabetesAssessment = "None";
+            }
+        }
+        log.info("Service - Diabetes Assessment is: " + diabetesAssessment);
+        return diabetesAssessment;
     }
 
-    private int counterWordsTriggerInNotes(List<String> notesPatientReportList) {
+    private List<String> getListNoteByPatientId(PatientReport patientReport) {
+        List<String> notesPatientReport = ((List<NotesPatientReport>) microServiceHistoryPatientReportProxy.getListNotesByPatient(patientReport.getId()))
+                .stream().map(notePatientReport -> notePatientReport.getNote()).collect(Collectors.toList());
+        return notesPatientReport;
+    }
+
+    private int getCounterWordsTriggerInNotes(List<String> notesPatientReportList) {
         List<String> listWordsTrigger = Arrays.asList("Hemoglobin", "Microalbumin", "Height", "Weight", "Smoker",
                 "Abnormal", "Cholesterol", "Dizziness", "Relapse", "Reaction", "Antibodies");
 
         int counter = 0;
         for (String note : notesPatientReportList) {
-            String[] noteSplits = note.split(" |,|:|\\.|/");
+            String[] noteSplits = note.split(" |,|:|\\.|/|\\'");
             for (String word : listWordsTrigger) {
                 for (String noteSplit : noteSplits) {
                     if (noteSplit.equalsIgnoreCase(word))
@@ -65,16 +95,20 @@ public class ReportDiabetesService {
                 }
             }
         }
+        log.info("TriggerCounter: " + counter);//Todo retirer le log
         return counter;
     }
 
     private int getAge(String birthDate) {
+        if (birthDate == null) {
+               }
         if (birthDate != null) {
             LocalDate birthDateParse = LocalDate.parse(birthDate);
             LocalDate currentDate = LocalDate.now();
             if (currentDate.isAfter(birthDateParse)) {
-                Years age = Years.yearsBetween(birthDateParse,currentDate);
+                Years age = Years.yearsBetween(birthDateParse, currentDate);
                 log.debug("DateUtils - Age calculated for birthDate: " + birthDate);
+                log.info("age du patient:" + age.getYears());//Todo retirer le log
                 return age.getYears();
             }
         }
