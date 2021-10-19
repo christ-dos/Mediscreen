@@ -1,5 +1,6 @@
 package com.mediscreen.microservicereportdiabetes.service;
 
+import com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment;
 import com.mediscreen.microservicereportdiabetes.model.Gender;
 import com.mediscreen.microservicereportdiabetes.model.NotesPatientReport;
 import com.mediscreen.microservicereportdiabetes.model.PatientReport;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class ReportDiabetesService {
+public class ReportDiabetesService implements IReportDiabetesService {
 
     private IMicroServiceHistoryPatientReportProxy microServiceHistoryPatientReportProxy;
 
@@ -30,9 +31,29 @@ public class ReportDiabetesService {
     }
 
 
-    public String getDiabetesAssessment(int id) {
+    @Override
+    public DiabetesAssessment getDiabetesAssessmentByPatientId(int patientId) {
+        PatientReport patientReport = microServicePatientReportProxy.getPatientById(patientId);
+        String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
+
+        return new DiabetesAssessment(patientReport.getFirstName(),
+                patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
+
+    }
+
+    @Override
+    public DiabetesAssessment getDiabetesAssessmentByFamilyName(String lastName) {
+        PatientReport patientReport = microServicePatientReportProxy.getPatientByLastName(lastName);
+        String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
+
+        return new DiabetesAssessment(patientReport.getFirstName(),
+                patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
+
+    }
+
+    private String getDiabetesAssessment(PatientReport patientReport) {
         String diabetesAssessment;
-        PatientReport patientReport = microServicePatientReportProxy.getPatientById(id);
+
         List<String> notesByPatient = getListNoteByPatientId(patientReport);
         int counterTrigger = getCounterWordsTriggerInNotes(notesByPatient);
         int agePatient = getAge(patientReport.getBirthDate());
@@ -101,7 +122,7 @@ public class ReportDiabetesService {
 
     private int getAge(String birthDate) {
         if (birthDate == null) {
-               }
+        }
         if (birthDate != null) {
             LocalDate birthDateParse = LocalDate.parse(birthDate);
             LocalDate currentDate = LocalDate.now();

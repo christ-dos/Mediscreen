@@ -10,4 +10,7 @@ public interface IMicroServicePatientReportProxy {
 
     @GetMapping(value = "/patient/{id}")
     PatientReport getPatientById(@PathVariable("id") int id);
+
+    @GetMapping(value = "/patient/lastname/{lastName}")
+    PatientReport getPatientByLastName(@PathVariable("lastName")String lastName);
 }
