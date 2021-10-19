@@ -34,7 +34,7 @@ public class MicroserviceReportDiabetesApplication implements CommandLineRunner 
 		Iterable<NotesPatientReport> list = microServiceHistoryPatientReportProxy.getListNotesByPatient(1);
 		list.forEach(x->System.out.println(x));
 
-		String resultReport = reportDiabetesService.getDiabetesAssessment(4);
+		String resultReport = reportDiabetesService.getDiabetesAssessment(4);//Todo retirer la method run
 //		System.out.println("resultat: " + resultReport);
 
 	}
