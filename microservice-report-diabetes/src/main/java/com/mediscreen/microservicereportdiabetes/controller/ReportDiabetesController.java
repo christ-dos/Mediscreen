@@ -8,16 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Class taht expose endpoints for microservice-report-diabetes
+ *
+ * @author Christine Duarte
+ */
 @RestController
 @Slf4j
 public class ReportDiabetesController {
     @Autowired
     private IReportDiabetesService reportDiabetesService;
 
-    @GetMapping(value = "/assess/{id}")
-    public DiabetesAssessment getDiabetesAssessmentByPatientId(@PathVariable("id") int id) {
-        log.debug("Controller - get Diabetes assessment with patient ID: " + id);
-        return reportDiabetesService.getDiabetesAssessmentByPatientId(id);
+    @GetMapping(value = "/assess/{patientId}")
+    public DiabetesAssessment getDiabetesAssessmentByPatientId(@PathVariable("patientId") int patienId) {
+        log.debug("Controller - get Diabetes assessment with patient ID: " + patienId);
+        return reportDiabetesService.getDiabetesAssessmentByPatientId(patienId);
     }
 
     @GetMapping(value = "/assess/familyName/{lastName}")

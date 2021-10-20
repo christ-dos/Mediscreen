@@ -30,13 +30,12 @@ public class ReportDiabetesService implements IReportDiabetesService {
         this.microServicePatientReportProxy = microServicePatientReportProxy;
     }
 
-
     @Override
     public DiabetesAssessment getDiabetesAssessmentByPatientId(int patientId) {
         PatientReport patientReport = microServicePatientReportProxy.getPatientById(patientId);
         String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
 
-        return new DiabetesAssessment(patientReport.getFirstName(),
+        return new DiabetesAssessment(patientId,patientReport.getFirstName(),
                 patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
 
     }
@@ -68,7 +67,6 @@ public class ReportDiabetesService implements IReportDiabetesService {
                 } else {
                     diabetesAssessment = "None";
                 }
-
             } else {
                 //for patient female with less 30 years
                 if (counterTrigger >= 4 & counterTrigger < 7) {
@@ -79,7 +77,6 @@ public class ReportDiabetesService implements IReportDiabetesService {
                     diabetesAssessment = "None";
                 }
             }
-
         } else {
             // patient male or female greater than 30 years
             if (counterTrigger >= 2 & counterTrigger < 6) {

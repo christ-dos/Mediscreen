@@ -34,8 +34,8 @@ public class NoteClientUiController {
             return "note-patient/addNote";
         }
         historyNotesPatientProxy.addNotePatient(notesClientUi);
-        log.info("Controller - return list of notes patient after addition");
 
+        log.info("Controller - return list of notes patient after addition");
         return "redirect:/patHistory/add/" + notesClientUi.getPatientId();
     }
 
@@ -47,6 +47,7 @@ public class NoteClientUiController {
             return "note-patient/updateNote";
         }
         historyNotesPatientProxy.updateNotePatient(notesClientUi, id);
+
         log.debug("Controller - Note updated with ID: " + id);
         return "redirect:/patHistory/add/" + notesClientUi.getPatientId();
     }
