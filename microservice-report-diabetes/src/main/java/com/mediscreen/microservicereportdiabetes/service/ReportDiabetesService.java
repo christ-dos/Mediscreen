@@ -50,7 +50,7 @@ public class ReportDiabetesService implements IReportDiabetesService {
             throw new PatientNotFoundException("Patient not Found with lastName: " + lastName);
         }
         String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
-        return new DiabetesAssessment(patientReport.getFirstName(),
+        return new DiabetesAssessment(patientReport.getId(), patientReport.getFirstName(),
                 patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
     }
 

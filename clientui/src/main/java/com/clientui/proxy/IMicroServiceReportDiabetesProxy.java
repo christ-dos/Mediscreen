@@ -13,7 +13,7 @@ public interface IMicroServiceReportDiabetesProxy {
     @GetMapping(value = "/assess/{id}")
     DiabetesAssessmentClientUi getDiabetesAssessmentByPatientId(@Valid @PathVariable("id") int id);
 
-    @GetMapping(value = "/assess/familyName/{lastName}")
+    @GetMapping(value = "/asses/familyName/{lastName}")
     DiabetesAssessmentClientUi getDiabetesAssessmentByFamilyName(@Valid @PathVariable("lastName") String lastName);
 
 
