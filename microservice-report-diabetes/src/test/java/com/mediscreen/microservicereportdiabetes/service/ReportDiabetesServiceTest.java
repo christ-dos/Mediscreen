@@ -1,5 +1,6 @@
 package com.mediscreen.microservicereportdiabetes.service;
 
+import com.mediscreen.microservicereportdiabetes.exception.PatientNotFoundException;
 import com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment;
 import com.mediscreen.microservicereportdiabetes.model.Gender;
 import com.mediscreen.microservicereportdiabetes.model.NotesPatientReport;
@@ -14,11 +15,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Class That test {@link ReportDiabetesService}
@@ -71,6 +74,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("Borderline", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -87,6 +92,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("In Danger", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -103,6 +110,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("Early On Set", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -119,6 +128,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("None", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -135,6 +146,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("None", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -151,6 +164,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("Early On Set", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -167,6 +182,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("None", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -183,6 +200,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("None", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -198,6 +217,8 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("In Danger", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
     }
 
     @Test
@@ -214,6 +235,18 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(id);
         //THEN
         assertEquals("Early On Set", diabetesAssessmentResult.getResult());
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
+        verify(microServiceHistoryPatientReportProxyMock, times(1)).getListNotesByPatient(anyInt());
+    }
+
+    @Test
+    public void getDiabetesAssessmentByPatientIdTest_whenPatientNotFound_thenThrowPatientNotFoundException() {
+        //GIVEN
+        when(microServicePatientReportProxyMock.getPatientById(anyInt())).thenReturn(null);
+        //WHEN
+        //THEN
+        assertThrows(PatientNotFoundException.class, () -> reportDiabetesServiceTest.getDiabetesAssessmentByPatientId(anyInt()));
+        verify(microServicePatientReportProxyMock, times(1)).getPatientById(anyInt());
     }
 
     /*---------------------------------------------------------------------------------------------------------------------------
@@ -281,6 +314,16 @@ public class ReportDiabetesServiceTest {
         DiabetesAssessment diabetesAssessmentResult = reportDiabetesServiceTest.getDiabetesAssessmentByFamilyName("Martin");
         //THEN
         assertEquals("None", diabetesAssessmentResult.getResult());
+    }
+
+    @Test
+    public void getDiabetesAssessmentByFamilyNameTest_whenPatientNotFound_thenThrowPatientNotFoundException() {
+        //GIVEN
+        when(microServicePatientReportProxyMock.getPatientByLastName(anyString())).thenReturn(null);
+        //WHEN
+        //THEN
+        assertThrows(PatientNotFoundException.class, () -> reportDiabetesServiceTest.getDiabetesAssessmentByFamilyName(anyString()));
+        verify(microServicePatientReportProxyMock, times(1)).getPatientByLastName(anyString());
     }
 
 }
