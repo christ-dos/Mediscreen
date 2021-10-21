@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * Class taht expose endpoints for microservice-report-diabetes
  *
@@ -20,13 +22,13 @@ public class ReportDiabetesController {
     private IReportDiabetesService reportDiabetesService;
 
     @GetMapping(value = "/assess/{patientId}")
-    public DiabetesAssessment getDiabetesAssessmentByPatientId(@PathVariable("patientId") int patienId) {
-        log.debug("Controller - get Diabetes assessment with patient ID: " + patienId);
-        return reportDiabetesService.getDiabetesAssessmentByPatientId(patienId);
+    public DiabetesAssessment getDiabetesAssessmentByPatientId(@Valid @PathVariable("patientId") int patientId) {
+        log.debug("Controller - get Diabetes assessment with patient ID: " + patientId);
+        return reportDiabetesService.getDiabetesAssessmentByPatientId(patientId);
     }
 
     @GetMapping(value = "/assess/familyName/{lastName}")
-    public DiabetesAssessment getDiabetesAssessmentByFamilyName(@PathVariable("lastName") String lastName) {
+    public DiabetesAssessment getDiabetesAssessmentByFamilyName(@Valid @PathVariable("lastName") String lastName) {
         log.debug("Controller - get Diabetes assessment with family name: " + lastName);
         return reportDiabetesService.getDiabetesAssessmentByFamilyName(lastName);
     }

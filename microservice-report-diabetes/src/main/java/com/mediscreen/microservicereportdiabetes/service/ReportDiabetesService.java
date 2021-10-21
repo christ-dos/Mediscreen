@@ -1,5 +1,6 @@
 package com.mediscreen.microservicereportdiabetes.service;
 
+import com.mediscreen.microservicereportdiabetes.exception.PatientNotFoundException;
 import com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment;
 import com.mediscreen.microservicereportdiabetes.model.Gender;
 import com.mediscreen.microservicereportdiabetes.model.NotesPatientReport;
@@ -33,8 +34,10 @@ public class ReportDiabetesService implements IReportDiabetesService {
     @Override
     public DiabetesAssessment getDiabetesAssessmentByPatientId(int patientId) {
         PatientReport patientReport = microServicePatientReportProxy.getPatientById(patientId);
+        if(patientReport == null){
+            throw new PatientNotFoundException("Patient not Found with ID: " + patientId);
+        }
         String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
-
         return new DiabetesAssessment(patientId,patientReport.getFirstName(),
                 patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
 
@@ -43,11 +46,12 @@ public class ReportDiabetesService implements IReportDiabetesService {
     @Override
     public DiabetesAssessment getDiabetesAssessmentByFamilyName(String lastName) {
         PatientReport patientReport = microServicePatientReportProxy.getPatientByLastName(lastName);
+        if(patientReport == null){
+            throw new PatientNotFoundException("Patient not Found with lastName: " + lastName);
+        }
         String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
-
         return new DiabetesAssessment(patientReport.getFirstName(),
                 patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
-
     }
 
     private String getDiabetesAssessment(PatientReport patientReport) {

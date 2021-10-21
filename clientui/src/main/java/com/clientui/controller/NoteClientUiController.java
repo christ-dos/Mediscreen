@@ -23,7 +23,6 @@ public class NoteClientUiController {
         model.addAttribute("notesPatient", getListNotesByPatientId(patientId));
         log.info("Controller - Displaying list of notes by patient");
         return "note-patient/addNote";
-//        return "redirect:/patHistory/add/" + patientId;
     }
 
     @PostMapping(value = "/patHistory/add")
