@@ -23,16 +23,15 @@ public class ReportDiabetesControllerClientUi {
     IMicroServiceReportDiabetesProxy reportDiabetesProxy;
 
     @GetMapping(value = "/assess")
-    public String ShowDiabetesAssessmentView(@ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi, Model model) {
+    public String ShowDiabetesAssessmentView(@ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
 
         log.info("Displaying View Diabetes Assessment by Id");
         return "diabetes-report/assessmentId";
     }
 
     @PostMapping(value = "/assess")
-    public String submitpatientIdToGetDiabetesAssessmentByPatientId(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
+    public String submitPatientIdToGetDiabetesAssessmentByPatientId(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
         DiabetesAssessmentClientUi diabetesAssessmentClientUiByPatientId = null;
-
         try {
             diabetesAssessmentClientUiByPatientId = reportDiabetesProxy.getDiabetesAssessmentByPatientId(diabetesAssessmentClientUi.getPatientId());
             model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByPatientId);
@@ -56,7 +55,7 @@ public class ReportDiabetesControllerClientUi {
     }
 
     @GetMapping(value = "/assess/familyName")
-    public String ShowDiabetesAssessmentViewByName(@ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
+    public String ShowDiabetesAssessmentViewByName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
 
         log.info("Displaying View Diabetes Assessment by family name");
         return "diabetes-report/assessmentName";
@@ -75,7 +74,9 @@ public class ReportDiabetesControllerClientUi {
     @PostMapping(value = "/assess/familyName")
     public String submitFamilyNameToGetDiabetesAssessmentByFamilyName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
         DiabetesAssessmentClientUi diabetesAssessmentClientUiByName = null;
-
+        if(result.hasErrors()){
+            return "diabetes-report/assessmentName";
+        }
         try {
             diabetesAssessmentClientUiByName = reportDiabetesProxy.getDiabetesAssessmentByFamilyName(diabetesAssessmentClientUi.getLastName());
             model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByName);

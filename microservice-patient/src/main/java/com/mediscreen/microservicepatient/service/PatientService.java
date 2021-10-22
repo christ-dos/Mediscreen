@@ -45,7 +45,7 @@ public class PatientService implements IPatientService {
 
     @Override
     public Patient findPatientByLastName(String lastName) {
-        Optional<Patient> patientByLastName = patientRepository.findByLastName(lastName);
+        Optional<Patient> patientByLastName = patientRepository.findDistinctFirstByLastName(lastName);
         if (!patientByLastName.isPresent()) {
             throw new PatientNotFoundException("Patient not found");
         }

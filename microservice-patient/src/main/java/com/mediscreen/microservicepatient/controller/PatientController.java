@@ -54,7 +54,7 @@ public class PatientController {
     }
 
     @GetMapping(value = "/patient/lastname/{lastName}")
-    public Patient getPatientByLastName(@PathVariable String lastName) {
+    public Patient getPatientByLastName(@PathVariable("lastName") String lastName) {
         log.info("Controller - Find Patient with family name: " + lastName);
         return patientService.findPatientByLastName(lastName);
     }

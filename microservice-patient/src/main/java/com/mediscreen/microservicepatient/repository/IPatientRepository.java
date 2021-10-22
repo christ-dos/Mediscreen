@@ -9,5 +9,5 @@ import java.util.Optional;
 
 
 public interface IPatientRepository extends CrudRepository<Patient,Integer> {
-    Optional<Patient > findByLastName(String lastName);
+    Optional<Patient > findDistinctFirstByLastName(String lastName);
 }

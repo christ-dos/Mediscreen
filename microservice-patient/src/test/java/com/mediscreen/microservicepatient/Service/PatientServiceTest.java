@@ -107,7 +107,7 @@ public class PatientServiceTest {
     public void findPatientByLastNameTest_whenPatientIsPresentInDB_thenReturnPatientFound() {
         //GIVEN
         Patient patient = new Patient(1, "Johanna", "Lefevre", "1970-09-08", Gender.F, null, null);
-        when(patientRepositoryMock.findByLastName(anyString())).thenReturn(Optional.of(patient));
+        when(patientRepositoryMock.findDistinctFirstByLastName(anyString())).thenReturn(Optional.of(patient));
         //WHEN
         Patient patientTestResult = patientServiceTest.findPatientByLastName(patient.getLastName());
         //THEN
@@ -117,16 +117,16 @@ public class PatientServiceTest {
         assertEquals("Lefevre", patientTestResult.getLastName());
         assertEquals("1970-09-08", patientTestResult.getBirthDate());
         assertEquals(Gender.F, patientTestResult.getGender());
-        verify(patientRepositoryMock, times(1)).findByLastName(anyString());
+        verify(patientRepositoryMock, times(1)).findDistinctFirstByLastName(anyString());
     }
  @Test
     public void findPatientByLastNameTest_whenPatientNotFound_thenThrowPatientNotFoundException() {
         //GIVEN
-        when(patientRepositoryMock.findByLastName(anyString())).thenReturn(Optional.empty());
+        when(patientRepositoryMock.findDistinctFirstByLastName(anyString())).thenReturn(Optional.empty());
         //WHEN
         //THEN
         assertThrows(PatientNotFoundException.class, () -> patientServiceTest.findPatientByLastName("familyName"));
-        verify(patientRepositoryMock, times(1)).findByLastName(anyString());
+        verify(patientRepositoryMock, times(1)).findDistinctFirstByLastName(anyString());
     }
 
     @Test

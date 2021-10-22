@@ -1,20 +1,17 @@
 package com.mediscreen.microservicereportdiabetes.IT;
 
 import com.mediscreen.microservicereportdiabetes.exception.PatientNotFoundException;
-import com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+//@ActiveProfiles("test")
 public class ReportDiabetesTestIT {
 
     /**
@@ -66,7 +64,8 @@ public class ReportDiabetesTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/TestBorderline"))
+        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/Martin")
+                        .param("lastName","Martin"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is("Test")))
                 .andExpect(jsonPath("$.lastName", is("TestBorderline")))

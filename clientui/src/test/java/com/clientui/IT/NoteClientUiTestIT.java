@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class NoteClientUiTestIT {
 
     /**
@@ -53,7 +55,7 @@ public class NoteClientUiTestIT {
                 .andExpect(view().name("note-patient/addNote"))
                 .andExpect(model().attributeExists("notesClientUi"))
                 .andExpect(model().attributeExists("notesPatient"))
-                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("id", is("616c68177562f055abd1e024")))))
+                .andExpect(model().attribute("notesPatient", hasItem(hasProperty("id", is("6171f45abc2c6a7754319b71")))))
                 .andExpect(model().attribute("notesPatient", hasItem(hasProperty("patientId", is(2)))))
                 .andExpect(model().attribute("notesPatient", hasItem(hasProperty("note", is(
                         "Patient: TestBorderline Practitioner's notes/recommendations: Patient states that they have had a Reaction to medication within last 3 months Patient also complains that their hearing continues to be problematic")))))
@@ -67,11 +69,11 @@ public class NoteClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.post("/patHistory/update/6169f7df2c0d9a754676809f")
+        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.post("/patHistory/update/6171f45abc2c6a7754319b76")
                         .content(Utils.asJsonString(notesClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .param("id", "6169f7df2c0d9a754676809f")
+                        .param("id", "6171f45abc2c6a7754319b76")
                         .param("patientId", String.valueOf(1))
                         .param("note", notesClientUiTest.getNote()))
                 .andExpect(status().is3xxRedirection())
@@ -104,11 +106,11 @@ public class NoteClientUiTestIT {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/update/6169f7df2c0d9a754676809f"))
+        mockMvcNoteClientUi.perform(MockMvcRequestBuilders.get("/patHistory/update/6171f459bc2c6a7754319b6e"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("note-patient/updateNote"))
-                .andExpect(model().attribute("notesClientUi",hasProperty("id", is("6169f7df2c0d9a754676809f"))))
-                .andExpect(model().attribute("notesClientUi",hasProperty("patientId", is(3))))
+                .andExpect(model().attribute("notesClientUi",hasProperty("id", is("6171f459bc2c6a7754319b6e"))))
+                .andExpect(model().attribute("notesClientUi",hasProperty("patientId", is(1))))
                 .andExpect(model().attribute("notesClientUi",hasProperty("note", is(
                         "Patient: TestNone Practitioner's notes/recommendations: Patient states that they are 'feeling terrific' Weight at or below recommended level"))))
                 .andDo(print());
