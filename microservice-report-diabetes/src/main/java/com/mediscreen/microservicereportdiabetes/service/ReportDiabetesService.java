@@ -34,11 +34,11 @@ public class ReportDiabetesService implements IReportDiabetesService {
     @Override
     public DiabetesAssessment getDiabetesAssessmentByPatientId(int patientId) {
         PatientReport patientReport = microServicePatientReportProxy.getPatientById(patientId);
-        if(patientReport == null){
+        if (patientReport == null) {
             throw new PatientNotFoundException("Patient not Found with ID: " + patientId);
         }
         String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
-        return new DiabetesAssessment(patientId,patientReport.getFirstName(),
+        return new DiabetesAssessment(patientId, patientReport.getFirstName(),
                 patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
 
     }
@@ -46,7 +46,7 @@ public class ReportDiabetesService implements IReportDiabetesService {
     @Override
     public DiabetesAssessment getDiabetesAssessmentByFamilyName(String lastName) {
         PatientReport patientReport = microServicePatientReportProxy.getPatientByLastName(lastName);
-        if(patientReport == null){
+        if (patientReport == null) {
             throw new PatientNotFoundException("Patient not Found with lastName: " + lastName);
         }
         String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
@@ -112,8 +112,9 @@ public class ReportDiabetesService implements IReportDiabetesService {
             String[] noteSplits = note.split(" |,|:|\\.|/|\\'");
             for (String word : listWordsTrigger) {
                 for (String noteSplit : noteSplits) {
-                    if (noteSplit.equalsIgnoreCase(word))
+                    if (noteSplit.equalsIgnoreCase(word)) {
                         counter++;
+                    }
                 }
             }
         }
