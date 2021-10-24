@@ -1,0 +1,64 @@
+# Use root/example as user/password credentials
+version: '3.6'
+
+services:
+#Mysql
+  mediscreen-mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mediscreen
+      MYSQL_USER: user
+      MYSQL_PASSWORD: rootroot
+    ports:
+            - "3307:3306"
+#    networks:
+#            - mediscreen-network
+
+    volumes:
+      - ./mysql-dump:/docker-entrypoint-initdb.d
+
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8000:8080
+
+
+
+
+#version: '3'
+#services:
+#  microservice-patient-app:
+#    image: microservice-patient-image
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - mediscreen-mysql
+#
+#    ports:
+#      - "8081:8081"
+#    networks:
+#      - mediscreen_network
+
+#  mediscreen-mysql:
+#      image: mysql:8.0.26
+#      environment:
+#        MYSQL_ROOT_PASSWORD: rootroot
+#        MYSQL_DATABASE: mediscreen
+#      volumes:
+#        - ./mysql-dump/mediscreen.sql:/var/lib/mysql
+#        - ./init:/docker-entrypoint-initdb.d
+#      ports:
+#        - "3337:3306"
+#      networks:
+#        - mediscreen_network
+
+
+#networks:
+#  mediscreen_network:
+
