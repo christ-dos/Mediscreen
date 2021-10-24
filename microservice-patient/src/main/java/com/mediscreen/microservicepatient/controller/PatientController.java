@@ -6,13 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.net.URI;
+import java.util.List;
 
 
 @RestController
@@ -53,10 +52,10 @@ public class PatientController {
         return patientService.findPatientById(id);
     }
 
-    @GetMapping(value = "/patient/lastname/{lastName}")
-    public Patient getPatientByLastName(@PathVariable("lastName") String lastName) {
+    @GetMapping(value = "/patients/lastname/{lastName}")
+    public List<Patient> getPatientsByLastName(@PathVariable("lastName") String lastName) {
         log.info("Controller - Find Patient with family name: " + lastName);
-        return patientService.findPatientByLastName(lastName);
+        return patientService.findPatientsByLastName(lastName);
     }
 
     @PostMapping(value = "/patient/update/{id}")

@@ -97,7 +97,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void getPatientByIdTest_whenPatientExistInDb_thenReturnPatientFound() throws Exception {
+    public void getPatientsByIdTest_whenPatientExistInDb_thenReturnPatientFound() throws Exception {
         //GIVEN
         when(patientServiceMock.findPatientById(anyInt())).thenReturn(patientTest);
         //WHEN
@@ -125,25 +125,32 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void getPatientByLastNameTest_whenPatientExistInDb_thenReturnPatientFound() throws Exception {
+    public void getPatientsByLastNameTest_whenPatientExistInDb_thenReturnPatientFound() throws Exception {
         //GIVEN
-        when(patientServiceMock.findPatientByLastName(anyString())).thenReturn(patientTest);
+        List<Patient> patientsTests = Arrays.asList(
+                new Patient(
+                        1, "John", "Boyd", "1964-09-23", Gender.M, null, null),
+                new Patient(
+                        2, "Jacob", "Boyd", "1968-07-15", Gender.M, null, null),
+                new Patient(
+                        3, "Johanna", "Boyd", "1970-09-08", Gender.F, null, null) );
+        when(patientServiceMock.findPatientsByLastName(anyString())).thenReturn(patientsTests);
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/Boyd"))
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/lastname/Boyd"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is("Jacob")))
-                .andExpect(jsonPath("$.lastName", is("Boyd")))
-                .andExpect(jsonPath("$.birthDate", is("1968-07-15")))
+                .andExpect(jsonPath("$.[0].firstName", is("John")))
+                .andExpect(jsonPath("$.[1].firstName", is("Jacob")))
+                .andExpect(jsonPath("$.[2].firstName", is("Johanna")))
                 .andDo(print());
     }
   @Test
     public void getPatientByLastNameTest_whenPatientNotFoundInDb_thenThrowPatientNotFoundException() throws Exception {
         //GIVEN
-        when(patientServiceMock.findPatientByLastName(anyString())).thenThrow(new PatientNotFoundException("Patient not found"));
+        when(patientServiceMock.findPatientsByLastName(anyString())).thenThrow(new PatientNotFoundException("Patient not found"));
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/familyName"))
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/lastname/familyName"))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
                 .andExpect(result -> assertEquals("Patient not found",

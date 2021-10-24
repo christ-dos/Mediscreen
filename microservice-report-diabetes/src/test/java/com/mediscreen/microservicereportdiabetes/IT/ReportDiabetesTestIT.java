@@ -59,32 +59,34 @@ public class ReportDiabetesTestIT {
                 .andDo(print());
     }
 
-    @Test
-    public void getDiabetesAssessmentByFamilyName_whenPatientReportGreaterThanThirtyFemale_thenReturnBorderLIne() throws Exception {
-        //GIVEN
-        //WHEN
-        //THEN
-        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/Martin")
-                        .param("lastName","Martin"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is("Test")))
-                .andExpect(jsonPath("$.lastName", is("TestBorderline")))
-                .andExpect(jsonPath("$.age", is(76)))
-                .andExpect(jsonPath("$.result", is("Borderline")))
-                .andDo(print());
-    }
+//    @Test
+//    public void getDiabetesAssessmentByFamilyName_whenPatientReportGreaterThanThirtyFemale_thenReturnBorderLIne() throws Exception {
+//        //GIVEN
+//        //WHEN
+//        //THEN
+//        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/Martin")
+//                        .param("lastName","Martin"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.firstName", is("Test")))
+//                .andExpect(jsonPath("$.lastName", is("TestBorderline")))
+//                .andExpect(jsonPath("$.age", is(76)))
+//                .andExpect(jsonPath("$.result", is("Borderline")))
+//                .andDo(print());
+//    }
+//
+//    @Test
+//    public void getDiabetesAssessmentByFamilyName_whenPatientReportNotFound_thenThrowPatientNotFoundException() throws Exception {
+//        //GIVEN
+//        //WHEN
+//        //THEN
+//        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/Unknown"))
+//                .andExpect(status().isNotFound())
+//                .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
+//                .andExpect(result -> assertEquals("Patient not found",
+//                        result.getResolvedException().getMessage()))
+//                .andDo(print());
+//    }
 
-    @Test
-    public void getDiabetesAssessmentByFamilyName_whenPatientReportNotFound_thenThrowPatientNotFoundException() throws Exception {
-        //GIVEN
-        //WHEN
-        //THEN
-        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/Unknown"))
-                .andExpect(status().isNotFound())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
-                .andExpect(result -> assertEquals("Patient not found",
-                        result.getResolvedException().getMessage()))
-                .andDo(print());
-    }
+    //todo celan code
 
 }

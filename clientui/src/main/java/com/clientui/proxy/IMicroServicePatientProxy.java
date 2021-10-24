@@ -27,4 +27,7 @@ public interface IMicroServicePatientProxy {
     @PostMapping(value = "/patient/update/{id}")
     ResponseEntity<PatientClientUi> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientClientUi patientClientUi);
 
+    @GetMapping(value = "/patients/lastname/{lastName}")
+    List<PatientClientUi> getPatientsByLastName(@PathVariable("lastName") String lastName);
+
 }

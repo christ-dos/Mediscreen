@@ -24,6 +24,7 @@ public class PatientClientUiController {
 
     @GetMapping(value = "/")
     public String showPatientHomeView(Model model) {
+
         List<PatientClientUi> patients = patientProxy.listPatients();
         model.addAttribute("patients", patients);
         log.info("Controller - Displaying list of patients");

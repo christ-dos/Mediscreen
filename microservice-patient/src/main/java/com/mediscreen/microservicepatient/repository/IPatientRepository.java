@@ -5,9 +5,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Optional;
 
 
 public interface IPatientRepository extends CrudRepository<Patient,Integer> {
-    Optional<Patient > findDistinctFirstByLastName(String lastName);
+    List<Patient> findByLastName(String lastName);
 }

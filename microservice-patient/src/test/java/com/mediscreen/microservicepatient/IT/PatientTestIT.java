@@ -57,7 +57,7 @@ public class PatientTestIT {
                         .content(Utils.asJsonString(patientTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(4)))
+                .andExpect(jsonPath("$.id", is(6)))
                 .andExpect(jsonPath("$.firstName", is("John")))
                 .andExpect(jsonPath("$.birthDate", is("1964-09-23")))
                 .andDo(print());
@@ -105,23 +105,23 @@ public class PatientTestIT {
     }
 
     @Test
-    public void getPatientByLastNameTest_whenPatientExistInDb_thenReturnPatientFound() throws Exception {
+    public void getPatientsByLastNameTest_whenPatientExistInDb_thenReturnListPatientFound() throws Exception {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/Martin"))
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/lastname/Martin"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is("Lili")))
-                .andExpect(jsonPath("$.lastName", is("Martin")))
-                .andExpect(jsonPath("$.birthDate", is("1950-01-15")))
+                .andExpect(jsonPath("$.[0].firstName", is("Wiliam")))
+                .andExpect(jsonPath("$.[1].firstName", is("Stephan")))
+                .andExpect(jsonPath("$.[2].firstName", is("Lili")))
                 .andDo(print());
     }
     @Test
-    public void getPatientByLastNameTest_whenPatientNotFoundInDb_thenThrowPatientNotFoundException() throws Exception {
+    public void getPatientsByLastNameTest_whenPatientNotFoundInDb_thenThrowPatientNotFoundException() throws Exception {
         //GIVEN
         //WHEN
         //THEN
-        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patient/lastname/familyName"))
+        mockMvcPatient.perform(MockMvcRequestBuilders.get("/patients/lastname/familyName"))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
                 .andExpect(result -> assertEquals("Patient not found",

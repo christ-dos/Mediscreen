@@ -61,34 +61,35 @@ public class ReportDiabetesControllerClientUi {
         return "diabetes-report/assessmentName";
     }
 
-    @GetMapping(value = "/assess/familyName/{lastName}")
-    public String getDiabetesAssessmentByFamilyName(@PathVariable("lastName") String lastName, Model model) {
-        DiabetesAssessmentClientUi diabetesAssessmentClientUiByName = reportDiabetesProxy.getDiabetesAssessmentByFamilyName(lastName);
-        model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByName);
+//    @GetMapping(value = "/assess/familyName/{lastName}")
+//    public String getDiabetesAssessmentByFamilyName(@PathVariable("lastName") String lastName, Model model) {
+//        DiabetesAssessmentClientUi diabetesAssessmentClientUiByName = reportDiabetesProxy.getDiabetesAssessmentByFamilyName(lastName);
+//        model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByName);
+//
+//        log.debug("Controller - Get assessment by family name:" + lastName);
+//        return "diabetes-report/assessmentName";
+//    } //TODO CLEAN CODE
 
-        log.debug("Controller - Get assessment by family name:" + lastName);
-        return "diabetes-report/assessmentName";
-    }
 
-
-    @PostMapping(value = "/assess/familyName")
-    public String submitFamilyNameToGetDiabetesAssessmentByFamilyName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
-        DiabetesAssessmentClientUi diabetesAssessmentClientUiByName = null;
-        if(result.hasErrors()){
-            return "diabetes-report/assessmentName";
-        }
-        try {
-            diabetesAssessmentClientUiByName = reportDiabetesProxy.getDiabetesAssessmentByFamilyName(diabetesAssessmentClientUi.getLastName());
-            model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByName);
-        } catch (PatientNotFoundException ex) {
-            log.error("Controller: Field lastName has error");
-            result.rejectValue("lastName", "NotFound", ex.getMessage());
-            return "diabetes-report/assessmentName";
-        }
-
-        log.debug("Controller - submit for obtain diabetes report with family name :" + diabetesAssessmentClientUi.getLastName());
-        return "redirect:/assess/familyName/" + diabetesAssessmentClientUiByName.getLastName();
-    }
+//    @PostMapping(value = "/assess/familyName")
+//    public String submitFamilyNameToGetDiabetesAssessmentByFamilyName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
+//        DiabetesAssessmentClientUi diabetesAssessmentClientUiByName = null;
+//        if(result.hasErrors()){
+//            return "diabetes-report/assessmentName";
+//        }
+//        try {
+//            diabetesAssessmentClientUiByName = reportDiabetesProxy.getDiabetesAssessmentByFamilyName(diabetesAssessmentClientUi.getLastName());
+//            model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByName);
+//        } catch (PatientNotFoundException ex) {
+//            log.error("Controller: Field lastName has error");
+//            result.rejectValue("lastName", "NotFound", ex.getMessage());
+//            return "diabetes-report/assessmentName";
+//        }
+//
+//        log.debug("Controller - submit for obtain diabetes report with family name :" + diabetesAssessmentClientUi.getLastName());
+//        return "redirect:/assess/familyName/" + diabetesAssessmentClientUiByName.getLastName();
+//    }
+    //todo clean code
 
 }
 

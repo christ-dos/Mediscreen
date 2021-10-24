@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -44,13 +45,13 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public Patient findPatientByLastName(String lastName) {
-        Optional<Patient> patientByLastName = patientRepository.findDistinctFirstByLastName(lastName);
-        if (!patientByLastName.isPresent()) {
+    public List<Patient> findPatientsByLastName(String lastName) {
+        List<Patient> patientByLastName = patientRepository.findByLastName(lastName);
+        if (patientByLastName.isEmpty()) {
             throw new PatientNotFoundException("Patient not found");
         }
         log.debug("Service - Patient found with family name: " + lastName);
-        return patientByLastName.get();
+        return patientByLastName;
     }
 
     @Override

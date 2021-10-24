@@ -6,5 +6,6 @@ public interface IReportDiabetesService {
 
     DiabetesAssessment getDiabetesAssessmentByPatientId(int patientId);
 
-    DiabetesAssessment getDiabetesAssessmentByFamilyName(String lastName);
+//    DiabetesAssessment getDiabetesAssessmentByFamilyName(String lastName);
+    //todo clean code
 }
