@@ -27,12 +27,4 @@ public class ReportDiabetesController {
         return reportDiabetesService.getDiabetesAssessmentByPatientId(patientId);
     }
 
-//    @GetMapping(value = "/asses/familyName/{lastName}")
-//    public DiabetesAssessment getDiabetesAssessmentByFamilyName(@Valid @PathVariable("lastName") String lastName) {
-//        log.debug("Controller - get Diabetes assessment with family name: " + lastName);
-//        return reportDiabetesService.getDiabetesAssessmentByFamilyName(lastName);
-//    }
-
-    //todo clean code
-
 }

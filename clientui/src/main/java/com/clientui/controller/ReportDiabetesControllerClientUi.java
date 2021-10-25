@@ -28,28 +28,6 @@ public class ReportDiabetesControllerClientUi {
     @Autowired
     IMicroServicePatientProxy patientProxy;
 
-//    @GetMapping(value = "/patients/lastname/{lastName}")
-//    public String ShowDiabetesAssessmentView(@ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
-//
-//        log.info("Displaying View Diabetes Assessment by Id");
-//        return "diabetes-report/assessmentId";
-//    }
-
-//    @GetMapping(value = "/patients/lastname/{lastName}")
-//    public String searchPatientByLastName(@PathVariable("lastName") String lastName,@ModelAttribute("patientClientUi") PatientClientUi patientClientUi, Model model) {
-//        List<PatientClientUi> patientsByName = patientProxy.getPatientsByLastName(lastName,patientClientUi);
-//        model.addAttribute("patientsByName", patientsByName);
-//        log.info("Displaying List of patients by name");
-//        return "diabetes-report/assessmentId";
-//    }
-
-//    @PostMapping(value = "/patients/lastname")
-//    public String submitFormToSearchPatientByLastName(@Valid PatientClientUi patientClientUi,BindingResult result, Model model) {
-//        List<PatientClientUi> patientsByName = patientProxy.getPatientsByLastName(patientClientUi.getLastName(),patientClientUi);
-//        model.addAttribute("patientsByName", patientsByName);
-//        log.info("submit lastName to get  List of patients by name");
-//        return "redirect:/patients/lastname/{lastName}" +patientClientUi.getLastName();
-//    }
 
     @PostMapping(value = "/assess")
     public String submitPatientIdToGetDiabetesAssessmentByPatientId(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
@@ -75,44 +53,6 @@ public class ReportDiabetesControllerClientUi {
         log.debug("Controller - Get assessment by id:" + patientId);
         return "diabetes-report/assessmentId";
     }
-
-//    @GetMapping(value = "/assess/familyName")
-//    public String ShowDiabetesAssessmentViewByName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
-//
-//        log.info("Displaying View Diabetes Assessment by family name");
-//        return "diabetes-report/assessmentName";
-//    }
-
-//    @GetMapping(value = "/assess/familyName/{lastName}")
-//    public String getDiabetesAssessmentByFamilyName(@PathVariable("lastName") String lastName, Model model) {
-//        DiabetesAssessmentClientUi diabetesAssessmentClientUiByName = reportDiabetesProxy.getDiabetesAssessmentByFamilyName(lastName);
-//        model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByName);
-//
-//        log.debug("Controller - Get assessment by family name:" + lastName);
-//        return "diabetes-report/assessmentName";
-//    } //TODO CLEAN CODE
-
-
-//    @PostMapping(value = "/assess/familyName")
-//    public String submitFamilyNameToGetDiabetesAssessmentByFamilyName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
-//        DiabetesAssessmentClientUi diabetesAssessmentClientUiByName = null;
-//        if(result.hasErrors()){
-//            return "diabetes-report/assessmentName";
-//        }
-//        try {
-//            diabetesAssessmentClientUiByName = reportDiabetesProxy.getDiabetesAssessmentByFamilyName(diabetesAssessmentClientUi.getLastName());
-//            model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUiByName);
-//        } catch (PatientNotFoundException ex) {
-//            log.error("Controller: Field lastName has error");
-//            result.rejectValue("lastName", "NotFound", ex.getMessage());
-//            return "diabetes-report/assessmentName";
-//        }
-//
-//        log.debug("Controller - submit for obtain diabetes report with family name :" + diabetesAssessmentClientUi.getLastName());
-//        return "redirect:/assess/familyName/" + diabetesAssessmentClientUiByName.getLastName();
-//    }
-    //todo clean code
-
 }
 
 

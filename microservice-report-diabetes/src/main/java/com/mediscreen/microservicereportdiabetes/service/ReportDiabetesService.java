@@ -43,17 +43,6 @@ public class ReportDiabetesService implements IReportDiabetesService {
 
     }
 
-//    @Override
-//    public DiabetesAssessment getDiabetesAssessmentByFamilyName(String lastName) {
-//        PatientReport patientReport = microServicePatientReportProxy.getPatientByLastName(lastName);
-//        if (patientReport == null) {
-//            throw new PatientNotFoundException("Patient not Found with lastName: " + lastName);
-//        }
-//        String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
-//        return new DiabetesAssessment(patientReport.getId(), patientReport.getFirstName(),
-//                patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
-//    }
-    //todo clean code
 
     private String getDiabetesAssessment(PatientReport patientReport) {
         String diabetesAssessment;

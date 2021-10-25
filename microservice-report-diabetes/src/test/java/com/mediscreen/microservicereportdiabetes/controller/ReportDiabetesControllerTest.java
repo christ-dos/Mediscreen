@@ -96,36 +96,4 @@ public class ReportDiabetesControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    public void getDiabetesAssessmentByFamilyName_whenPatientReportLessThanThirtyAndMaleAndPatientNotFound_thenReturnBorderline() throws Exception {
-//        //GIVEN
-//        DiabetesAssessment diabetesAssessmentTest = new DiabetesAssessment("John", "Boyd", 24, "BorderLine");
-//        when(microServicePatientReportProxyMock.getPatientByLastName(anyString())).thenReturn(patientReportLessThanThirtyMaleTest);
-//        when(reportDiabetesServiceMock.getDiabetesAssessmentByFamilyName(anyString())).thenReturn(diabetesAssessmentTest);
-//        //WHEN
-//        //THEN
-//        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/Boyd"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.firstName", is("John")))
-//                .andExpect(jsonPath("$.lastName", is("Boyd")))
-//                .andExpect(jsonPath("$.age", is(24)))
-//                .andExpect(jsonPath("$.result", is("BorderLine")))
-//                .andDo(print());
-//    }
-//
-//    @Test
-//    public void getDiabetesAssessmentByFamilyName_whenPatientReportNotFound_thenThrowPatientNotFoundException() throws Exception {
-//        //GIVEN
-//        when(reportDiabetesServiceMock.getDiabetesAssessmentByFamilyName(anyString())).thenThrow(new PatientNotFoundException(("Patient not found")));
-//
-//        //WHEN
-//        //THEN
-//        mockMvcReportDiabetes.perform(MockMvcRequestBuilders.get("/asses/familyName/Unknown"))
-//                .andExpect(status().isNotFound())
-//                .andExpect(result -> assertTrue(result.getResolvedException() instanceof PatientNotFoundException))
-//                .andExpect(result -> assertEquals("Patient not found",
-//                        result.getResolvedException().getMessage()))
-//                .andDo(print());
-//    }
-    //todo clean code
 }

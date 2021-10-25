@@ -137,35 +137,6 @@ public class ReportDiabetesControllerClientUiTest {
                 .andDo(print());
     }
 
-//    @Test
-//    public void submitPatientIdToGetDiabetesAssessmentByFamilyName_whenPatientIdExist_thenReturnDiadetesAssessmentForPatient() throws Exception {
-//        //GIVEN
-//        when(reportDiabetesProxy.getDiabetesAssessmentByFamilyName(anyString())).thenReturn(diabetesAssessmentClientUiTest);
-//        //WHEN
-//        //THEN
-//        mockMvcReportDiabetesClientUi.perform(MockMvcRequestBuilders.post("/assess/familyName")
-//                        .param("lastName" , "Sinclar"))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(view().name("redirect:/assess/familyName/Sinclar"))
-//                .andExpect(redirectedUrl("/assess/familyName/Sinclar"))
-//                .andDo(print());
-//
-//    }
-//
-//    @Test
-//    public void submitPatientIdToGetDiabetesAssessmentByFamilyName_whenDiabetesPatientIdNotExist_thenThrowPatientNotFoundException() throws Exception {
-//        //GIVEN
-//        when(reportDiabetesProxy.getDiabetesAssessmentByFamilyName(anyString())).thenThrow(new PatientNotFoundException("patient Not Found"));
-//        //WHEN
-//        //THEN
-//        mockMvcReportDiabetesClientUi.perform(MockMvcRequestBuilders.post("/assess/familyName")
-//                        .param("lastName", "Unknown"))
-//                .andExpect(status().isOk())
-//                .andExpect(model().attributeErrorCount("diabetesAssessmentClientUi",1))
-//                .andExpect(model().attributeHasFieldErrorCode("diabetesAssessmentClientUi","lastName","NotFound"))
-//                .andDo(print());
-//    }
-//todo clean code
     @Test
     public void submitPatientIdToGetDiabetesAssessmentByFamilyName_whenDiabetesFieldsLastNamehasError_thenReturnErrorInFieldLastname() throws Exception {
         //GIVEN
