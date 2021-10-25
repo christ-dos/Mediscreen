@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -28,6 +29,6 @@ public interface IMicroServicePatientProxy {
     ResponseEntity<PatientClientUi> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientClientUi patientClientUi);
 
     @GetMapping(value = "/patients/lastname/{lastName}")
-    List<PatientClientUi> getPatientsByLastName(@PathVariable("lastName") String lastName);
+    List<PatientClientUi> getPatientsByLastName(@Valid @PathVariable("lastName")  String lastName);
 
 }

@@ -14,59 +14,87 @@
             <img src="https://img.icons8.com/material-outlined/30/000000/chevron-left.png"/>
         </a>
         <h1 class="col-11">Mediscreen - Diabetes Assessment</h1>
-        <h4 class="text-primary"> Search by N° Patient</h4>
     </div>
     <div class="row">
-        <form action="#" th:action="@{/assess}" th:object="${diabetesAssessmentClientUi}" method="post"
-              class="form-horizontal">
-            <div class="row mb-2">
-                <label for="patientId" class="col-3 col-sm-2 col-md-2 col-lg-2 col-form-label"><strong>N°
-                    Patient:</strong></label>
-                <div class="col-2 col-sm-2 col-md-2 col-lg-1">
-                    <input th:field="*{patientId}" th:value="${diabetesAssessmentClientUi.patientId}" type="number"
-                           class="p-1 form-control text-primary fw-bold"
-                           id="patientId" step="1" min="1" placeholder="1" required>
-                </div>
-                <p class="text-danger" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></p>
-            </div>
+        <!--        <form action="#" th:action="@{/assess}" th:object="${diabetesAssessmentClientUi}" method="post"-->
+        <!--              class="form-horizontal">-->
+        <!--            <div class="row mb-2">-->
+        <!--                <label for="patientId" class="col-3 col-sm-2 col-md-2 col-lg-2 col-form-label"><strong>N°-->
+        <!--                    Patient:</strong></label>-->
+        <!--                <div class="col-2 col-sm-2 col-md-2 col-lg-1">-->
+        <!--                    <input th:field="*{patientId}" th:value="${diabetesAssessmentClientUi.patientId}" type="number"-->
+        <!--                           class="p-1 form-control text-primary fw-bold"-->
+        <!--                           id="patientId" step="1" min="1" placeholder="1" required>-->
+        <!--                </div>-->
+        <!--                <p class="text-danger" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></p>-->
+        <!--            </div>-->
 
-            <div class="form-group">
-                <input class="btn btn-primary btn-sm mt-2" type="submit" value="Diabetes Assessment">
-            </div>
-            <br>
-            <hr class="mt-3">
+        <!--            <div class="form-group">-->
+        <!--                <input class="btn btn-primary btn-sm mt-2" type="submit" value="Diabetes Assessment">-->
+        <!--            </div>-->
 
-            <div class="row">
+        <div class="border mb-3">
+            <div class="row ">
                 <label for="name" class="col-sm-5  col-form-label"><b>Name:</b></label>
                 <div class="col-sm-6 p-0">
-                    <p class="form-control-plaintext" th:text=" ${diabetesAssessmentClientUi.firstName} + ' ' + ${diabetesAssessmentClientUi.lastName}"
-                       id="name" placehorder= "Paul Durant" ></p>
+                    <p id=name th:text="${diabetesAssessmentClientUi.firstName == null} ? ' ' :
+                    ${diabetesAssessmentClientUi.firstName}   + ' ' + ${diabetesAssessmentClientUi.lastName}"></p>
                 </div>
             </div>
 
             <div class="row">
                 <label for="age" class="col-sm-5 col-form-label"><b>Age:</b></label>
                 <div class="col-sm-6 p-0">
-                    <p class="form-control-plaintext" id="age" th:text=" '(' + ${diabetesAssessmentClientUi.age} + ' ans)' ">(15 ans)</p>
+                    <p id=age
+                       th:text="${diabetesAssessmentClientUi.age == 0} ? ' ' : '(' + ${diabetesAssessmentClientUi.age}  + ' ans)' ">
+                        someValue</p>
                 </div>
             </div>
 
             <div class="row">
                 <label for="result" class="col-sm-5 col-form-label"><b>Diabetes Assessment is:</b></label>
                 <div class="col-6 p-0">
-                    <p class="form-control-plaintext text-primary fw-bold" id="result" th:text="${diabetesAssessmentClientUi.result}">(15 ans)</p>
+                    <p class="form-control-plaintext text-primary fw-bold" id="result"
+                       th:text="${diabetesAssessmentClientUi.result} ?: ' '">(15 ans)</p>
 
                 </div>
             </div>
-        </form>
+        </div>
+        <!--        <hr class="mt-3">-->
 
+        <!-- ***************Table******************-->
+        <table class="table table-bordered p-1">
+            <thead>
+            <tr>
+                <th>N° Patient</th>
+                <th>First Name</th>
+                <th>Last name</th>
+                <th>Birth date</th>
+                <th>Gender</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="patient : ${patientsByName}">
+                <td style="width: 5%" th:text="${patient.id}"></td>
+                <td th:text="${patient.firstName}"></td>
+                <td th:text="${patient.lastName}"></td>
+                <td th:text="${patient.birthDate}"></td>
+                <td style="width: 5%" th:text="${patient.gender}"></td>
+                <td th:text="${patient.address}"></td>
+                <td th:text="${patient.phone}"></td>
+                <td style="width:30%" class="text-center">
+                    <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a> |
+                    <a th:href="@{/patHistory/add/{patienId}(patienId=${patient.id})}" href="#">History</a> |
+                    <a th:href="@{/assess/{id}(id=${patient.id})}" href="#">Report</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--        </form>-->
 
-        <!--        <b class="col-1 ">Patient:</b>-->
-        <!--        <p th:text="${diabetesAssessmentClientUi.firstName}" class="col-1"></p>-->
-        <!--        <p th:text="${diabetesAssessmentClientUi.lastName}" class="col-2  p-0"></p>-->
-        <!--        <p class="col-2 p-0">(age 52)</p>-->
-        <!--        <p class="col-4 p-0"> diabetes assessment is:</p>-->
-        <!--        <b th:text="${diabetesAssessmentClientUi.result}" class="col-2 p-0"> </b>-->
     </div>
 </div>
 <script type="text/javascript" src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>

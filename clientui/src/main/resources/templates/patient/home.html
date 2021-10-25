@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Mediscreen</title>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css"/>
@@ -11,63 +12,77 @@
     <div class="row">
         <h1>Mediscreen - Patients</h1>
     </div>
-    <div class="row">
-        <!--        <form action="#" th:action="@{/assess/familyName}" th:object="${diabetesAssessmentClientUi}" method="post"-->
-        <!--              class="form-horizontal">-->
-        <div class="row mb-2">
-            <!--                <label for="lastName" class="col-3 col-sm-3 col-md-3 col-lg-2 col-form-label"><b>Family-->
-            <!--                    Name:</b></label>-->
-            <!--                <div class="col-3 col-sm-3 col-md-3 col-lg-2">-->
-            <!--                    <input th:field="*{lastName}" type="text"-->
-            <!--                           class="form-control"-->
-            <!--                           id="lastName">-->
-            <!--                    &lt;!&ndash; th:value="${diabetesAssessmentClientUi.lastName}"&ndash;&gt;-->
+    <div class="row my-3">
+        <form th:action="@{/patients/lastname}" th:object="${patientClientUi}" action="#" method="post"
+              class="form-horizontal">
+            <!--                    th:action="@{/assess/familyName}" th:object="${diabetesAssessmentClientUi}"-->
 
-            <!--                </div>-->
-            <!--                <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>-->
-        </div>
-        <hr>
-        <br>
-        <div class="form-group">
-            <input class="btn btn-primary btn-sm mt-2" type="submit" value="Diabetes Assessment">
-        </div>
-        <!--        </form>-->
+            <div class="row justify-content-center p-2 mb-3">
+                <label for="lastName" class="col-3 col-sm-3 col-md-3 col-lg-2 col-form-label pb-0"><b>Family
+                    Name:</b>
+                </label>
+                <div class="col-4 col-sm-4 col-md-4 col-lg-3">
+                    <input th:field="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" required>
+                    <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+                </div>
+                <div class="col-2 col-sm-2 col-md-2 col-lg-3">
+                    <input class="btn btn-primary btn-sm " type="submit" value="Search Patient">
+                </div>
+<!--                <div class="col-4 col-sm-5 col-md-5 col-lg-4 mx-2">-->
+<!--                    <input th:field="*{lastName}"  type="text" id="lastName" name="lastName" class="form-control">-->
+<!--                </div>-->
+
+                <!--                    &lt;!&ndash; th:value="${diabetesAssessmentClientUi.lastName}"&ndash;&gt;-->
+
+                <!--                </div>-->
+                <!--                <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>-->
+<!--                <div class="col-3 col-sm-3 col-md-3 col-lg-3 mt-1">-->
+<!--                    <a  href="/patients/lastname"  class="btn btn-primary btn-block btn-sm">Search Patient</a>-->
+<!--                </div>-->
+            </div>
+
+
+
+
+        </form>
+
+
+            <div class="col-3 my-2 p-0">
+                <a href="/patient/add" class="btn btn-primary btn-sm">Add Patient</a>
+            </div>
+
+            <!-- ***************Table******************-->
+            <table class="table table-bordered p-1">
+                <thead>
+                <tr>
+                    <th>N° Patient</th>
+                    <th>First Name</th>
+                    <th>Last name</th>
+                    <th>Birth date</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="patient : ${patients}">
+                    <td style="width: 5%" th:text="${patient.id}"></td>
+                    <td th:text="${patient.firstName}"></td>
+                    <td th:text="${patient.lastName}"></td>
+                    <td th:text="${patient.birthDate}"></td>
+                    <td style="width: 5%" th:text="${patient.gender}"></td>
+                    <td th:text="${patient.address}"></td>
+                    <td th:text="${patient.phone}"></td>
+                    <td style="width:30%" class="text-center">
+                        <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a> |
+                        <a th:href="@{/patHistory/add/{patienId}(patienId=${patient.id})}" href="#">History</a> |
+                        <a th:href="@{/assess/{id}(id=${patient.id})}" href="#">Report</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
     </div>
-    <!-- ***************Table******************-->
-    <div class="col-3 my-1">
-        <a href="/patient/add" class="btn btn-primary btn-sm">Add Patient</a>
-    </div>
-    <table class="table table-bordered p-1">
-        <thead>
-        <tr>
-            <th>N° Patient</th>
-            <th>First Name</th>
-            <th>Last name</th>
-            <th>Birth date</th>
-            <th>Gender</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="patient : ${patients}">
-            <td style="width: 5%" th:text="${patient.id}"></td>
-            <td th:text="${patient.firstName}"></td>
-            <td th:text="${patient.lastName}"></td>
-            <td th:text="${patient.birthDate}"></td>
-            <td style="width: 5%" th:text="${patient.gender}"></td>
-            <td th:text="${patient.address}"></td>
-            <td th:text="${patient.phone}"></td>
-            <td style="width: 30%" class="text-center">
-                <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a> |
-                <a th:href="@{/patHistory/add/{patienId}(patienId=${patient.id})}" href="#">History</a> |
-                <a th:href="@{/assess/{id}(id=${patient.id})}" href="#">Report</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 </div>
 <script type="text/javascript" src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
 

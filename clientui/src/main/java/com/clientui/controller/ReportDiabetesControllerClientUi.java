@@ -2,6 +2,8 @@ package com.clientui.controller;
 
 import com.clientui.exception.PatientNotFoundException;
 import com.clientui.models.DiabetesAssessmentClientUi;
+import com.clientui.models.PatientClientUi;
+import com.clientui.proxy.IMicroServicePatientProxy;
 import com.clientui.proxy.IMicroServiceReportDiabetesProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -22,12 +25,31 @@ public class ReportDiabetesControllerClientUi {
     @Autowired
     IMicroServiceReportDiabetesProxy reportDiabetesProxy;
 
-    @GetMapping(value = "/assess")
-    public String ShowDiabetesAssessmentView(@ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
+    @Autowired
+    IMicroServicePatientProxy patientProxy;
 
-        log.info("Displaying View Diabetes Assessment by Id");
-        return "diabetes-report/assessmentId";
-    }
+//    @GetMapping(value = "/patients/lastname/{lastName}")
+//    public String ShowDiabetesAssessmentView(@ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
+//
+//        log.info("Displaying View Diabetes Assessment by Id");
+//        return "diabetes-report/assessmentId";
+//    }
+
+//    @GetMapping(value = "/patients/lastname/{lastName}")
+//    public String searchPatientByLastName(@PathVariable("lastName") String lastName,@ModelAttribute("patientClientUi") PatientClientUi patientClientUi, Model model) {
+//        List<PatientClientUi> patientsByName = patientProxy.getPatientsByLastName(lastName,patientClientUi);
+//        model.addAttribute("patientsByName", patientsByName);
+//        log.info("Displaying List of patients by name");
+//        return "diabetes-report/assessmentId";
+//    }
+
+//    @PostMapping(value = "/patients/lastname")
+//    public String submitFormToSearchPatientByLastName(@Valid PatientClientUi patientClientUi,BindingResult result, Model model) {
+//        List<PatientClientUi> patientsByName = patientProxy.getPatientsByLastName(patientClientUi.getLastName(),patientClientUi);
+//        model.addAttribute("patientsByName", patientsByName);
+//        log.info("submit lastName to get  List of patients by name");
+//        return "redirect:/patients/lastname/{lastName}" +patientClientUi.getLastName();
+//    }
 
     @PostMapping(value = "/assess")
     public String submitPatientIdToGetDiabetesAssessmentByPatientId(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi, BindingResult result, Model model) {
@@ -40,16 +62,16 @@ public class ReportDiabetesControllerClientUi {
             result.rejectValue("patientId", "NotFound", ex.getMessage());
             return "diabetes-report/assessmentId";
         }
-
         log.debug("Controller - submit for obtain diabetes report with ID :" + diabetesAssessmentClientUi.getPatientId());
         return "redirect:/assess/" + diabetesAssessmentClientUiByPatientId.getPatientId();
     }
 
     @GetMapping(value = "/assess/{patientId}")
-    public String getDiabetesAssessmentByPatientId(@Valid @PathVariable("patientId") int patientId, Model model) {
-        DiabetesAssessmentClientUi diabetesAssessmentClientUi = reportDiabetesProxy.getDiabetesAssessmentByPatientId(patientId);
-        model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUi);
-
+    public String getDiabetesAssessmentByPatientId(@Valid @PathVariable("patientId") int patientId,@ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi, Model model) {
+        DiabetesAssessmentClientUi diabetesAssessmentClientUi1 = reportDiabetesProxy.getDiabetesAssessmentByPatientId(diabetesAssessmentClientUi.getPatientId());
+        model.addAttribute("diabetesAssessmentClientUi", diabetesAssessmentClientUi1);
+        List<PatientClientUi> patientsByName = patientProxy.getPatientsByLastName(diabetesAssessmentClientUi1.getLastName());
+        model.addAttribute("patientsByName", patientsByName);
         log.debug("Controller - Get assessment by id:" + patientId);
         return "diabetes-report/assessmentId";
     }
