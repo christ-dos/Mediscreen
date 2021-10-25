@@ -25,49 +25,44 @@ public class PatientClientUiController {
 
     @GetMapping(value = "/")
     public String showPatientHomeView(@ModelAttribute("patientClientUi") PatientClientUi patientClientUi, Model model) {
-
         List<PatientClientUi> patients = patientProxy.listPatients();
         model.addAttribute("patients", patients);
         log.info("Controller - Displaying list of patients");
+
         return "patient/home";
     }
 
     @GetMapping(value = "/patients/lastname")
-    public String ShowDiabetesAssessmentView(@ModelAttribute("patientClientUi") PatientClientUi patientClientUi, @ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
-
+    public String showDiabetesAssessmentView(@ModelAttribute("patientClientUi") PatientClientUi patientClientUi, @ModelAttribute("diabetesAssessmentClientUi") DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
         log.info("Displaying View Diabetes Assessment by Id");
+
         return "diabetes-report/assessmentId";
     }
 
     @GetMapping(value = "/patients/lastname/{lastName}")
-    public String getPatientsByLastName(@Valid @PathVariable("lastName") String lastName, DiabetesAssessmentClientUi diabetesAssessmentClientUi, Model model) {
+    public String getPatientsByLastName(@PathVariable("lastName") String lastName, DiabetesAssessmentClientUi diabetesAssessmentClientUi, Model model) {
         List<PatientClientUi> patientsByName = patientProxy.getPatientsByLastName(lastName);
         model.addAttribute("patientsByName", patientsByName);
-
         log.info("Displaying List of patients by name");
+
         return "diabetes-report/assessmentId";
     }
 
     @PostMapping(value = "/patients/lastname")
     public String submitFormToSearchPatientByLastName(@Valid String lastName,PatientClientUi patientClientUi, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("patients", patientProxy.listPatients());
-            log.error("Controller - Has error in form");
-            return "patient/home";
-        }
         List<PatientClientUi> patientsByName = null;
         try {
             patientsByName = patientProxy.getPatientsByLastName(lastName);
         } catch (PatientNotFoundException ex) {
             model.addAttribute("patients", patientProxy.listPatients());
             result.rejectValue("lastName", "NotFound", ex.getMessage());
-
             log.error("Controller: Field lastName has error - Patient not found");
+
             return "patient/home";
         }
         model.addAttribute("patientsByName", patientsByName);
-
         log.info("display search patient by lastName");
+
         return "redirect:/patients/lastname/" + lastName;
     }
 
@@ -75,6 +70,7 @@ public class PatientClientUiController {
     public String showFormAddNewPatient(PatientClientUi patientClientUi,Model model) {
         model.addAttribute("genders", Gender.values());
         log.info("Controller - Displaying form for adding new patient");
+
         return "patient/add";
     }
 
@@ -88,6 +84,7 @@ public class PatientClientUiController {
         patientProxy.addPatient(patientClientUi);
         model.addAttribute("patients", patientProxy.listPatients());
         log.info("Controller - redirection to patient list after addition patient");
+
         return "redirect:/";
     }
 
@@ -97,6 +94,7 @@ public class PatientClientUiController {
         model.addAttribute("genders", Gender.values());
         model.addAttribute("patientClientUi", patientClientUiToUpdate);
         log.info("Controller - Displaying form for updating a patient");
+
         return "patient/update";
     }
 
@@ -105,11 +103,13 @@ public class PatientClientUiController {
         if (result.hasErrors()) {
             model.addAttribute("genders", Gender.values());
             log.error("Controller - Has error in form update patient");
+
             return "patient/update";
         }
         patientProxy.updatePatient(id, patientClientUi);
         model.addAttribute("patients", patientProxy.listPatients());
         log.info("Controller - Redirection to patient list after update");
+
         return "redirect:/";
     }
 }
