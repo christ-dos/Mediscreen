@@ -49,8 +49,9 @@ public class PatientClientUiController {
     }
 
     @PostMapping(value = "/patients/lastname")
-    public String submitFormToSearchPatientByLastName(@Valid String lastName,@Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
+    public String submitFormToSearchPatientByLastName(@Valid String lastName,PatientClientUi patientClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("patients", patientProxy.listPatients());
             log.error("Controller - Has error in form");
             return "patient/home";
         }
@@ -59,12 +60,14 @@ public class PatientClientUiController {
             patientsByName = patientProxy.getPatientsByLastName(lastName);
         } catch (PatientNotFoundException ex) {
             model.addAttribute("patients", patientProxy.listPatients());
-            log.error("Controller: Field lastName has error");
             result.rejectValue("lastName", "NotFound", ex.getMessage());
+
+            log.error("Controller: Field lastName has error - Patient not found");
             return "patient/home";
         }
         model.addAttribute("patientsByName", patientsByName);
-        log.info("submit lastName to get  List of patients by name");
+
+        log.info("display search patient by lastName");
         return "redirect:/patients/lastname/" + lastName;
     }
 

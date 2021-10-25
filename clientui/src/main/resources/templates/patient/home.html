@@ -15,39 +15,22 @@
     <div class="row my-3">
         <form th:action="@{/patients/lastname}" th:object="${patientClientUi}" action="#" method="post"
               class="form-horizontal">
-            <!--                    th:action="@{/assess/familyName}" th:object="${diabetesAssessmentClientUi}"-->
-
-            <div class="row justify-content-center p-2 mb-3">
-                <label for="lastName" class="col-3 col-sm-3 col-md-3 col-lg-2 col-form-label pb-0"><b>Family
+            <div class="row justify-content-center p-2 mb-4 ">
+                <label for="lastName" class="col-4 col-sm-4 col-md-3 col-lg-2 col-form-label pb-0 text-end"><b>Family
                     Name:</b>
                 </label>
                 <div class="col-4 col-sm-4 col-md-4 col-lg-3">
-                    <input th:field="*{lastName}" type="text" class="form-control" id="lastName" name="lastName" required>
+                    <input th:field="*{lastName}" type="text" minlength="3"  maxlength="20" class="form-control" id="lastName" name="lastName" required>
                     <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
                 </div>
-                <div class="col-2 col-sm-2 col-md-2 col-lg-3">
+                <div class="col-2 col-sm-2 col-md-2 col-lg-3 mt-1">
                     <input class="btn btn-primary btn-sm " type="submit" value="Search Patient">
                 </div>
-<!--                <div class="col-4 col-sm-5 col-md-5 col-lg-4 mx-2">-->
-<!--                    <input th:field="*{lastName}"  type="text" id="lastName" name="lastName" class="form-control">-->
-<!--                </div>-->
-
-                <!--                    &lt;!&ndash; th:value="${diabetesAssessmentClientUi.lastName}"&ndash;&gt;-->
-
-                <!--                </div>-->
-                <!--                <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>-->
-<!--                <div class="col-3 col-sm-3 col-md-3 col-lg-3 mt-1">-->
-<!--                    <a  href="/patients/lastname"  class="btn btn-primary btn-block btn-sm">Search Patient</a>-->
-<!--                </div>-->
             </div>
-
-
-
-
         </form>
 
 
-            <div class="col-3 my-2 p-0">
+            <div class="col-4 my-2 p-0">
                 <a href="/patient/add" class="btn btn-primary btn-sm">Add Patient</a>
             </div>
 

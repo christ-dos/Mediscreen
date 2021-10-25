@@ -76,12 +76,12 @@ public class ReportDiabetesControllerClientUi {
         return "diabetes-report/assessmentId";
     }
 
-    @GetMapping(value = "/assess/familyName")
-    public String ShowDiabetesAssessmentViewByName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
-
-        log.info("Displaying View Diabetes Assessment by family name");
-        return "diabetes-report/assessmentName";
-    }
+//    @GetMapping(value = "/assess/familyName")
+//    public String ShowDiabetesAssessmentViewByName(@Valid DiabetesAssessmentClientUi diabetesAssessmentClientUi) {
+//
+//        log.info("Displaying View Diabetes Assessment by family name");
+//        return "diabetes-report/assessmentName";
+//    }
 
 //    @GetMapping(value = "/assess/familyName/{lastName}")
 //    public String getDiabetesAssessmentByFamilyName(@PathVariable("lastName") String lastName, Model model) {
