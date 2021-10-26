@@ -2,16 +2,25 @@
 version: '3.6'
 
 services:
+  microservice-patient-app:
+    image: microservice-patient-image
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mediscreen-mysql
+    ports:
+      - "8081:8081"
 #Mysql
   mediscreen-mysql:
-    image: mysql
+    image: mysql:8.0.26
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootroot
       MYSQL_DATABASE: mediscreen
     ports:
-      - "3307:3306"
+      - "13306:3306"
     volumes:
       - ./mysql-dump:/docker-entrypoint-initdb.d
 
@@ -21,23 +30,16 @@ services:
     ports:
       - 8000:8080
 
-  microservice-patient-app:
-      image: microservice-patient-image
-      build:
-        context: ./
-        dockerfile: Dockerfile
-      depends_on:
-        - mediscreen-mysql
-      ports:
-        - "8081:8081"
 #      environment:
 #        SPRING_DATASOURCE_URL: jdbc:mysql://mediscreen-mysql:3306/mediscreen?serverTimezone=Europe/Paris
 #        SPRING_DATASOURCE_USERNAME: root
 #        SPRING_DATASOURCE_PASSWORD: rootroot
+
+
 #      networks:
-#        -  microservice-patient_default
+#        -  _default
 #networks:
-#  microservice-patient_default:
+#  _default:
 
 
 
