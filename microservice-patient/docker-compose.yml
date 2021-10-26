@@ -1,9 +1,10 @@
 # Use root/example as user/password credentials
-version: '3.6'
+version: '3.1'
 
 services:
   microservice-patient-app:
     image: microservice-patient-image
+    restart: always
     build:
       context: ./
       dockerfile: Dockerfile
@@ -21,6 +22,7 @@ services:
       MYSQL_DATABASE: mediscreen
     ports:
       - "13306:3306"
+
     volumes:
       - ./mysql-dump:/docker-entrypoint-initdb.d
 
@@ -28,19 +30,35 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8000:8080
-
-#      environment:
+      - "8000:8080"
+#    environment:
 #        SPRING_DATASOURCE_URL: jdbc:mysql://mediscreen-mysql:3306/mediscreen?serverTimezone=Europe/Paris
 #        SPRING_DATASOURCE_USERNAME: root
 #        SPRING_DATASOURCE_PASSWORD: rootroot
 
+#MongoDb
+  mongo:
+    image: mongo
+    container_name: "mongo"
+    hostname: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+        - "27017:27017"
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: example
 
-#      networks:
-#        -  _default
-#networks:
-#  _default:
-
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8085:8081"
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+#      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
 
 
 
