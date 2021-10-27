@@ -1,6 +1,20 @@
 version: '3.1'
 
 services:
+#*****************Microservice-Client-Ui******************************
+  microservice-client-ui-app:
+    image: microservice-client-ui-image
+    #    container_name: microservice-client-ui
+    restart: always
+    build:
+      context: ./clientui
+      dockerfile: Dockerfile
+    depends_on:
+      - microservice-report-diabetes-app
+      - microservice-patient-app
+      - microservice-history-patient-app
+    ports:
+      - "8080:8080"
 #*****************Microservice-report-diabetes-patient******************************
   microservice-report-diabetes-app:
     image: microservice-report-diabetes-image

@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 
-@FeignClient(name = "microservice-patient", url = "localhost:8081")
+@FeignClient(name = "microservice-patient", url = "microservice-patient-app:8081")
 public interface IMicroServicePatientProxy {
 
     @GetMapping(value = "/patients")
@@ -23,7 +23,6 @@ public interface IMicroServicePatientProxy {
 
     @PostMapping(value = "/patient/add")
     ResponseEntity<PatientClientUi> addPatient(@RequestBody PatientClientUi patientClientUi);
-
 
     @PostMapping(value = "/patient/update/{id}")
     ResponseEntity<PatientClientUi> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientClientUi patientClientUi);
