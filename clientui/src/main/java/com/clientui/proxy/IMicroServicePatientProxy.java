@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 
+//@FeignClient(name = "microservice-patient", url = "localhost:8081")
 @FeignClient(name = "microservice-patient", url = "microservice-patient-app:8081")
 public interface IMicroServicePatientProxy {
 

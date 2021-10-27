@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.validation.Valid;
 
+//@FeignClient(name = "microservice-report-diabetes", url = "localhost:8083")
 @FeignClient(name = "microservice-report-diabetes", url = "microservice-report-diabetes-app:8083")
 public interface IMicroServiceReportDiabetesProxy {
 
