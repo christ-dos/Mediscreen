@@ -1,24 +1,39 @@
 version: '3.1'
 
 services:
-  #*****************Microservice-patient******************************
-  microservice-patient-app:
-    image: microservice-patient-image
+#*****************Microservice-report-diabetes-patient******************************
+  microservice-report-diabetes-app:
+    image: microservice-report-diabetes-image
+    #    container_name: microservice-report-diabetes
     restart: always
     build:
-      context: ./
+      context: ./microservice-report-diabetes
+      dockerfile: Dockerfile
+    depends_on:
+      - microservice-patient-app
+      - microservice-history-patient-app
+    ports:
+      - "8083:8083"
+#*****************Microservice-patient******************************
+  microservice-patient-app:
+    image: microservice-patient-image
+#    container_name: microservice-patient
+    restart: always
+    build:
+      context: ./microservice-patient
       dockerfile: Dockerfile
     depends_on:
       - mediscreen-mysql
     ports:
       - "8081:8081"
 
-#*****************Microservice-history-patient******************************
+  #*****************Microservice-history-patient******************************
   microservice-history-patient-app:
     image: microservice-history-patient-image
+#    container_name: microservice-history-patient
     restart: always
     build:
-      context: ./
+      context: ./microservice-history-patient
       dockerfile: Dockerfile
     depends_on:
       - mongo
@@ -43,10 +58,10 @@ services:
     restart: always
     ports:
       - "8000:8080"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mediscreen-mysql:3306/mediscreen?serverTimezone=Europe/Paris
-#      SPRING_DATASOURCE_USERNAME: root
-#      SPRING_DATASOURCE_PASSWORD: rootroot
+  #    environment:
+  #      SPRING_DATASOURCE_URL: jdbc:mysql://mediscreen-mysql:3306/mediscreen?serverTimezone=Europe/Paris
+  #      SPRING_DATASOURCE_USERNAME: root
+  #      SPRING_DATASOURCE_PASSWORD: rootroot
 
   #*************************MongoDb for microservice-history-patient*******************
   mongo:
@@ -54,17 +69,17 @@ services:
     container_name: "mongo"
     hostname: mongo
     restart: always
-#    environment:
-#      MONGODB_DATABASE: history_patient
+    #    environment:
+    #      MONGODB_DATABASE: history_patient
     volumes:
       - ./data:/data/db
     ports:
       - "27018:27017"
-#    environment:
-#       MONGODB_DATABASE=test1
-##      MONGO_INITDB_DATABASE=history_patient
-##      MONGO_INITDB_ROOT_USERNAME: root
-##      MONGO_INITDB_ROOT_PASSWORD: example
+  #    environment:
+  #       MONGODB_DATABASE=test1
+  ##      MONGO_INITDB_DATABASE=history_patient
+  ##      MONGO_INITDB_ROOT_USERNAME: root
+  ##      MONGO_INITDB_ROOT_PASSWORD: example
   #*****************Mongo-express UI for mongoDb******************************
   mongo-express:
     image: mongo-express
@@ -75,9 +90,4 @@ services:
 #      ME_CONFIG_MONGODB_ADMINUSERNAME: root
 #      ME_CONFIG_MONGODB_ADMINPASSWORD: example
 #      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-
-
-
-
-
 

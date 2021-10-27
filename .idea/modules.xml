@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/clientui/clientui.iml" filepath="$PROJECT_DIR$/clientui/clientui.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/mediscreen.iml" filepath="$PROJECT_DIR$/.idea/mediscreen.iml" />
       <module fileurl="file://$PROJECT_DIR$/microservice-patient/microservice-patient.iml" filepath="$PROJECT_DIR$/microservice-patient/microservice-patient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-report-diabetes/microservice-report-diabetes.iml" filepath="$PROJECT_DIR$/microservice-report-diabetes/microservice-report-diabetes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-history-patient/microsevice-history-patient.iml" filepath="$PROJECT_DIR$/microservice-history-patient/microsevice-history-patient.iml" />
     </modules>
   </component>
 </project>
