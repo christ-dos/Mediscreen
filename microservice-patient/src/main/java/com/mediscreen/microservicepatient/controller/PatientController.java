@@ -6,14 +6,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
-
+/**
+ * Class that manage requests for {@link Patient}
+ *
+ * @author Christine Duarte
+ */
 @RestController
 @Slf4j
 public class PatientController {
@@ -50,6 +54,12 @@ public class PatientController {
     public Patient getPatientById(@PathVariable("id") int id) {
         log.info("Controller - Find Patient with ID: " + id);
         return patientService.findPatientById(id);
+    }
+
+    @GetMapping(value = "/patients/lastname/{lastName}")
+    public List<Patient> getPatientsByLastName(@PathVariable("lastName") String lastName) {
+        log.info("Controller - Find Patient with family name: " + lastName);
+        return patientService.findPatientsByLastName(lastName);
     }
 
     @PostMapping(value = "/patient/update/{id}")

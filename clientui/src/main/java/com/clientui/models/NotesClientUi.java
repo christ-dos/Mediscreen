@@ -5,10 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
+
+/**
+ * Class that manage {@link NotesClientUi}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,7 +21,6 @@ import java.time.LocalDate;
 public class NotesClientUi {
     private String id;
 
-    @Min(value = 1, message = "Field patientId must be greater than 1 ")
     private int patientId;
 
     @NotBlank(message = "The field note cannot be blank")

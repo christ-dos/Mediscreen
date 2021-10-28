@@ -1,5 +1,6 @@
 package com.clientui.controller;
 
+import com.clientui.exception.PatientNotFoundException;
 import com.clientui.models.Gender;
 import com.clientui.models.PatientClientUi;
 import com.clientui.proxy.IMicroServicePatientProxy;
@@ -25,8 +26,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -140,6 +140,86 @@ public class PatientClientUiControllerTest {
                 .andDo(print());
 
     }
+
+    @Test
+    public void showDiabetesAssessmentViewTest_thenReturnViewAssessmentId() throws Exception {
+        //GIVEN
+        //WHEN
+        //THEN
+        mockMvcClientUi.perform(MockMvcRequestBuilders.get("/patients/lastname"))
+                .andExpect(status().isOk())
+                .andExpect(model().hasNoErrors())
+                .andExpect(view().name("diabetes-report/assessmentId"))
+                .andExpect(model().attributeExists("patientClientUi"))
+                .andExpect(model().attributeExists("diabetesAssessmentClientUi"))
+                .andDo(print());
+    }
+
+    @Test
+    public void getPatientsByLastNameTest_whenLastnameIsBoydAndExist_thenReturnPatientBoyd() throws Exception {
+        //GIVEN
+        List<PatientClientUi> patientsTest = Arrays.asList(
+                new PatientClientUi(
+                        1, "John", "Boyd", "1964-09-23", Gender.M, null, null),
+                new PatientClientUi(
+                        2, "Jacob", "Boyd", "1968-07-15", Gender.M, null, null),
+                new PatientClientUi(
+                        3, "Johanna", "Boyd", "1970-09-08", Gender.F, null, null)
+        );
+        when(microServicePatientProxyMock.getPatientsByLastName(anyString())).thenReturn(patientsTest);
+        //WHEN
+        //THEN
+        mockMvcClientUi.perform(MockMvcRequestBuilders.get("/patients/lastname/Boyd"))
+                .andExpect(status().isOk())
+                .andExpect(model().hasNoErrors())
+                .andExpect(view().name("diabetes-report/assessmentId"))
+                .andExpect(model().attributeExists("diabetesAssessmentClientUi"))
+                .andExpect(model().attribute("patientsByName", hasItem(hasProperty("firstName", is("John")))))
+                .andExpect(model().attribute("patientsByName", hasItem(hasProperty("lastName", is("Boyd")))))
+                .andExpect(model().attribute("patientsByName", hasItem(hasProperty("firstName", is("Johanna")))))
+                .andExpect(model().attribute("patientsByName", hasItem(hasProperty("firstName", is("Jacob")))))
+                .andDo(print());
+    }
+
+    @Test
+    public void submitFormToSearchPatientByLastNameTest_whenPatientExits_thenReturnListPatientFound() throws Exception {
+        //GIVEN
+        List<PatientClientUi> patientsTest = Arrays.asList(
+                new PatientClientUi(
+                        1, "John", "Boyd", "1964-09-23", Gender.M, null, null),
+                new PatientClientUi(
+                        2, "Jacob", "Boyd", "1968-07-15", Gender.M, null, null),
+                new PatientClientUi(
+                        3, "Johanna", "Boyd", "1970-09-08", Gender.F, null, null)
+        );
+        when(microServicePatientProxyMock.getPatientsByLastName(anyString())).thenReturn(patientsTest);
+        //WHEN
+        //THEN
+        mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patients/lastname")
+                        .param("lastName", "Boyd"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/patients/lastname/Boyd"))
+                .andExpect(header().stringValues("Location", "/patients/lastname/Boyd"))
+                .andDo(print());
+    }
+
+    @Test
+    public void submitFormToSearchPatientByLastNameTest_whenPatientNotExits_thenReturnPatientNotFoundException() throws Exception {
+        //GIVEN
+        when(microServicePatientProxyMock.getPatientsByLastName(anyString())).thenThrow(new PatientNotFoundException("patient Not Found"));
+        //WHEN
+        //THEN
+        mockMvcClientUi.perform(MockMvcRequestBuilders.post("/patients/lastname")
+                        .param("lastName", "Casimir"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patient/home"))
+                .andExpect(model().attributeExists("patientClientUi"))
+                .andExpect(model().hasErrors())
+                .andExpect(model().errorCount(1))
+                .andExpect(model().attributeHasFieldErrorCode("patientClientUi", "lastName", "NotFound"))
+                .andDo(print());
+    }
+
 
     @Test
     public void updatePatientTest_whenPatientExitsInDbAndHasNoErrorInForm_thenRedirectHome() throws Exception {

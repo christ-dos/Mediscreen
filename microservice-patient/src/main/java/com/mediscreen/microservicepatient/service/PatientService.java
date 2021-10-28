@@ -7,9 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Class of service that manage {@link Patient} entity
+ * and implements IPatientService
+ *
+ * @author Christine Duarte
+ */
 @Service
 @Slf4j
 public class PatientService implements IPatientService {
@@ -44,12 +50,22 @@ public class PatientService implements IPatientService {
     }
 
     @Override
-    public Patient updatePatient(Patient patient){
-        Optional<Patient> patientToUpdateOptional = patientRepository.findById(patient.getId());
-        if(!patientToUpdateOptional.isPresent()){
-            throw  new PatientNotFoundException("Patient to update not found");
+    public List<Patient> findPatientsByLastName(String lastName) {
+        List<Patient> patientByLastName = patientRepository.findByLastName(lastName);
+        if (patientByLastName.isEmpty()) {
+            throw new PatientNotFoundException("Patient not found");
         }
-        Patient patientToUpdate= patientToUpdateOptional.get();
+        log.debug("Service - Patient found with family name: " + lastName);
+        return patientByLastName;
+    }
+
+    @Override
+    public Patient updatePatient(Patient patient) {
+        Optional<Patient> patientToUpdateOptional = patientRepository.findById(patient.getId());
+        if (!patientToUpdateOptional.isPresent()) {
+            throw new PatientNotFoundException("Patient to update not found");
+        }
+        Patient patientToUpdate = patientToUpdateOptional.get();
 
         patientToUpdate.setFirstName(patient.getFirstName());
         patientToUpdate.setLastName(patient.getLastName());

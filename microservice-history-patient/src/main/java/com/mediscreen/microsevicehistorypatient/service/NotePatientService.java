@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Class of service that manage {@link NotePatient}
+ * and implements INotePatientService
+ *
+ * @author Christine Duarte
+ */
 @Service
 @Slf4j
 public class NotePatientService implements INotePatientService {

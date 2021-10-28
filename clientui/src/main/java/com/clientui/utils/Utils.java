@@ -1,6 +1,12 @@
 package com.clientui.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * Class Utils to write an object as JsonString
+ *
+ * @author Christine Duarte
+ */
 public class Utils {
 
     /**

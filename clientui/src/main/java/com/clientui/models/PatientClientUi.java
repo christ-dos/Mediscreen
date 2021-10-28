@@ -1,6 +1,7 @@
 package com.clientui.models;
 
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Class that manage {@link PatientClientUi}
+ *
+ * @author Christine Duarte
+ */
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,15 +22,19 @@ public class PatientClientUi {
 
     private int id;
 
+    @JsonAlias("given")
     @Size(min=3, max=20, message = "First name must be between 3 and 20 characters")
     private String firstName;
 
+    @JsonAlias("family")
     @Size(min=3, max=20, message = "Last name must be between 3 and 20 characters")
     private String lastName;
 
+    @JsonAlias("dob")
     @NotBlank(message = "The field cannot be blank")
     private String birthDate;
 
+    @JsonAlias("sex")
     @NotNull(message = "The field cannot be blank")
     private Gender gender;
 

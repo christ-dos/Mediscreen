@@ -4,6 +4,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/microservice-patient/pom.xml" />
+        <option value="$PROJECT_DIR$/clientui/pom.xml" />
+        <option value="$PROJECT_DIR$/microservice-report-diabetes/pom.xml" />
+        <option value="$PROJECT_DIR$/microservice-history-patient/pom.xml" />
       </list>
     </option>
   </component>
