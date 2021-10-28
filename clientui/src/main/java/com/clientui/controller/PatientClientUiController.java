@@ -78,12 +78,12 @@ public class PatientClientUiController {
     public String addNewPatient(@Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("genders", Gender.values());
-            log.error("Controller - Has error in form");
-            return "/patient/add";
+            log.error("Controller - Has error in form add patient");
+            return "patient/add";
         }
         patientProxy.addPatient(patientClientUi);
         model.addAttribute("patients", patientProxy.listPatients());
-        log.info("Controller - redirection to patient list after addition patient");
+        log.info("Controller - redirection to list of patients, after addition patient succeed");
 
         return "redirect:/";
     }

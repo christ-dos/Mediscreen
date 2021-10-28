@@ -4,8 +4,8 @@ services:
 #*****************Microservice-Client-Ui******************************
   microservice-client-ui-app:
     image: microservice-client-ui-image
-    #    container_name: microservice-client-ui
-#    restart: always
+    container_name: microservice-client-ui
+    restart: always
     build:
       context: ./clientui
       dockerfile: Dockerfile
@@ -18,7 +18,7 @@ services:
 #*****************Microservice-report-diabetes-patient******************************
   microservice-report-diabetes-app:
     image: microservice-report-diabetes-image
-    #    container_name: microservice-report-diabetes
+    container_name: microservice-report-diabetes
     restart: always
     build:
       context: ./microservice-report-diabetes
@@ -31,7 +31,7 @@ services:
 #*****************Microservice-patient******************************
   microservice-patient-app:
     image: microservice-patient-image
-#    container_name: microservice-patient
+    container_name: microservice-patient
     restart: always
     build:
       context: ./microservice-patient
@@ -44,7 +44,7 @@ services:
   #*****************Microservice-history-patient******************************
   microservice-history-patient-app:
     image: microservice-history-patient-image
-#    container_name: microservice-history-patient
+    container_name: microservice-history-patient
     restart: always
     build:
       context: ./microservice-history-patient
@@ -79,21 +79,17 @@ services:
 
   #*************************MongoDb for microservice-history-patient*******************
   mongo:
-    image: mongo:5.0.3
+    image: mongo
     container_name: "mongo"
     hostname: mongo
     restart: always
-    #    environment:
-    #      MONGODB_DATABASE: history_patient
     volumes:
       - ./data:/data/db
     ports:
       - "27018:27017"
-  #    environment:
-  #       MONGODB_DATABASE=test1
-  ##      MONGO_INITDB_DATABASE=history_patient
-  ##      MONGO_INITDB_ROOT_USERNAME: root
-  ##      MONGO_INITDB_ROOT_PASSWORD: example
+#    environment:
+#        MONGO_INITDB_ROOT_USERNAME: root
+#        MONGO_INITDB_ROOT_PASSWORD: example
   #*****************Mongo-express UI for mongoDb******************************
   mongo-express:
     image: mongo-express

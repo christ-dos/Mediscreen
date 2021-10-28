@@ -40,10 +40,13 @@ public class ReportDiabetesService implements IReportDiabetesService {
         String resultDiabetesAssessment = getDiabetesAssessment(patientReport);
         return new DiabetesAssessment(patientId, patientReport.getFirstName(),
                 patientReport.getLastName(), getAge(patientReport.getBirthDate()), resultDiabetesAssessment);
-
     }
 
-
+    /**
+     * Method private that obtain the result
+     * @param patientReport {@link PatientReport}
+     * @return A string with the result of diabetes assessment
+     */
     private String getDiabetesAssessment(PatientReport patientReport) {
         String diabetesAssessment;
 
@@ -128,5 +131,4 @@ public class ReportDiabetesService implements IReportDiabetesService {
         log.error("DateUtils - The birthdate is not valid");
         return 0;
     }
-
 }

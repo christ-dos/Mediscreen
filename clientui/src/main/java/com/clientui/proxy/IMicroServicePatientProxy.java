@@ -23,7 +23,7 @@ public interface IMicroServicePatientProxy {
     PatientClientUi getPatientById(@PathVariable("id") int id);
 
     @PostMapping(value = "/patient/add")
-    ResponseEntity<PatientClientUi> addPatient(@RequestBody PatientClientUi patientClientUi);
+    ResponseEntity<PatientClientUi> addPatient(@RequestBody @Valid PatientClientUi patientClientUi);
 
     @PostMapping(value = "/patient/update/{id}")
     ResponseEntity<PatientClientUi> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientClientUi patientClientUi);
