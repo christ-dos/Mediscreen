@@ -30,7 +30,6 @@ public class PatientClientUiController {
     @Autowired
     private IMicroServicePatientProxy patientProxy;
 
-
     @GetMapping(value = "/")
     public String showPatientHomeView(@ModelAttribute("patientClientUi") PatientClientUi patientClientUi, Model model) {
         List<PatientClientUi> patients = patientProxy.listPatients();
@@ -75,11 +74,11 @@ public class PatientClientUiController {
     }
 
     @GetMapping(value = "/patient/add")
-    public String showFormAddNewPatient(PatientClientUi patientClientUi, Model model) {
+    public String showFormAddNewPatient(@ModelAttribute("patientClientUi") PatientClientUi patientClientUi, Model model) {
         model.addAttribute("genders", Gender.values());
         log.info("Controller - Displaying form for adding new patient");
 
-        return "patient/add";
+        return "patient/add.html";
     }
 
     @PostMapping("/patient/add")

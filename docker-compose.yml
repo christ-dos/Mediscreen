@@ -66,16 +66,13 @@ services:
       - "13306:3306"
     volumes:
       - ./mysql-dump:/docker-entrypoint-initdb.d
+
   #*****************Adminer manage mysql******************************
   adminer:
     image: adminer
     restart: always
     ports:
       - "8000:8080"
-  #    environment:
-  #      SPRING_DATASOURCE_URL: jdbc:mysql://mediscreen-mysql:3306/mediscreen?serverTimezone=Europe/Paris
-  #      SPRING_DATASOURCE_USERNAME: root
-  #      SPRING_DATASOURCE_PASSWORD: rootroot
 
   #*************************MongoDb for microservice-history-patient*******************
   mongo:
@@ -87,17 +84,11 @@ services:
       - ./data:/data/db
     ports:
       - "27018:27017"
-#    environment:
-#        MONGO_INITDB_ROOT_USERNAME: root
-#        MONGO_INITDB_ROOT_PASSWORD: example
+
   #*****************Mongo-express UI for mongoDb******************************
   mongo-express:
     image: mongo-express
     restart: always
     ports:
       - "8085:8081"
-#    environment:
-#      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-#      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-#      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
 
