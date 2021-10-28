@@ -2,6 +2,11 @@ package com.mediscreen.microsevicehistorypatient.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Class Utils to write an object as JsonString
+ *
+ * @author Christine Duarte
+ */
 public class Utils {
     /**
      * Method that write an object as JsonString to build the body of the request

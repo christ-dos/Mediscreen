@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.validation.Valid;
 
+/**
+ * An Interface that manage requests send to microservice-report-diabetes
+ *
+ * @author Christine Duarte
+ */
 //@FeignClient(name = "microservice-report-diabetes", url = "localhost:8083")
 @FeignClient(name = "microservice-report-diabetes", url = "microservice-report-diabetes-app:8083")
 public interface IMicroServiceReportDiabetesProxy {

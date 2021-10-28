@@ -8,6 +8,11 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
+/**
+ * Class that manage {@link NotesPatientReport}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @NoArgsConstructor

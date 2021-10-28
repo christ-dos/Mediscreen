@@ -17,6 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class of service that manage {@link ReportDiabetesService}
+ * and implements IReportDiabetesService
+ *
+ * @author Christine Duarte
+ */
 @Service
 @Slf4j
 public class ReportDiabetesService implements IReportDiabetesService {
@@ -31,6 +37,12 @@ public class ReportDiabetesService implements IReportDiabetesService {
         this.microServicePatientReportProxy = microServicePatientReportProxy;
     }
 
+    /**
+     * Method that get the result of diabetes assessment
+     *
+     * @param patientId an Integer with the patient id
+     * @return A {@link DiabetesAssessment}
+     */
     @Override
     public DiabetesAssessment getDiabetesAssessmentByPatientId(int patientId) {
         PatientReport patientReport = microServicePatientReportProxy.getPatientById(patientId);
@@ -44,6 +56,7 @@ public class ReportDiabetesService implements IReportDiabetesService {
 
     /**
      * Method private that obtain the result
+     *
      * @param patientReport {@link PatientReport}
      * @return A string with the result of diabetes assessment
      */
@@ -96,6 +109,12 @@ public class ReportDiabetesService implements IReportDiabetesService {
         return notesPatientReport;
     }
 
+    /**
+     * Method private that count the occurrences of medicals term in notes of patients
+     *
+     * @param notesPatientReportList An list that contain notes of a patient
+     * @return an Integer with the occurrences of trigger words find in notes of patient
+     */
     private int getCounterWordsTriggerInNotes(List<String> notesPatientReportList) {
         List<String> listWordsTrigger = Arrays.asList("Hemoglobin", "Microalbumin", "Height", "Weight", "Smoker",
                 "Abnormal", "Cholesterol", "Dizziness", "Relapse", "Reaction", "Antibodies");
@@ -111,10 +130,16 @@ public class ReportDiabetesService implements IReportDiabetesService {
                 }
             }
         }
-        log.info("TriggerCounter: " + counter);//Todo retirer le log
+        log.info("TriggerCounter: " + counter);
         return counter;
     }
 
+    /**
+     * Method private that calculate the age of patient
+     *
+     * @param birthDate A String with date of birth
+     * @return an integer with age of patient
+     */
     private int getAge(String birthDate) {
         if (birthDate == null) {
         }
@@ -124,7 +149,6 @@ public class ReportDiabetesService implements IReportDiabetesService {
             if (currentDate.isAfter(birthDateParse)) {
                 Years age = Years.yearsBetween(birthDateParse, currentDate);
                 log.debug("DateUtils - Age calculated for birthDate: " + birthDate);
-                log.info("age du patient:" + age.getYears());//Todo retirer le log
                 return age.getYears();
             }
         }

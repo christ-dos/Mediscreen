@@ -10,11 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Class that manage requests to the microservice-patient
+ *
+ * @author Christine Duarte
+ */
 @Controller
 @Slf4j
 public class PatientClientUiController {
@@ -49,7 +57,7 @@ public class PatientClientUiController {
     }
 
     @PostMapping(value = "/patients/lastname")
-    public String submitFormToSearchPatientByLastName(@Valid String lastName,PatientClientUi patientClientUi, BindingResult result, Model model) {
+    public String submitFormToSearchPatientByLastName(@Valid String lastName, PatientClientUi patientClientUi, BindingResult result, Model model) {
         List<PatientClientUi> patientsByName = null;
         try {
             patientsByName = patientProxy.getPatientsByLastName(lastName);
@@ -67,7 +75,7 @@ public class PatientClientUiController {
     }
 
     @GetMapping(value = "/patient/add")
-    public String showFormAddNewPatient(PatientClientUi patientClientUi,Model model) {
+    public String showFormAddNewPatient(PatientClientUi patientClientUi, Model model) {
         model.addAttribute("genders", Gender.values());
         log.info("Controller - Displaying form for adding new patient");
 
@@ -99,7 +107,7 @@ public class PatientClientUiController {
     }
 
     @PostMapping(value = "/patient/update/{id}")
-    public String updatePatient( @PathVariable("id") Integer id,@Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
+    public String updatePatient(@PathVariable("id") Integer id, @Valid PatientClientUi patientClientUi, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("genders", Gender.values());
             log.error("Controller - Has error in form update patient");

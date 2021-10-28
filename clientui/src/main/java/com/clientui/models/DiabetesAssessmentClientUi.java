@@ -8,6 +8,11 @@ import lombok.Setter;
 
 import javax.validation.constraints.Size;
 
+/**
+ * Class that manage {@link DiabetesAssessmentClientUi}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,12 +20,12 @@ import javax.validation.constraints.Size;
 public class DiabetesAssessmentClientUi {
 
     @JsonAlias("patId")
-    int patientId ;
+    int patientId;
 
-    @Size(min=3, max=20, message = "Last name must be between 3 and 20 characters")
+    @Size(min = 3, max = 20, message = "Last name must be between 3 and 20 characters")
     private String firstName;
 
-    @Size(min=3, max=20, message = "Last name must be between 3 and 20 characters")
+    @Size(min = 3, max = 20, message = "Last name must be between 3 and 20 characters")
     private String lastName;
 
     int age;

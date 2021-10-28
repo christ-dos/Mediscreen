@@ -12,6 +12,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 
+/**
+ * An Interface that manage requests send to microservice-patient
+ *
+ * @author Christine Duarte
+ */
 //@FeignClient(name = "microservice-patient", url = "localhost:8081")
 @FeignClient(name = "microservice-patient", url = "microservice-patient-app:8081")
 public interface IMicroServicePatientProxy {
@@ -29,6 +34,6 @@ public interface IMicroServicePatientProxy {
     ResponseEntity<PatientClientUi> updatePatient(@PathVariable("id") Integer id, @RequestBody PatientClientUi patientClientUi);
 
     @GetMapping(value = "/patients/lastname/{lastName}")
-    List<PatientClientUi> getPatientsByLastName(@Valid @PathVariable("lastName")  String lastName);
+    List<PatientClientUi> getPatientsByLastName(@Valid @PathVariable("lastName") String lastName);
 
 }

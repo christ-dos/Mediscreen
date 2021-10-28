@@ -9,6 +9,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Class that manage {@link PatientReport}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,10 +22,10 @@ public class PatientReport {
 
     private int id;
 
-    @Size(min=3, max=20, message = "First name must be between 3 and 20 characters")
+    @Size(min = 3, max = 20, message = "First name must be between 3 and 20 characters")
     private String firstName;
 
-    @Size(min=3, max=20, message = "Last name must be between 3 and 20 characters")
+    @Size(min = 3, max = 20, message = "Last name must be between 3 and 20 characters")
     private String lastName;
 
     @NotBlank(message = "The field cannot be blank")

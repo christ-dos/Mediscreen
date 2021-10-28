@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Class of service that manage {@link Patient} entity
+ * and implements IPatientService
+ *
+ * @author Christine Duarte
+ */
 @Service
 @Slf4j
 public class PatientService implements IPatientService {

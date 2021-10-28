@@ -5,10 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
+
+/**
+ * Class that manage {@link NotesClientUi}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @NoArgsConstructor

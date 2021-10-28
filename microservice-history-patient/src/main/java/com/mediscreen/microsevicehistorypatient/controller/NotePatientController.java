@@ -12,6 +12,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+/**
+ * Class that manage requests for {@link NotePatient}
+ *
+ * @author Christine Duarte
+ */
 @RestController
 @Slf4j
 public class NotePatientController {

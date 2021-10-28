@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 /**
- * Class taht expose endpoints for microservice-report-diabetes
+ * Class that expose endpoints for microservice-report-diabetes
  *
  * @author Christine Duarte
  */

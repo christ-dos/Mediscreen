@@ -43,7 +43,7 @@ Running App Post installation of MySQL, Java and Maven, you will have to set up 
 
 For this, please run the sql commands present in file in path microservice-patient/mysql-dump/mediscreen.sql in microservice-patient.
 
-Then install MongoDB, no username or password are required.
+Then install MongoDB, no username or password is required.
 
 And then if your Operating system is not linux install docker.
 

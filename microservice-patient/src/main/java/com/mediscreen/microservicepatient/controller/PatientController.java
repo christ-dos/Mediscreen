@@ -13,7 +13,11 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-
+/**
+ * Class that manage requests for {@link Patient}
+ *
+ * @author Christine Duarte
+ */
 @RestController
 @Slf4j
 public class PatientController {

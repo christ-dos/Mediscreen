@@ -4,6 +4,11 @@ import com.mediscreen.microservicepatient.model.Patient;
 
 import java.util.List;
 
+/**
+ * An Interface that exposes methods for {@link PatientService}
+ *
+ * @author Christine Duarte
+ */
 public interface IPatientService {
     Patient addPatient(Patient patient);
 

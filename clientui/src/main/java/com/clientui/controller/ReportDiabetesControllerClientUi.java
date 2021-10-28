@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Class that manage requests to the microservice-report-diabetes
+ *
+ * @author Christine Duarte
+ */
 @Controller
 @Slf4j
 public class ReportDiabetesControllerClientUi {

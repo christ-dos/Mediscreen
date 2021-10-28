@@ -10,6 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+/**
+ * Class that manage {@link NotePatient}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @Document("note_patient")
