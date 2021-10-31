@@ -107,7 +107,7 @@ public class PatientServiceTest {
     @Test
     public void findPatientsByLastNameTest_whenPatientIsPresentInDB_thenReturnListPatientFound() {
         //GIVEN
-        List<Patient> patientsTest = Arrays.asList(
+        List<Patient> patientsResultBoyd = Arrays.asList(
                 new Patient(
                         "John", "Boyd", "1964-09-23", Gender.M),
                 new Patient(
@@ -115,18 +115,19 @@ public class PatientServiceTest {
                 new Patient(
                         "Johanna", "Boyd", "1970-09-08", Gender.F)
         );
-//        Patient patient = new Patient(1, "Johanna", "Lefevre", "1970-09-08", Gender.F, null, null);
-        when(patientRepositoryMock.findByLastName(anyString())).thenReturn(patientsTest);
+        when(patientRepositoryMock.findByLastName(anyString())).thenReturn(patientsResultBoyd);
         //WHEN
         List<Patient> patientTestResult = patientServiceTest.findPatientsByLastName("Boyd");
         //THEN
-        assertTrue(patientTestResult.size() == 3);
+        assertTrue(patientTestResult.size() > 0);
+        assertNotEquals(4, patientTestResult.size());
         assertEquals("John", patientTestResult.get(0).getFirstName());
         assertEquals("Jacob", patientTestResult.get(1).getFirstName());
         assertEquals("Johanna", patientTestResult.get(2).getFirstName());
         verify(patientRepositoryMock, times(1)).findByLastName(anyString());
     }
- @Test
+
+    @Test
     public void findPatientByLastNameTest_whenPatientNotFound_thenThrowPatientNotFoundException() {
         //GIVEN
         when(patientRepositoryMock.findByLastName(anyString())).thenReturn(Collections.emptyList());

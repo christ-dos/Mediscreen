@@ -3,6 +3,7 @@ package com.mediscreen.microservicepatient.IT;
 import com.mediscreen.microservicepatient.exception.PatientNotFoundException;
 import com.mediscreen.microservicepatient.model.Gender;
 import com.mediscreen.microservicepatient.model.Patient;
+import com.mediscreen.microservicepatient.repository.IPatientRepository;
 import com.mediscreen.microservicepatient.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,6 +47,9 @@ public class PatientTestIT {
 
     private Patient patientTest;
 
+    @Autowired
+    private IPatientRepository patientRepository;
+
     @BeforeEach
     public void setupPerTest() {
         patientTest = new Patient("John", "Boyd", "1964-09-23", Gender.M);
@@ -61,6 +68,9 @@ public class PatientTestIT {
                 .andExpect(jsonPath("$.firstName", is("John")))
                 .andExpect(jsonPath("$.birthDate", is("1964-09-23")))
                 .andDo(print());
+
+        long count = patientRepository.count();
+        assertEquals(6, count);
     }
 
     @Test
@@ -75,6 +85,9 @@ public class PatientTestIT {
                 .andExpect(jsonPath("$.[0].lastName", is("Deschamps")))
                 .andExpect(jsonPath("$.[0].birthDate", is("1974-05-25")))
                 .andDo(print());
+
+        List patients = (List) patientRepository.findAll();
+        assertEquals(5, patients.size());
     }
 
     @Test
@@ -89,6 +102,13 @@ public class PatientTestIT {
                 .andExpect(jsonPath("$.birthDate", is("2003-04-27")))
                 .andDo(print());
 
+        Optional<Patient> gettedPatient = patientRepository.findById(2);
+        assertTrue(gettedPatient.isPresent());
+        Patient patient = gettedPatient.get();
+        assertEquals("Gérard", patient.getFirstName());
+        assertEquals("Duhammel", patient.getLastName());
+        assertEquals("2003-04-27", patient.getBirthDate());
+
     }
 
     @Test
@@ -102,6 +122,7 @@ public class PatientTestIT {
                 .andExpect(result -> assertEquals("Patient not found",
                         result.getResolvedException().getMessage()))
                 .andDo(print());
+
     }
 
     @Test
@@ -115,6 +136,9 @@ public class PatientTestIT {
                 .andExpect(jsonPath("$.[1].firstName", is("Stephan")))
                 .andExpect(jsonPath("$.[2].firstName", is("Lili")))
                 .andDo(print());
+
+        long count = patientRepository.findByLastName("Martin").stream().count();
+        assertEquals(3, count);
     }
     @Test
     public void getPatientsByLastNameTest_whenPatientNotFoundInDb_thenThrowPatientNotFoundException() throws Exception {
@@ -129,12 +153,11 @@ public class PatientTestIT {
                 .andDo(print());
     }
 
-
     @Test
     public void updatePatientTest_whenPatientRecodedInDb_thenReturnResponseEntityCreated() throws Exception {
         //GIVEN
         Patient patientToUpdate = new Patient(
-                1, "Johnne", "Boyd", "1964-09-23", Gender.M, "1509 Culver St ,Culver 97451", "123-456-789");
+                1, "Leon", "Boyd", "1960-12-23", Gender.M, "1509 Culver St ,Culver 97451", "123-456-789");
         //WHEN
         //THEN
         mockMvcPatient.perform(MockMvcRequestBuilders.post("/patient/update/1")
@@ -143,10 +166,17 @@ public class PatientTestIT {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(header().stringValues("Location", "http://localhost:8081/patient/update/1"))
-                .andExpect(jsonPath("$.firstName", is("Johnne")))
+                .andExpect(jsonPath("$.firstName", is("Leon")))
                 .andExpect(jsonPath("$.address", is("1509 Culver St ,Culver 97451")))
                 .andExpect(jsonPath("$.phone", is("123-456-789")))
                 .andDo(print());
+
+        Optional<Patient> updatedPatient = patientRepository.findById(1);
+        assertTrue(updatedPatient.isPresent());
+        Patient patient = updatedPatient.get();
+        assertEquals("Leon", patient.getFirstName());
+        assertEquals("Boyd", patient.getLastName());
+        assertEquals("1960-12-23", patient.getBirthDate());
 
     }
 
