@@ -15,8 +15,8 @@ import javax.validation.Valid;
  *
  * @author Christine Duarte
  */
-//@FeignClient(name = "microservice-history-patient", url = "localhost:8082")
-@FeignClient(name = "microservice-history-patient", url = "microservice-history-patient-app:8082")
+@FeignClient(name = "microservice-history-patient", url = "localhost:8082")
+//@FeignClient(name = "microservice-history-patient", url = "microservice-history-patient-app:8082")
 public interface IMicroServiceHistoryPatientProxy {
 
     @PostMapping(value = "/patHistory/add")

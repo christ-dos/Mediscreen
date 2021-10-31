@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
  *
  * @author Christine Duarte
  */
-//@FeignClient(name = "microservice-history-patient", url = "localhost:8082")
-@FeignClient(name = "microservice-history-patient", url = "microservice-history-patient-app:8082")
+@FeignClient(name = "microservice-history-patient", url = "localhost:8082")
+//@FeignClient(name = "microservice-history-patient", url = "microservice-history-patient-app:8082")
 public interface IMicroServiceHistoryPatientReportProxy {
 
     @GetMapping(value = "/notesPatient/{patientId}")
