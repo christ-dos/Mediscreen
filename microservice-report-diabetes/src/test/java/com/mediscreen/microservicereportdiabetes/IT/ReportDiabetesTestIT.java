@@ -2,6 +2,7 @@ package com.mediscreen.microservicereportdiabetes.IT;
 
 import com.mediscreen.microservicereportdiabetes.exception.PatientNotFoundException;
 import com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment;
+import com.mediscreen.microservicereportdiabetes.model.NotesPatientReport;
 import com.mediscreen.microservicereportdiabetes.model.PatientReport;
 import com.mediscreen.microservicereportdiabetes.proxy.IMicroServiceHistoryPatientReportProxy;
 import com.mediscreen.microservicereportdiabetes.proxy.IMicroServicePatientReportProxy;
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -37,13 +39,12 @@ public class ReportDiabetesTestIT {
     @Autowired
     private MockMvc mockMvcReportDiabetes;
 
-//    @Autowired
-//    private IMicroServicePatientReportProxy microServicePatientReportProxy;
-//
-//    @Autowired
-//    private IMicroServiceHistoryPatientReportProxy microServiceHistoryPatientReportProxy;
     @Autowired
-    private ReportDiabetesService reportDiabetesService;
+    private IMicroServicePatientReportProxy microServicePatientReportProxy;
+
+    @Autowired
+    private IMicroServiceHistoryPatientReportProxy microServiceHistoryPatientReportProxy;
+
 
     @Test
     public void getDiabetesAssessmentByPatientId_whenPatientReportLessThanThirtyAndMale_thenReturnNone() throws Exception {
@@ -58,11 +59,14 @@ public class ReportDiabetesTestIT {
                 .andExpect(jsonPath("$.result", is("None")))
                 .andDo(print());
 
-//        DiabetesAssessment gettedPatientReport = reportDiabetesService.getDiabetesAssessmentByPatientId(1);
-//        assertNotNull(gettedPatientReport);
-//        assertEquals("Leon", gettedPatientReport.getFirstName());
-//        assertEquals("Boyd", gettedPatientReport.getLastName());
-//        assertEquals("1960-12-23", gettedPatientReport.getBirthDate());
+        PatientReport gettedPatientReport = microServicePatientReportProxy.getPatientById(1);
+        assertNotNull(gettedPatientReport);
+        assertEquals("Test", gettedPatientReport.getFirstName());
+        assertEquals("TestNone", gettedPatientReport.getLastName());
+        assertEquals("1966-12-31", gettedPatientReport.getBirthDate());
+
+        List<NotesPatientReport> gettedNotesPatien = (List<NotesPatientReport>) microServiceHistoryPatientReportProxy.getListNotesByPatient(1);
+        assertEquals(2,gettedNotesPatien.size());
     }
 
     @Test
