@@ -24,7 +24,7 @@ public class NotePatient {
     @Id
     private String id;
 
-    @JsonAlias("patid")
+    @JsonAlias("patId")
     private Integer patientId;
 
     @JsonAlias("e")

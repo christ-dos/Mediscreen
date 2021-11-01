@@ -1,5 +1,9 @@
 package com.clientui.IT;
 
+import com.clientui.models.NotesClientUi;
+import com.clientui.models.PatientClientUi;
+import com.clientui.proxy.IMicroServiceHistoryPatientProxy;
+import com.clientui.proxy.IMicroServicePatientProxy;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -7,8 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -27,6 +35,12 @@ public class ReportDiabetesUiIT {
     @Autowired
     private MockMvc mockMvcReportDiabetesClientUi;
 
+    @Autowired
+    private IMicroServicePatientProxy microServicePatientProxy;
+
+    @Autowired
+    private IMicroServiceHistoryPatientProxy microServiceHistoryPatientProxy;
+
 
     @Test
     public void getDiabetesAssessmentByPatientIdTest_whenPatientExistInDb_thenReturnDiabetesAssessmentFound() throws Exception {
@@ -42,6 +56,7 @@ public class ReportDiabetesUiIT {
                 .andExpect(model().attribute("diabetesAssessmentClientUi", hasProperty("age", is(54))))
                 .andExpect(model().attribute("diabetesAssessmentClientUi", hasProperty("result", is("None"))))
                 .andDo(print());
+
     }
 
     @Test
@@ -69,6 +84,5 @@ public class ReportDiabetesUiIT {
                 .andExpect(model().attributeHasFieldErrorCode("diabetesAssessmentClientUi", "patientId", "NotFound"))
                 .andDo(print());
     }
-
 
 }

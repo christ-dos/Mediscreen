@@ -3,6 +3,7 @@ package com.clientui.IT;
 import com.clientui.exception.PatientNotFoundException;
 import com.clientui.models.Gender;
 import com.clientui.models.PatientClientUi;
+import com.clientui.proxy.IMicroServicePatientProxy;
 import com.clientui.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,9 +45,12 @@ public class PatientClientUiTestIT {
 
     private PatientClientUi patientClientUiTest;
 
+    @Autowired
+    private IMicroServicePatientProxy microServicePatientProxy;
+
     @BeforeEach
     public void setupPerTest() {
-        patientClientUiTest = new PatientClientUi(2,"Test", "TestNone", "1966-12-31", Gender.F,null,null);
+        patientClientUiTest = new PatientClientUi(1,"Test", "TestNone", "1966-12-31", Gender.F,null,null);
     }
 
     @Test
@@ -62,6 +68,7 @@ public class PatientClientUiTestIT {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().stringValues("Location", "/"))
                 .andDo(print());
+
     }
 
     @Test
@@ -174,7 +181,7 @@ public class PatientClientUiTestIT {
                         .content(Utils.asJsonString(patientClientUiTest))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
                         .param("firstName","Test")
-                        .param("lastName","TestNone")
+                        .param("lastName","TestBorderlineUpdate")
                         .param("birthDate","1966-12-31")
                         .param("gender", String.valueOf(Gender.F)))
                 .andExpect(status().is3xxRedirection())
@@ -202,5 +209,6 @@ public class PatientClientUiTestIT {
                 .andExpect(model().attributeHasFieldErrorCode("patientClientUi", "birthDate", "NotBlank"))
                 .andExpect(model().attributeHasFieldErrorCode("patientClientUi", "gender", "NotNull"))
                 .andDo(print());
+
     }
 }

@@ -1,6 +1,12 @@
 package com.mediscreen.microservicereportdiabetes.IT;
 
 import com.mediscreen.microservicereportdiabetes.exception.PatientNotFoundException;
+import com.mediscreen.microservicereportdiabetes.model.DiabetesAssessment;
+import com.mediscreen.microservicereportdiabetes.model.NotesPatientReport;
+import com.mediscreen.microservicereportdiabetes.model.PatientReport;
+import com.mediscreen.microservicereportdiabetes.proxy.IMicroServiceHistoryPatientReportProxy;
+import com.mediscreen.microservicereportdiabetes.proxy.IMicroServicePatientReportProxy;
+import com.mediscreen.microservicereportdiabetes.service.ReportDiabetesService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,9 +15,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,7 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-//@ActiveProfiles("test")
 public class ReportDiabetesTestIT {
 
     /**
@@ -31,6 +38,13 @@ public class ReportDiabetesTestIT {
      */
     @Autowired
     private MockMvc mockMvcReportDiabetes;
+
+    @Autowired
+    private IMicroServicePatientReportProxy microServicePatientReportProxy;
+
+    @Autowired
+    private IMicroServiceHistoryPatientReportProxy microServiceHistoryPatientReportProxy;
+
 
     @Test
     public void getDiabetesAssessmentByPatientId_whenPatientReportLessThanThirtyAndMale_thenReturnNone() throws Exception {
@@ -44,6 +58,7 @@ public class ReportDiabetesTestIT {
                 .andExpect(jsonPath("$.age", is(54)))
                 .andExpect(jsonPath("$.result", is("None")))
                 .andDo(print());
+
     }
 
     @Test

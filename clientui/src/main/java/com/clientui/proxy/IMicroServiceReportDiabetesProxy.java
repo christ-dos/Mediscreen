@@ -12,8 +12,8 @@ import javax.validation.Valid;
  *
  * @author Christine Duarte
  */
-//@FeignClient(name = "microservice-report-diabetes", url = "localhost:8083")
-@FeignClient(name = "microservice-report-diabetes", url = "microservice-report-diabetes-app:8083")
+@FeignClient(name = "microservice-report-diabetes", url = "localhost:8083")
+//@FeignClient(name = "microservice-report-diabetes", url = "microservice-report-diabetes-app:8083")
 public interface IMicroServiceReportDiabetesProxy {
 
     @GetMapping(value = "/assess/{id}")
