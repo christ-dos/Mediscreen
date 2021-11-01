@@ -71,8 +71,6 @@ public class NoteClientUiTestIT {
                         "Patient: TestBorderline Practitioner's notes/recommendations: Patient states that they are feeling a great deal of stress at work Patient also complains that their hearing seems Abnormal as of late")))))
                 .andDo(print());
 
-        List<NotesClientUi> notesClientUIByPatientId = (List<NotesClientUi>) microServiceHistoryPatientProxy.getListNotesByPatient(2);
-        assertEquals(2, notesClientUIByPatientId.size());
     }
 
     @Test
@@ -127,12 +125,6 @@ public class NoteClientUiTestIT {
                 .andExpect(model().attribute("notesClientUi",hasProperty("note", is(
                         "Patient: TestNone Practitioner's notes/recommendations: Patient states that they are 'feeling terrific' Weight at or below recommended level"))))
                 .andDo(print());
-
-        NotesClientUi gettedNoteClientUiById = microServiceHistoryPatientProxy.getNotePatientById("6169f7df2c0d9a754676809f");
-        assertNotNull(gettedNoteClientUiById);
-        assertEquals("6169f7df2c0d9a754676809f", gettedNoteClientUiById.getId());
-        assertEquals(1, gettedNoteClientUiById.getPatientId());
-        assertEquals("Patient: TestNone Practitioner's notes/recommendations: Patient states that they are 'feeling terrific' Weight at or below recommended level", gettedNoteClientUiById.getNote());
 
     }
 

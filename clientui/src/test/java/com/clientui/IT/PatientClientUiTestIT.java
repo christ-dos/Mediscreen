@@ -69,12 +69,6 @@ public class PatientClientUiTestIT {
                 .andExpect(header().stringValues("Location", "/"))
                 .andDo(print());
 
-        PatientClientUi gettedPatientClientUi = microServicePatientProxy.getPatientById(1);
-        assertNotNull(gettedPatientClientUi);
-        assertEquals("Test", gettedPatientClientUi.getFirstName());
-        assertEquals("TestNone", gettedPatientClientUi.getLastName());
-        assertEquals("1966-12-31", gettedPatientClientUi.getBirthDate());
-
     }
 
     @Test
@@ -193,14 +187,6 @@ public class PatientClientUiTestIT {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().stringValues("Location", "/"))
                 .andDo(print());
-
-        PatientClientUi gettedPatientUpdatedClientUi = microServicePatientProxy.getPatientById(2);
-        assertNotNull(gettedPatientUpdatedClientUi);
-        assertEquals("Test", gettedPatientUpdatedClientUi.getFirstName());
-        assertEquals("TestBorderlineUpdate", gettedPatientUpdatedClientUi.getLastName());
-        assertEquals("1966-12-31", gettedPatientUpdatedClientUi.getBirthDate());
-
-
     }
 
     @Test
@@ -223,7 +209,6 @@ public class PatientClientUiTestIT {
                 .andExpect(model().attributeHasFieldErrorCode("patientClientUi", "birthDate", "NotBlank"))
                 .andExpect(model().attributeHasFieldErrorCode("patientClientUi", "gender", "NotNull"))
                 .andDo(print());
-
 
     }
 }

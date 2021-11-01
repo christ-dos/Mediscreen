@@ -57,14 +57,6 @@ public class ReportDiabetesUiIT {
                 .andExpect(model().attribute("diabetesAssessmentClientUi", hasProperty("result", is("None"))))
                 .andDo(print());
 
-        PatientClientUi gettedPatientReportClientUI = microServicePatientProxy.getPatientById(1);
-        assertNotNull(gettedPatientReportClientUI);
-        assertEquals("Test", gettedPatientReportClientUI.getFirstName());
-        assertEquals("TestNone", gettedPatientReportClientUI.getLastName());
-        assertEquals("1966-12-31", gettedPatientReportClientUI.getBirthDate());
-
-        List<NotesClientUi> gettedNotesPatient = (List<NotesClientUi>) microServiceHistoryPatientProxy.getListNotesByPatient(1);
-        assertEquals(1,gettedNotesPatient.size());
     }
 
     @Test
@@ -92,6 +84,5 @@ public class ReportDiabetesUiIT {
                 .andExpect(model().attributeHasFieldErrorCode("diabetesAssessmentClientUi", "patientId", "NotFound"))
                 .andDo(print());
     }
-
 
 }

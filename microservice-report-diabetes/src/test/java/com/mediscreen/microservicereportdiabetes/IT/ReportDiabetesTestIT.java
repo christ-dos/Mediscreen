@@ -59,14 +59,6 @@ public class ReportDiabetesTestIT {
                 .andExpect(jsonPath("$.result", is("None")))
                 .andDo(print());
 
-        PatientReport gettedPatientReport = microServicePatientReportProxy.getPatientById(1);
-        assertNotNull(gettedPatientReport);
-        assertEquals("Test", gettedPatientReport.getFirstName());
-        assertEquals("TestNone", gettedPatientReport.getLastName());
-        assertEquals("1966-12-31", gettedPatientReport.getBirthDate());
-
-        List<NotesPatientReport> gettedNotesPatien = (List<NotesPatientReport>) microServiceHistoryPatientReportProxy.getListNotesByPatient(1);
-        assertEquals(2,gettedNotesPatien.size());
     }
 
     @Test

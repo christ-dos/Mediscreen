@@ -11,8 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
 /**
@@ -46,12 +45,34 @@ public class PatientRepositoryTest {
     }
 
     @Test
-    public void findPatientsByLastNameTest_whenLastNameIsBoyd_ThenReturnListWith2Elements() {
+    public void findPatientsByLastNameTest_whenLastNameIsMartin_ThenReturnListWith2Elements() {
         // GIVEN
         // WHEN
-        List<Patient> PatientsByLastName = patientRepositoryTest.findByLastName("Martin");
+        List<Patient> patientsByLastName = patientRepositoryTest.findByLastName("Martin");
         // THEN
-        assertEquals(3, PatientsByLastName.size());
+        assertEquals(3, patientsByLastName.size());
+    }
+
+    @Test
+    public void findPatientsByLastNameTest_whenLastNameIsDurant_ThenReturnListWithPatientDurant() {
+        // GIVEN
+        Patient PatientDurant = new Patient("Christine","Durant", "2008-02-05",Gender.F);
+        // WHEN
+        patientRepositoryTest.save(PatientDurant);
+        List<Patient> patientsByLastName = patientRepositoryTest.findByLastName("Durant");
+        // THEN
+        assertEquals(1, patientsByLastName.size());
+        assertEquals("Durant", patientsByLastName.get(0).getLastName());
+        assertEquals("Christine", patientsByLastName.get(0).getFirstName());
+    }
+
+    @Test
+    public void findPatientsByLastNameTest_whenPatientNotExist_ThenReturnEmptyList() {
+        // GIVEN
+        // WHEN
+        List<Patient> patientsByLastName = patientRepositoryTest.findByLastName("NotExist");
+        // THEN
+        assertTrue(patientsByLastName.isEmpty());
     }
 
     @Test

@@ -10,8 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class That test {@link INotePatientRepository}
@@ -34,7 +33,7 @@ public class NotePatientRepositoryTest {
     }
 
     @Test
-    public void findAllByPatientIdOrderByDateDescTest_thenReturnListNotesWith5Elements() {
+    public void findAllByPatientIdOrderByDateDescTest_thenReturnListNotesWith3Elements() {
         // GIVEN
         List<NotePatient> listNotesPatientId3 = Arrays.asList(
                 new NotePatient(3, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 3", null),
@@ -44,22 +43,26 @@ public class NotePatientRepositoryTest {
         );
         // WHEN
         notePatientRepositoryTest.saveAll(listNotesPatientId3);
-        List<NotePatient> NotesByPatient = (List<NotePatient>) notePatientRepositoryTest.findAllByPatientIdOrderByDateDesc(3);
+        List<NotePatient> notesByPatient = (List<NotePatient>) notePatientRepositoryTest.findAllByPatientIdOrderByDateDesc(3);
         // THEN
-        assertEquals(3, NotesByPatient.size());
+        assertTrue(notesByPatient.get(0).getNote().contains("3B"));
+        assertEquals(3, notesByPatient.size());
     }
 
     @Test
     public void saveNoteTest_thenReturnNoteSaved() {
         // GIVEN
         // WHEN
-        NotePatient notePatientSaved = notePatientRepositoryTest.save(notePatientTest);
         List<NotePatient> notes = notePatientRepositoryTest.findAll();
+        assertTrue(notes.isEmpty());
+
+        NotePatient notePatientSaved = notePatientRepositoryTest.save(notePatientTest);
+        List<NotePatient> notesAfterSaved = notePatientRepositoryTest.findAll();
         // THEN
         assertNotNull(notePatientSaved);
         assertEquals(3, notePatientSaved.getPatientId());
         assertEquals(notePatientTest.getNote(), notePatientSaved.getNote());
-        assertEquals(1, notes.size());
+        assertEquals(1, notesAfterSaved.size());
     }
 
 
