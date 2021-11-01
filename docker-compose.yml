@@ -1,0 +1,96 @@
+version: '3.1'
+
+services:
+#*****************Microservice-Client-Ui******************************
+  microservice-client-ui-app:
+    image: microservice-client-ui-image
+    container_name: microservice-client-ui
+    restart: always
+    build:
+      context: ./clientui
+      dockerfile: Dockerfile
+    depends_on:
+      - microservice-report-diabetes-app
+      - microservice-patient-app
+      - microservice-history-patient-app
+    ports:
+      - "8080:8080"
+#*****************Microservice-report-diabetes-patient******************************
+  microservice-report-diabetes-app:
+    image: microservice-report-diabetes-image
+    container_name: microservice-report-diabetes
+    restart: always
+    build:
+      context: ./microservice-report-diabetes
+      dockerfile: Dockerfile
+    depends_on:
+      - microservice-patient-app
+      - microservice-history-patient-app
+    ports:
+      - "8083:8083"
+#*****************Microservice-patient******************************
+  microservice-patient-app:
+    image: microservice-patient-image
+    container_name: microservice-patient
+    restart: always
+    build:
+      context: ./microservice-patient
+      dockerfile: Dockerfile
+    depends_on:
+      - mediscreen-mysql
+    ports:
+      - "8081:8081"
+
+  #*****************Microservice-history-patient******************************
+  microservice-history-patient-app:
+    image: microservice-history-patient-image
+    container_name: microservice-history-patient
+    restart: always
+    build:
+      context: ./microservice-history-patient
+      dockerfile: Dockerfile
+    environment:
+      MYFEIGN_PATIENT_URL: microservice-patient-app:8081
+    depends_on:
+      - mongo
+    ports:
+      - "8082:8082"
+
+  #*****************Mysql for microservice patient******************************
+  mediscreen-mysql:
+    image: mysql:8.0.26
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: mediscreen
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./mysql-dump:/docker-entrypoint-initdb.d
+
+  #*****************Adminer manage mysql******************************
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8000:8080"
+
+  #*************************MongoDb for microservice-history-patient*******************
+  mongo:
+    image: mongo
+    container_name: "mongo"
+    hostname: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27018:27017"
+
+  #*****************Mongo-express UI for mongoDb******************************
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8085:8081"
+

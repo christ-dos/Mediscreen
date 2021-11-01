@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Mediscreen</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0-2/css/bootstrap.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h1>Mediscreen - Patients</h1>
+    </div>
+    <div class="row my-3">
+        <form th:action="@{/patients/lastname}" th:object="${patientClientUi}" action="#" method="post"
+              class="form-horizontal">
+            <div class="row justify-content-center p-2 mb-4 ">
+                <label for="lastName" class="col-4 col-sm-4 col-md-3 col-lg-2 col-form-label pb-0 text-end"><b>Family
+                    Name:</b>
+                </label>
+                <div class="col-4 col-sm-4 col-md-4 col-lg-3">
+                    <input th:field="*{lastName}" type="text" minlength="3" maxlength="20" class="form-control"
+                           id="lastName" name="lastName" required>
+                    <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+                </div>
+                <div class="col-2 col-sm-2 col-md-2 col-lg-3 mt-1">
+                    <input class="btn btn-primary btn-sm " type="submit" value="Search Patient">
+                </div>
+            </div>
+        </form>
+        <div class="col-4 my-2 p-0">
+            <a href="/patient/add" class="btn btn-primary btn-sm">Add Patient</a>
+        </div>
+        <!-- ***************Table******************-->
+        <table class="table table-bordered p-1">
+            <thead>
+            <tr>
+                <th>N° Patient</th>
+                <th>First Name</th>
+                <th>Last name</th>
+                <th>Birth date</th>
+                <th>Gender</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="patient : ${patients}">
+                <td style="width: 5%" th:text="${patient.id}"></td>
+                <td th:text="${patient.firstName}"></td>
+                <td th:text="${patient.lastName}"></td>
+                <td th:text="${patient.birthDate}"></td>
+                <td style="width: 5%" th:text="${patient.gender}"></td>
+                <td th:text="${patient.address}"></td>
+                <td th:text="${patient.phone}"></td>
+                <td style="width:30%" class="text-center">
+                    <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a> |
+                    <a th:href="@{/patHistory/add/{id}(id=${patient.id})}" href="#">History</a> |
+                    <a th:href="@{/assess/{id}(id=${patient.id})}" href="#">Report</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
