@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
@@ -48,8 +49,10 @@ public class PatientRepositoryTest {
     public void findPatientsByLastNameTest_whenLastNameIsMartin_ThenReturnListWith2Elements() {
         // GIVEN
         // WHEN
+        List<Patient> listAllPatients = (List<Patient>) patientRepositoryTest.findAll();
         List<Patient> patientsByLastName = patientRepositoryTest.findByLastName("Martin");
         // THEN
+        assertEquals(5, listAllPatients.size());
         assertEquals(3, patientsByLastName.size());
     }
 
@@ -100,5 +103,14 @@ public class PatientRepositoryTest {
         assertEquals("Martin", patientTestResult.getLastName());
         assertEquals("2005-01-02", patientTestResult.getBirthDate());
         assertEquals(Gender.F, patientTestResult.getGender());
+    }
+
+    @Test
+    public void findPatientByIdTest_whenPatientIdNotExist_thenReturnOptionalIsNorPresente() {
+        // GIVEN
+        // WHEN
+        Optional patientTestResult = patientRepositoryTest.findById(103);
+        //THEN
+        assertFalse(patientTestResult.isPresent());
     }
 }

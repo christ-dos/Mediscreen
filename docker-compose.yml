@@ -49,6 +49,8 @@ services:
     build:
       context: ./microservice-history-patient
       dockerfile: Dockerfile
+    environment:
+      MYFEIGN_PATIENT_URL: microservice-patient-app:8081
     depends_on:
       - mongo
     ports:

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,21 +34,24 @@ public class NotePatientRepositoryTest {
     }
 
     @Test
-    public void findAllByPatientIdOrderByDateDescTest_thenReturnListNotesWith3Elements() {
+    public void findAllByPatientIdOrderByDateDescTest_thenReturnListNotesWithThreeElements() {
         // GIVEN
         List<NotePatient> listNotesPatientId3 = Arrays.asList(
-                new NotePatient(3, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 3", null),
-                new NotePatient(3, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 3A", null),
-                new NotePatient(3, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 3B", null),
-                new NotePatient(5, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 5", null)
+                new NotePatient(3, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 3", LocalDateTime.now().minusMinutes(15)),
+                new NotePatient(3, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 3A", LocalDateTime.now().minusMinutes(10)),
+                new NotePatient(3, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 3B", LocalDateTime.now().minusMinutes(5)),
+                new NotePatient(5, "Patient:Mr Durant Recommendation: une recommendation test pour le patient 5", LocalDateTime.now())
         );
         // WHEN
         notePatientRepositoryTest.saveAll(listNotesPatientId3);
+        List<NotePatient> listAllNotes = notePatientRepositoryTest.findAll();
         List<NotePatient> notesByPatient = (List<NotePatient>) notePatientRepositoryTest.findAllByPatientIdOrderByDateDesc(3);
         // THEN
         assertTrue(notesByPatient.get(0).getNote().contains("3B"));
+        assertEquals(4,listAllNotes.size());
         assertEquals(3, notesByPatient.size());
     }
+
 
     @Test
     public void saveNoteTest_thenReturnNoteSaved() {
@@ -64,6 +68,4 @@ public class NotePatientRepositoryTest {
         assertEquals(notePatientTest.getNote(), notePatientSaved.getNote());
         assertEquals(1, notesAfterSaved.size());
     }
-
-
 }
